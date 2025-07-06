@@ -10,7 +10,7 @@ from model.utils import resnet
 from model.aux_modules import AuxComputer
 from model.transformer.object_transformer import QueryTransformer
 from model.transformer.object_summarizer import ObjectSummarizer
-from livos_utils.tensor_utils import aggregate
+from utils.tensor_utils import aggregate
 
 log = logging.getLogger()
 
@@ -499,7 +499,7 @@ class MaskDecoder(nn.Module):
         return logits_BNCHW, new_sensory_BNCHW
 
 
-class LIVOS(nn.Module):
+class GDKVM(nn.Module):
     def __init__(
             self,
             model_type='base',
