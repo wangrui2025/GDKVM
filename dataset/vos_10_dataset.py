@@ -55,14 +55,14 @@ class TenCamusDataset(Dataset):
             mask_dir = os.path.join(self.filepath, 'gt_lv', pid)
 
             if (not os.path.isdir(img_dir)) or (not os.path.isdir(mask_dir)):
-                log.warning(f"{pid} 的图像目录或掩码目录不存在，已跳过。")
+                log.warning(f"{pid} wrong。")
                 continue
 
             img_list = sorted(os.listdir(img_dir), key=sort_by_number)
             mask_list = sorted(os.listdir(mask_dir), key=sort_by_number)
 
             if len(img_list) < self.seq_length:
-                log.warning(f"{pid} 有 {len(img_list)} 帧图像，少于{self.seq_length}帧，已跳过。")
+                log.warning(f"{pid}  {len(img_list)} less {self.seq_length}=")
                 continue
 
             self.samples.append({
