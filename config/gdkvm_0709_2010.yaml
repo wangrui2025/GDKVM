@@ -1,0 +1,81 @@
+defaults:
+  - _self_
+  - model: base  # 如果你有模型的子配置，就保留这一行
+
+# =======================
+# 通用配置
+# =======================
+exp_id: "camus_15f_semi"         # 实验名称
+seed: 42                     # 随机种子
+debug: false                 # 是否debug模式
+cudnn_benchmark: true
+log_text_interval: 10        # 日志文本的打印/记录间隔
+log_image_interval: 50       # 日志中图片的可视化间隔
+save: 0                      # 是否保存模型
+save_weights_interval: 200    # 保存权重的间隔(iter)
+save_checkpoint_interval: 200 # 保存checkpoint的间隔(iter)
+
+data_path: "/data/camus_png256x256_15f_20250709/"
+
+# =======================
+# 训练阶段配置
+# =======================
+main_training:
+  name: "main_training"
+  enabled: true
+  batch_size: 12
+  num_workers: 48
+  amp: true
+  num_iterations: 3000         # 训练多少个iteration
+  learning_rate: 1.0e-4
+  lr_schedule: step            # "constant", "poly", "step"
+  lr_schedule_gamma: 0.1
+  point_supervision: true
+  train_num_points: 12544
+  oversample_ratio: 3.0
+  importance_sample_ratio: 0.75
+
+  clip_grad_norm: 3.0 
+  weight_decay: 0.001
+  embed_weight_decay: 0.0
+  backbone_lr_ratio: 0.1
+  lr_schedule_steps: [1000, 2000]
+
+  num_ref_frames: 15
+  seq_length: 15
+  num_objects: 1
+  crop_size: [256, 256]  
+
+  # 自定义损失/超参
+  pos_weight_val: 2.0
+
+# 如果有预训练阶段，可以保留；若不需要，直接enabled = false 或删除
+pre_training:
+  enabled: false
+
+# =======================
+# 验证 / 推理相关配置
+# =======================
+val:
+  enabled: true  # 是否在训练时做验证
+
+# 如果单独做推理/评估，可以用这个 eval_stage，也可在训练结束后直接调用
+eval_stage:
+  name: "eval_stage"
+  amp: false
+  # batch_size: 
+  # num_workers: 
+  eval_interval: 10
+  num_vis: 1
+  crop_size: [256, 256]
+  learning_rate: 1e-4
+  weight_decay: 1e-3
+  lr_schedule: "constant"
+  clip_grad_norm: 0.0
+  point_supervision: false
+  train_num_points: 0
+  oversample_ratio: 3.0
+  importance_sample_ratio: 0.75
+  embed_weight_decay: 0.0
+  backbone_lr_ratio: 0.1
+

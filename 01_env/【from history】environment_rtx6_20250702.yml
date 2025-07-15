@@ -1,0 +1,6 @@
+name: env-LiVOS-20241220
+channels:
+  - defaults
+dependencies:
+  - python=3.10
+prefix: /data/wr2024/miniconda3/envs/env-LiVOS-20241220
