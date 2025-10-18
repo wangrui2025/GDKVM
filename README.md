@@ -57,7 +57,7 @@
 | EchoNet-Dynamic       | [https://echonet.github.io/dynamic/](https://echonet.github.io/dynamic/)                                                   |
 | 处理好的 CAMUS 10帧 PNG 子集 | [Hugging Face 链接](https://huggingface.co/datasets/miyuki17/camus_png256x256_10f_20250709)                                  |
 
-> 💡 建议将数据解压到 `/data/username/dataset/camus_png256x256_10f/` 或自定义路径。
+> 💡 建议将数据解压到 `/data/username/dataset/camus_png256x256_10f/` 。
 
 ```yaml
 data_path: "/data/username/dataset/camus_png256x256_10f/"
