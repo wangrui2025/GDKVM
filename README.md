@@ -1,44 +1,151 @@
-# GDKVM 复现指南
+# GDKVM 项目复现指南
 
+## 1. 环境准备
 
-## 1. 准备服务器项目目录
-1. 进入实验根目录，以日期命名创建项目骨架：
+### 1.1 Python 与依赖管理
+
+* **Python**：建议使用 3.12（`pyproject.toml` 指定 `>=3.12`）。
+* **依赖管理工具**：[uv](https://docs.astral.sh/uv/)（若无法使用，可退回 `pip`）。
+
+### 1.2 创建项目目录
+
+1. 进入实验根目录，创建项目骨架：
+
    ```bash
    cd /data/username/Repo
    uv init -p 3.12.4 gdkvm_20251018
    ```
-2. 将仓库克隆到同一目录，获取实际代码：
+2. 克隆 GDKVM 仓库（可替换为你的 fork 地址）：
+
    ```bash
    git clone https://github.com/wangrui2025/GDKVM.git /data/username/Repo/gdkvm_20251018
    ```
 
+   或者：
+
+   ```bash
+   git clone https://github.com/your-org-or-user/gdkvm_20251018.git .
+   ```
+
+---
+
 ## 2. 使用 uv 管理依赖
-### 2.1 基于 uv 的项目
-1. 依靠 GDKVM 的 `pyproject.toml` 与 `uv.lock` 配置环境。
-2. 服务器端激活虚拟环境并安装依赖：
-```bash
+
+1. 进入项目目录并激活虚拟环境：
+
+   ```bash
    cd /data/username/Repo/gdkvm_20251018
    source .venv/bin/activate
+   ```
+2. 同步依赖并验证：
+
+   ```bash
    uv sync
    uv pip check
+   ```
+
+---
+
+## 3. 数据集准备
+
+推荐数据集来源如下：
+
+| 名称                    | 来源                                                                                                                         |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| CAMUS 原始数据            | [https://www.creatis.insa-lyon.fr/Challenge/camus/index.html](https://www.creatis.insa-lyon.fr/Challenge/camus/index.html) |
+| EchoNet-Dynamic       | [https://echonet.github.io/dynamic/](https://echonet.github.io/dynamic/)                                                   |
+| 处理好的 CAMUS 10帧 PNG 子集 | [Hugging Face 链接](https://huggingface.co/datasets/miyuki17/camus_png256x256_10f_20250709)                                  |
+
+> 💡 建议将数据解压到 `/data/username/dataset/camus_png256x256_15f/` 或自定义路径。
+
+```yaml
+data_path: "/data/username/dataset/camus_png256x256_15f/"
 ```
 
-## 数据集
-- CAMUS PNG 256×256 10 帧子集：[Hugging Face 链接](https://huggingface.co/datasets/miyuki17/camus_png256x256_10f_20250709)
-数据集：
-camus：https://www.creatis.insa-lyon.fr/Challenge/camus/index.html
-EchoNet-Dynamic数据集：https://echonet.github.io/dynamic/
-处理好的camus，10 帧，png：https://huggingface.co/datasets/miyuki17/camus_png256x256_10f_20250709
-- `data_path`：需改成你的本地或挂载路径，例如
+---
 
-  ```yaml
-  data_path: "/data/username/dataset/camus_png256x256_15f/"
+## 4. 配置关键项
+
+所有默认配置位于：
+
+```
+config/gdkvm_0709_2010.yaml
+```
+
+主要字段说明：
+
+| 配置项                                                         | 说明                     |
+| ----------------------------------------------------------- | ---------------------- |
+| `data_path`                                                 | 数据集路径（可通过命令行 Hydra 覆盖） |
+| `main_training.batch_size` / `num_workers`                  | 总量。脚本会按 GPU 数自动整除      |
+| `main_training.seq_length` / `num_ref_frames` / `crop_size` | 与数据处理一致                |
+| `exp_id` / `save_*`                                         | 实验命名、日志与权重保存控制         |
+
+**Hydra 覆盖示例：**
+
+```bash
+python train.py \
+  data_path=/data/your_disk/camus \
+  main_training.batch_size=16 \
+  main_training.lr_schedule=poly
+```
+
+---
+
+## 5. 启动训练
+
+### 5.1 使用提供的脚本
+
+默认脚本：`train0123.sh` 或 `train.sh`
+
+1. 编辑脚本：
+
+   * 指定 GPU：
+
+     ```bash
+     export CUDA_VISIBLE_DEVICES=0,1,2,3
+     ```
+   * 设置 PYTHONPATH：
+
+     ```bash
+     export PYTHONPATH=/data/username/Repo/gdkvm_20251018${PYTHONPATH:+:$PYTHONPATH}
+     ```
+2. 激活虚拟环境并执行：
+
+   ```bash
+   bash train0123.sh
+   ```
+
+   或：
+
+   ```bash
+   chmod +x ./train.sh
+   ./train.sh
+   ```
+
+---
+
+## 6. 日志与结果
+
+* **Hydra 输出目录**：
+  `outputs/gdkvm/<日期>/<时间>/`
+* **Weights & Biases 日志**：
+  保存在 `wandb/` 目录。可在本地执行：
+
+  ```bash
+  wandb sync wandb/
   ```
 
+  上传结果至 Weights & Biases 云端查看训练曲线。
 
-## 3. 运行训练脚本
-```bash
-chmod +x ./train.sh
-./train.sh
-```
+---
 
+## 7. 离线场景说明
+
+本指南专为 **无外网服务器** 设计，建议：
+
+* 手动下载依赖包与数据集；
+* 通过本地同步工具（如 `rsync`、`scp`）传输；
+* WandB 结果可本地同步后再上传。
+
+---
