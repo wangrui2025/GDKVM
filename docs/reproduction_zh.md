@@ -2,13 +2,7 @@
 
 ## 1. 环境准备
 
-### 1.1 Python 与依赖管理
-
-* **Python**：建议使用 3.12（`pyproject.toml` 指定 `>=3.12`）。
-* **uv**
-
-
-### 1.2 创建项目目录
+### 1.1 创建项目目录
 
 1. 进入实验根目录，创建项目骨架：
 
@@ -55,7 +49,7 @@
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | CAMUS 原始数据            | [https://www.creatis.insa-lyon.fr/Challenge/camus/index.html](https://www.creatis.insa-lyon.fr/Challenge/camus/index.html) |
 | EchoNet-Dynamic       | [https://echonet.github.io/dynamic/](https://echonet.github.io/dynamic/)                                                   |
-| 处理好的 CAMUS 10帧 PNG 子集 | [Hugging Face 链接](https://huggingface.co/datasets/miyuki17/camus_png256x256_10f_20250709)                                  |
+| 处理好的 CAMUS 10帧 PNG 数据集 | [Hugging Face 链接](https://huggingface.co/datasets/miyuki17/camus_png256x256_10f_20250709)                                  |
 
 > 💡 建议将数据解压到 `/data/username/dataset/camus_png256x256_10f/` 。
 
