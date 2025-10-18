@@ -5,7 +5,8 @@
 ### 1.1 Python 与依赖管理
 
 * **Python**：建议使用 3.12（`pyproject.toml` 指定 `>=3.12`）。
-* **依赖管理工具**：[uv](https://docs.astral.sh/uv/)（若无法使用，可退回 `pip`）。
+* 如何使用 uv [notion帮助文档](https://how2research.notion.site/uv-28fa44e48b9b80e396b3df9e2c8d9cdf)
+
 
 ### 1.2 创建项目目录
 
@@ -56,10 +57,10 @@
 | EchoNet-Dynamic       | [https://echonet.github.io/dynamic/](https://echonet.github.io/dynamic/)                                                   |
 | 处理好的 CAMUS 10帧 PNG 子集 | [Hugging Face 链接](https://huggingface.co/datasets/miyuki17/camus_png256x256_10f_20250709)                                  |
 
-> 💡 建议将数据解压到 `/data/username/dataset/camus_png256x256_15f/` 或自定义路径。
+> 💡 建议将数据解压到 `/data/username/dataset/camus_png256x256_10f/` 或自定义路径。
 
 ```yaml
-data_path: "/data/username/dataset/camus_png256x256_15f/"
+data_path: "/data/username/dataset/camus_png256x256_10f/"
 ```
 
 ---
