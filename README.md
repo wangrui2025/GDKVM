@@ -1,7 +1,8 @@
 # GDKVM
 
-## 复现
-复现 link : [GDKVM 复现指南 (imp.md)](imp.md)
+## Reproduction Guides
+- [GDKVM Reproduction Guide (English)](docs/reproduction_en.md)
+- [GDKVM 项目复现指南（中文）](docs/reproduction_zh.md)
 
-## wiki
+## Wiki
 wiki link : [GDKVM wiki](wiki.md)
