@@ -138,4 +138,4 @@ config/gdkvm_0709_2010.yaml
 ## 8. 帮助文档
 1. 如何使用 uv [notion帮助文档](https://how2research.notion.site/uv-28fa44e48b9b80e396b3df9e2c8d9cdf)
 2. 本项目中出现的 wandb 配置 todo
-3. GDKVM wiki
+3. GDKVM wiki [github](https://github.com/wangrui2025/GDKVM_wiki)
