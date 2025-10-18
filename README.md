@@ -2,13 +2,13 @@
 2025 GDKVM：Gated Delta Rule 引导的时空键值记忆，用于超声心动图视频分割
 
 ## 快速概览
-- 本地编写代码，使用 Copilot 等 AI 辅助。
-- 服务器使用 `uv` 独立管理 Python 环境并运行实验。
+- 本地编写代码，配合 Copilot 等 AI 辅助修改。
+- Git 管理版本，服务器侧由 `uv` 维护 Python 环境并独立运行实验。
 
 ## 准备工作
 - 服务器终端工具：Termius 或 VS Code Remote Terminal。
 - 本地工具：VS Code（可选）、Git。
-- 服务器已安装 `uv` 与 Python 3.12.4（或可自行安装）。
+- 服务器已安装 `uv` 与 Python 3.12.4（或可自行安装该版本）。
 
 ## 1. 服务器初始化 uv 项目
 ```bash
@@ -17,6 +17,11 @@ uv init -p 3.12.4 gdkvm_20251018
 ```
 - `username` 与日期按需替换。
 - 该命令会创建基础项目结构与 `.venv` 环境（若未禁用）。
+- 把项目 git clone 到相应目录下：
+  ```bash
+  git clone https://github.com/wangrui2025/GDKVM.git /data/username/Repo/gdkvm_20251018
+  ```
+  若目录已存在 `uv init` 生成的文件，可先备份或清理后再克隆；也可以在克隆后的仓库中执行 `uv init -p 3.12.4 .` 更新 `pyproject.toml` 与 `.venv`。
 
 ## 2. 使用 uv 管理环境
 ### 2.1 基于 uv 项目
