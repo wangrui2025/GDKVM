@@ -5,7 +5,7 @@
 ### 1.1 Python 与依赖管理
 
 * **Python**：建议使用 3.12（`pyproject.toml` 指定 `>=3.12`）。
-* 如何使用 uv [notion帮助文档](https://how2research.notion.site/uv-28fa44e48b9b80e396b3df9e2c8d9cdf)
+* **uv**
 
 
 ### 1.2 创建项目目录
@@ -82,22 +82,13 @@ config/gdkvm_0709_2010.yaml
 | `main_training.seq_length` / `num_ref_frames` / `crop_size` | 与数据处理一致                |
 | `exp_id` / `save_*`                                         | 实验命名、日志与权重保存控制         |
 
-**Hydra 覆盖示例：**
-
-```bash
-python train.py \
-  data_path=/data/your_disk/camus \
-  main_training.batch_size=16 \
-  main_training.lr_schedule=poly
-```
-
 ---
 
 ## 5. 启动训练
 
 ### 5.1 使用提供的脚本
 
-默认脚本：`train0123.sh` 或 `train.sh`
+默认脚本：`train.sh`
 
 1. 编辑脚本：
 
@@ -111,14 +102,7 @@ python train.py \
      ```bash
      export PYTHONPATH=/data/username/Repo/gdkvm_20251018${PYTHONPATH:+:$PYTHONPATH}
      ```
-2. 激活虚拟环境并执行：
-
-   ```bash
-   bash train0123.sh
-   ```
-
-   或：
-
+2. 执行：
    ```bash
    chmod +x ./train.sh
    ./train.sh
@@ -150,3 +134,7 @@ python train.py \
 * WandB 结果可本地同步后再上传。
 
 ---
+
+## 8. 外部连接
+1. 如何使用 uv [notion帮助文档](https://how2research.notion.site/uv-28fa44e48b9b80e396b3df9e2c8d9cdf)
+2. 本项目中出现的 wandb 配置 todo
