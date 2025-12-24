@@ -1,7 +1,31 @@
-# GDKVM
-2025 GDKVM: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule
+# GDKVM 
 
-coming soon
+## ICCV 2025
 
+<div align="center">
 
-dataset [huggingface](https://huggingface.co/datasets/miyuki17/camus_png256x256_10f_20250709)
+**GDKVM: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule**
+
+[![arXiv](https://img.shields.io/badge/arXiv-2512.10252-b31b1b.svg)](https://arxiv.org/abs/2512.10252)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+</div>
+
+Please refer to our **[Reproduction Process](https://wangrui2025.github.io/GDKVM/reprod/index.html)**.
+
+## 🔗 Citation
+If you find this work helpful for your research, please cite our paper:
+```
+@InProceedings{Wang_ICCV25_GDKVM,
+    author    = {Wang, Rui and Sun, Yimu and Guo, Jingxing and Wu, Huisi and Qin, Jing},
+    title     = {{GDKVM}: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule},
+    booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+    month     = {October},
+    year      = {2025},
+    pages     = {12191-12200}
+}
+```
+
+## 🙌 Acknowledgement
+
+This repository is built upon the [Cutie](https://github.com/hkchengrex/Cutie). We appreciate the authors for their well-maintained code and contribution to the community.
