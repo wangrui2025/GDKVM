@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html class="lang-en"> <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GDKVM | Reproduction Guide</title>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/ini.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+
+  <style>
+    /* --- 1. Global Settings --- */
+    html { font-size: 14px; scroll-behavior: smooth; }
+    body { font-family: 'Noto Sans', 'Noto Sans SC', sans-serif; background-color: #ffffff; color: #4a4a4a; min-height: 100vh; display: flex; flex-direction: column; }
+    a { color: #3273dc; transition: color 0.2s; text-decoration: none; }
+    a:hover { color: #1a237e; text-decoration: underline; }
+
+    /* --- 2. Typography --- */
+    .publication-title { font-family: 'Google Sans', sans-serif; font-size: 2.2rem !important; }
+    .subtitle.is-4 { font-size: 1.3rem !important; line-height: 1.5; margin-top: 0.5rem; }
+    
+    .section-title { font-size: 1.5rem !important; margin-top: 2.5rem; margin-bottom: 1.5rem; font-weight: 600; color: #363636; border-bottom: 2px solid #f5f5f5; padding-bottom: 0.5rem; }
+    .subsection-title { font-size: 1.2rem !important; margin-top: 1.8rem; margin-bottom: 0.8rem; font-weight: 600; color: #4a4a4a; }
+    
+    .content { font-size: 1rem; }
+    
+    /* --- 3. Code Block Styles --- */
+    .code-container { position: relative; margin-bottom: 1rem; }
+    
+    pre { background-color: #f5f5f5; padding: 1rem; border-radius: 4px; overflow-x: auto; }
+    
+    /* Inline Code */
+    :not(pre) > code { 
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; 
+      background-color: #f3f6fc; 
+      padding: 0.15rem 0.35rem; 
+      border-radius: 4px;
+      color: #0969da; 
+      font-size: 0.9em;
+      border: 1px solid rgba(175, 184, 193, 0.2);
+    }
+
+    pre code.hljs { padding: 0; background-color: transparent; font-size: 0.95em; font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+
+    .copy-btn {
+      position: absolute; top: 0.5rem; right: 0.5rem;
+      opacity: 0.7; transition: opacity 0.2s;
+      border: 1px solid #dbdbdb; cursor: pointer; z-index: 10;
+    }
+    .copy-btn:hover { opacity: 1; }
+
+    /* --- 4. Special Boxes (Merged) --- */
+    .advanced-box {
+      background-color: #fffbeb;
+      border-left: 4px solid #ffdd57;
+      border-radius: 4px;
+      padding: 1.2rem;
+      margin: 1.5rem 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .advanced-title {
+      font-weight: bold; color: #947600; margin-bottom: 0.8rem;
+      display: flex; align-items: center; font-size: 1.05rem;
+    }
+    .advanced-title i { margin-right: 0.5rem; }
+
+    details.compatibility-box {
+      background-color: #fffdf5; border-left: 4px solid #ffdd57;
+      border-radius: 4px; margin: 1.5rem 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow: hidden;
+    }
+    
+    summary.compatibility-header {
+      padding: 1rem 1.2rem; font-weight: bold; color: #856404; cursor: pointer;
+      list-style: none; display: flex; align-items: center; justify-content: space-between;
+      outline: none; background-color: rgba(255, 221, 87, 0.15);
+    }
+    summary.compatibility-header:hover { background-color: rgba(255, 221, 87, 0.25); }
+    summary.compatibility-header::-webkit-details-marker { display: none; }
+    
+    .compatibility-content { padding: 1.2rem; border-top: 1px solid rgba(255, 221, 87, 0.3); }
+
+    /* --- 5. Data Cards --- */
+    .compact-card {
+      background: #fff; border: 1px solid #ededed;
+      border-radius: 6px; padding: 1rem 1.2rem; margin-bottom: 1.2rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03); font-size: 0.95rem;
+    }
+    
+    .link-tag {
+      background-color: #f5f5f5; padding: 0.1rem 0.5rem; border-radius: 3px;
+      font-size: 0.85rem; color: #3273dc; display: inline-flex; align-items: center;
+      transition: background-color 0.2s; border: 1px solid transparent;
+    }
+    .link-tag:hover { background-color: #e8f0fe; border-color: #b5d0ff; text-decoration: none; }
+    .link-tag i { margin-left: 0.3rem; font-size: 0.8em; }
+
+    .link-subtle {
+      color: #999; text-decoration: none; margin-left: 0.4rem;
+      transition: color 0.2s; border-bottom: 1px dotted #ccc;
+    }
+    .link-subtle:hover { color: #3273dc; border-bottom-color: #3273dc; }
+
+    /* --- 6. Layout --- */
+    .hero { background-color: #f8f9fa; margin-bottom: 2rem; border-bottom: 1px solid #eaeaea; }
+    .section { flex: 1; }
+
+    /* --- 7. Language Switcher & Logic --- */
+    .lang-btn {
+        position: fixed; top: 1.5rem; right: 1.5rem; z-index: 999;
+        background: #cccccc; border: 1px solid #dbdbdb;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 50px;
+        padding: 0.5rem 1.2rem; font-weight: bold; cursor: pointer;
+        transition: all 0.3s; display: flex; align-items: center; gap: 8px;
+        font-family: 'Google Sans', sans-serif;
+    }
+    .lang-btn:hover { background: #f5f5f5; color: #3273dc; }
+    
+    @media screen and (max-width: 768px) {
+        .lang-btn { top: 1rem; right: 1rem; padding: 0.4rem 1rem; font-size: 0.8rem; }
+    }
+
+    /* Core Toggle Logic */
+    [lang] { display: none; }
+    
+    /* English Mode */
+    html.lang-en [lang="en"] { display: inline; }
+    html.lang-en div[lang="en"], html.lang-en p[lang="en"], html.lang-en span[lang="en"] { display: block; }
+    html.lang-en span[lang="en"] { display: inline; }
+    
+    /* Chinese Mode */
+    html.lang-zh [lang="zh"] { display: inline; }
+    html.lang-zh div[lang="zh"], html.lang-zh p[lang="zh"], html.lang-zh span[lang="zh"] { display: block; }
+    html.lang-zh span[lang="zh"] { display: inline; }
+
+    /* Code Block Specific Toggle Logic */
+    html.lang-en pre[lang="en"] { display: block; }
+    html.lang-zh pre[lang="zh"] { display: block; }
+
+    /* Animation */
+    .fade-in { animation: fadeIn 0.4s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  </style>
+
+  <script>
+    // Init Language from LocalStorage
+    let savedLang = 'en';
+    try {
+      savedLang = localStorage.getItem('lang') || 'en';
+    } catch (e) {
+      console.warn('LocalStorage access denied:', e);
+    }
+    document.documentElement.className = 'lang-' + savedLang;
+  </script>
+</head>
+<body>
+
+<button id="lang-toggle" class="lang-btn" title="Switch Language">
+    <img src="../assets/images/translate.svg" alt="Translate" style="height: 1.2rem; width: auto;">
+</button>
+
+<section class="hero is-light">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+             <span lang="en">Reproduction Guide</span><span lang="zh">复现指南</span>
+          </h1>
+          <p class="subtitle is-4">
+            <span lang="en">GDKVM: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule</span>
+            <span lang="zh">GDKVM：含门控 Delta 规则的时空键值记忆的超声心动图视频分割</span>
+          </p>
+          
+          <div style="margin-top: 1.5rem;">
+            <a href="../index.html" class="button is-dark is-rounded">
+              <span class="icon"><i class="fas fa-arrow-left"></i></span>
+              <span lang="en">Back to Home</span><span lang="zh">返回主页</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop content fade-in">
+    
+    <!-- ==================== 1. Environment Setup ==================== -->
+    <h2 class="section-title" id="environment">
+        <span lang="zh">1. 环境构建</span><span lang="en">1. Environment Setup</span>
+    </h2>
+    
+    <h3 class="subsection-title">
+        <span lang="zh">0. 清理环境</span><span lang="en">0. Clean Environment</span>
+    </h3>
+    <p>
+      <span lang="zh">若当前 Shell 已激活虚拟环境（左侧显示 <code>(base)</code> 或 <code>(env)</code>），需先退出。</span>
+      <span lang="en">If a virtual environment is currently activated in your Shell (indicated by <code>(base)</code> or <code>(env)</code> on the left), please deactivate it first.</span>
+    </p>
+
+    <p>
+        <span lang="zh">对于 Conda 环境：</span><span lang="en">For Conda environments:</span>
+    </p>
+    <div class="code-container">
+      <button class="button is-small is-light copy-btn" onclick="copyCode(this)"><span class="icon"><i class="fas fa-copy"></i></span><span>Copy</span></button>
+      <pre><code class="language-bash">conda deactivate</code></pre>
+    </div>
+
+    <p>
+        <span lang="zh">对于普通 venv：</span><span lang="en">For standard venv:</span>
+    </p>
+    <div class="code-container">
+      <button class="button is-small is-light copy-btn" onclick="copyCode(this)"><span class="icon"><i class="fas fa-copy"></i></span><span>Copy</span></button>
+      <pre><code class="language-bash">deactivate</code></pre>
+    </div>
+
+    <p class="is-size-7 has-text-grey" style="margin-top: 0.5rem;">
+      <span lang="zh">备注： uv 的环境管理具有较高的隔离性。在大多数场景下，即便未退出 Conda 环境，直接构建 uv 虚拟环境也不会引发依赖冲突。</span>
+      <span lang="en">Note: uv's environment management features high isolation. In most scenarios, even without deactivating the Conda environment, directly creating a uv virtual environment will not cause dependency conflicts.</span>
+    </p>
+
+    <h3 class="subsection-title">
+        <span lang="zh">1. 工具准备：安装 uv</span><span lang="en">1. Preparation: Install uv</span>
+    </h3>
+    <p>
+      <span lang="zh">本项目采用 <a href="https://uv.doczh.com/" target="_blank">uv</a> 进行依赖管理。该工具基于 Rust 开发，具备高效的依赖解析能力。</span>
+      <span lang="en">This project uses <a href="https://uv.doczh.com/" target="_blank">uv</a> for dependency management. Developed in Rust, it features highly efficient dependency resolution capabilities.</span>
+    </p>
+
+    <p>
+        <span lang="zh">服务器无法直接链接外网时，安装：</span><span lang="en">Installation without direct internet access:</span>
+    </p>
+    <div class="code-container">
+      <button class="button is-small is-light copy-btn" onclick="copyCode(this)"><span class="icon"><i class="fas fa-copy"></i></span><span>Copy</span></button>
+      <pre><code class="language-bash">pip install uv</code></pre>
+    </div>
+    
+    <p>
+        <span lang="zh">或更新至最新版：</span><span lang="en">Or update to the latest version:</span>
+    </p>
+    <div class="code-container">
+      <button class="button is-small is-light copy-btn" onclick="copyCode(this)"><span class="icon"><i class="fas fa-copy"></i></span><span>Copy</span></button>
+      <pre><code class="language-bash">pip install --upgrade uv</code></pre>
+    </div>
+
+    <p>
+        <span lang="zh">验证安装：</span><span lang="en">Verify installation:</span>
+    </p>
+    <div class="code-container">
+      <button class="button is-small is-light copy-btn" onclick="copyCode(this)"><span class="icon"><i class="fas fa-copy"></i></span><span>Copy</span></button>
+      <pre><code class="language-bash">uv -V</code></pre>
+    </div>
+    <p class="is-size-7 has-text-grey">
+        <span lang="zh">基准版本：今天的版本 0.9.10。</span>
+        <span lang="en">Baseline version: Today's version 0.9.10.</span>
+    </p>
+
+    <h3 class="subsection-title">
+        <span lang="zh">2. 获取项目代码</span><span lang="en">2. Get Project Code</span>
+    </h3>
+    <p>
+        <span lang="zh">克隆代码仓库并指定本地目录名。</span>
+        <span lang="en">Clone the repository and specify the local directory name.</span>
+    </p>
+    <div class="code-container">
+      <button class="button is-small is-light copy-btn" onclick="copyCode(this)"><span class="icon"><i class="fas fa-copy"></i></span><span>Copy</span></button>
+      <pre><code class="language-bash">git clone https://github.com/wangrui2025/GDKVM.git gdkvm_20251215</code></pre>
+    </div>
+
+    <p>
+        <span lang="zh">进入项目目录：</span><span lang="en">Enter the project directory:</span>
+    </p>
+    <div class="code-container">
+      <button class="button is-small is-light copy-btn" onclick="copyCode(this)"><span class="icon"><i class="fas fa-copy"></i></span><span>Copy</span></button>
+      <pre><code class="language-bash">cd gdkvm_20251215</code></pre>
+    </div>
+    
+    <p>
+        <span lang="zh">项目结构概览：</span><span lang="en">Project structure overview:</span>
+    </p>
+    <div class="code-container">
+      <pre lang="en"><code class="language-bash">.
+├── .python-version    # Specifies the Python version
+├── pyproject.toml     # Main project configuration file
+├── uv.lock            # Lock file (Ensures consistency)
+└── ...                # Other source code files</code></pre>
+      <pre lang="zh"><code class="language-bash">.
+├── .python-version    # 指定项目使用的 Python 版本
+├── pyproject.toml     # 项目的主配置文件
+├── uv.lock            # 锁定文件 (确保环境一致性)
+└── ...                # 其他项目源代码文件</code></pre>
+    </div>
+
+    <h3 class="subsection-title">
+        <span lang="zh">3. 环境初始化与同步</span><span lang="en">3. Initialization & Sync</span>
+    </h3>
+    <p>
+        <span lang="zh">uv 将读取配置文件，创建虚拟环境，安装所有依赖。</span>
+        <span lang="en">uv will read configuration files, create a virtual environment, and install all dependencies.</span>
+    </p>
+    <p class="is-size-7 has-text-grey" style="margin-top: 0.5rem;">
+      <span lang="zh">对于更新的环境，可以使用 <code>env_02</code> 环境配置，具体代码参考 <code>env/env_02/pyproject.toml</code></span>
+      <span lang="en">For a newer environment, you can use the <code>env_02</code> configuration. Refer to <code>env/env_02/pyproject.toml</code>.</span>
+    </p>
+
+    <details class="compatibility-box">
+      <summary class="compatibility-header">
+        <span><i class="fas fa-search"></i> <span lang="zh">环境自检</span><span lang="en">Environment Self-Check</span></span>
+        <span class="icon faq-toggle-icon"><i class="fas fa-chevron-down"></i></span>
+      </summary>
+      <div class="compatibility-content">
+        <div class="code-container">
+          <button class="button is-small is-light copy-btn" onclick="copyCode(this)"><span class="icon"><i class="fas fa-copy"></i></span><span>Copy</span></button>
+          <pre><code class="language-bash">( printf "\n==========================================\n🔍 1. GPU Drivers (Hardware Foundation)\n"; nvidia-smi --query-gpu=driver_version --format=csv,noheader 2>/dev/null | awk '{print "Driver: " $1}' || echo "Driver: Unknown"; nvidia-smi 2>/dev/null | grep "CUDA Version" | awk '{print "Max CUDA: " $9}' || echo "Max CUDA: Unknown"; printf "\n==========================================\n🐧 2. OS & GLIBC\n"; [ -f /etc/os-release ] && . /etc/os-release && echo "OS: ${PRETTY_NAME}"; ldd --version | head -n 1; printf "\n==========================================\n🏗️  3. Compiler (JIT Critical)\n"; printf "GCC: "; gcc --version 2>/dev/null | head -n 1 || echo "Not found"; printf "\n==========================================\n🛠️  4. CUDA Toolkit\n"; if command -v nvcc >/dev/null 2>&1; then nvcc -V | grep release; else echo "⚠️ nvcc not found"; fi; printf -- "------------------------------------------\nCUDA Physical Directories (/usr/local):\n"; ls -l /usr/local 2>/dev/null | grep cuda; printf -- "------------------------------------------\nLD_LIBRARY_PATH (Runtime Libs):\n${LD_LIBRARY_PATH:-⚠️ Not set}\n"; printf "\n==========================================\n🐍 5. Python Environment\n"; printf "Python: "; python3 --version 2>&1 || echo "Not found"; printf "Path:   "; command -v python3 || echo "Not found"; printf "==========================================\n" )</code></pre>
+        </div>
+        
+        <div class="box is-size-7" style="font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; overflow-x: auto; margin-bottom: 0; background-color: #fafafa; border: 1px solid #dbdbdb; color: #4a4a4a; box-shadow: none;">
+          <p style="color: #3273dc; font-weight: bold; margin-bottom: 0.5rem; background-color: #eff5fb; padding: 0.2rem 0.5rem; display: inline-block; border-radius: 4px;">env_01 <span lang="zh">（兼容性较好的环境）</span><span lang="en">(Stable Environment)</span></p>
+          <div style="padding-left: 0.5rem;">
+            ==========================================<br>
+            🔍 1. GPU Drivers (Hardware Foundation)<br>
+            Driver: 525.85.05<br>
+            Driver: 525.85.05<br>
+            Driver: 525.85.05<br>
+            Driver: 525.85.05<br>
+            Driver: 525.85.05<br>
+            Driver: 525.85.05<br>
+            Driver: 525.85.05<br>
+            Driver: 525.85.05<br>
+            Max CUDA: 12.0<br>
+            <br>
+            ==========================================<br>
+            🐧 2. OS & GLIBC<br>
+            OS: Ubuntu 18.04.6 LTS<br>
+            ldd (Ubuntu GLIBC 2.27-3ubuntu1.6) 2.27<br>
+            <br>
+            ==========================================<br>
+            🏗️  3. Compiler (JIT Critical)<br>
+            GCC: gcc (GCC) 7.4.0<br>
+            <br>
+            ==========================================<br>
+            🛠️  4. CUDA Toolkit<br>
+            Cuda compilation tools, release 11.8, V11.8.89<br>
+            ------------------------------------------<br>
+            CUDA Physical Directories (/usr/local):<br>
+            lrwxrwxrwx  1 root root    20 11月 21  2022 cuda -> /usr/local/cuda-10.0<br>
+            drwxr-xr-x 17 root root  4096 11月  9  2022 cuda-10.1<br>
+            drwxr-xr-x 18 root root  4096 7月  18  2022 cuda-10.2<br>
+            drwxr-xr-x 17 root root  4096 4月  19  2024 cuda-11.8<br>
+            drwxr-xr-x 17 root root  4096 7月   9  2022 cuda-8.0<br>
+            drwxr-xr-x 18 root root  4096 7月  18  2022 cuda-9.0<br>
+            ------------------------------------------<br>
+            LD_LIBRARY_PATH (Runtime Libs):<br>
+            /usr/local/cuda-11.8/lib64:<br>
+            <br>
+            ==========================================<br>
+            🐍 5. Python Environment<br>
+            Python: Python 3.12.12<br>
+            Path:   /data/Anon/Repo/gdkvm-20251216/.venv/bin/python3<br>
+            ==========================================<br>
+          </div>
+          <hr style="border-top: 1px dashed #ccc; margin: 1.5rem 0;">
+          <p style="color: #3273dc; font-weight: bold; margin-bottom: 0.5rem; background-color: #eff5fb; padding: 0.2rem 0.5rem; display: inline-block; border-radius: 4px;">env_02 <span lang="zh">（较新的环境）</span><span lang="en">(Newer Environment)</span></p>
+          <div style="padding-left: 0.5rem;">
+            ==========================================<br>
+            🔍 1. GPU Drivers (Hardware Foundation)<br>
+            Driver: 570.133.07<br>
+            Driver: 570.133.07<br>
+            Driver: 570.133.07<br>
+            Driver: 570.133.07<br>
+            Max CUDA: 12.8<br>
+            <br>
+            ==========================================<br>
+            🐧 2. OS & GLIBC<br>
+            OS: Ubuntu 20.04.6 LTS<br>
+            ldd (Ubuntu GLIBC 2.31-0ubuntu9.16) 2.31<br>
+            <br>
+            ==========================================<br>
+            🏗️  3. Compiler (JIT Critical)<br>
+            GCC: gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0<br>
+            <br>
+            ==========================================<br>
+            🛠️  4. CUDA Toolkit<br>
+            Cuda compilation tools, release 11.8, V11.8.89<br>
+            ------------------------------------------<br>
+            CUDA Physical Directories (/usr/local):<br>
+            lrwxrwxrwx  1 root root   21 4月   4  2023 cuda -> /usr/local/cuda-11.7/<br>
+            drwxr-xr-x 19 root root 4096 9月   8  2022 cuda-10.0<br>
+            drwxr-xr-x 18 root root 4096 10月 31  2022 cuda-10.1<br>
+            drwxr-xr-x 15 root root 4096 9月   8  2022 cuda-11.3<br>
+            drwxr-xr-x 16 root root 4096 9月  21  2021 cuda-11.4<br>
+            drwxr-xr-x 16 root root 4096 4月   4  2023 cuda-11.7<br>
+            drwxr-xr-x 17 root root 4096 4月  22  2024 cuda-11.8<br>
+            drwxr-xr-x 17 root root 4096 12月  1 15:59 cuda-12.6<br>
+            ------------------------------------------<br>
+            LD_LIBRARY_PATH (Runtime Libs):<br>
+            /usr/local/cuda-11.8/lib64:<br>
+            <br>
+            ==========================================<br>
+            🐍 5. Python Environment<br>
+            Python: Python 3.13.7<br>
+            Path:   /data/Anon/Repo/gdkvm-rtx6/.venv/bin/python3<br>
+            ==========================================
+          </div>
+        </div>
+      </div>
+    </details>
+    
+    <div class="code-container">
+      <button class="button is-small is-light copy-btn" onclick="copyCode(this)"><span class="icon"><i class="fas fa-copy"></i></span><span>Copy</span></button>
+      <pre><code class="language-bash">uv sync</code></pre>
+    </div>
+
+    <div class="advanced-box">
+      <div class="advanced-title">
+        <i class="fas fa-tools"></i> 
+        <span lang="zh">故障排除：内网/受限网络下的 Python 安装</span>
+        <span lang="en">Troubleshooting: Python Installation in Intranet</span>
+      </div>
+      <p>
+        <span lang="zh"><strong>场景：</strong> 若执行 <code>uv sync</code> 时报错（如 SSL 错误、连接超时），通常系网络策略限制导致 uv 无法自动下载 Python 解释器。</span>
+        <span lang="en"><strong>Scenario:</strong> If <code>uv sync</code> fails (e.g., SSL errors, timeouts), it is usually due to network policies preventing uv from automatically downloading the Python interpreter.</span>
+      </p>
+      
+      <p>
+        <span lang="zh"><strong>解决方案：</strong> 通过镜像源手动安装 Python。</span>
+        <span lang="en"><strong>Solution:</strong> Manually install Python via a mirror source.</span>
+      </p>
+      
+      <p style="margin-top: 0.8rem;">
+          <span lang="zh">查看可用版本：</span><span lang="en">Check available versions:</span>
+      </p>
+      <div class="code-container">
+        <button class="button is-small is-light copy-btn" onclick="copyCode(this)"><span class="icon"><i class="fas fa-copy"></i></span><span>Copy</span></button>
+        <pre><code class="language-bash">uv python list</code></pre>
+      </div>
+
+      <p>
+          <span lang="zh">通过镜像源安装（以 3.12.12 为例）：</span><span lang="en">Install via mirror (e.g., 3.12.12):</span>
+      </p>
+      <div class="code-container">
+        <button class="button is-small is-light copy-btn" onclick="copyCode(this)"><span class="icon"><i class="fas fa-copy"></i></span><span>Copy</span></button>
+        <pre><code class="language-bash">uv python install 3.12.12 --mirror https://github-proxy.lixxing.top/https://github.com/astral-sh/python-build-standalone/releases/download</code></pre>
+      </div>
+      <p>
+          <span lang="zh">安装成功后，再次运行 <code>uv sync</code> 。</span><span lang="en">After successful installation, run <code>uv sync</code> again.</span>
+      </p>
+    </div>
+
+    <details class="compatibility-box">
+      <summary class="compatibility-header">
+        <span><i class="fas fa-exclamation-triangle"></i> <span lang="zh">版本约束与兼容性说明</span><span lang="en">Version Constraints & Compatibility</span></span>
+        <span class="icon faq-toggle-icon"><i class="fas fa-chevron-down"></i></span>
+      </summary>
+      <div class="compatibility-content content">
+        <ol style="margin-top: 0; padding-left: 1.2rem;">
+          <li style="margin-bottom: 1.5rem;">
+            <strong><span lang="zh">Pydantic 版本冲突</span><span lang="en">Pydantic Version Conflict</span> <code>&lt;2.12</code></strong>
+            <div class="is-size-7" style="margin-top: 0.3rem; padding-left: 0.2rem;">
+              <p style="margin-bottom: 0.3rem;">
+                  <span lang="zh"><strong><i class="fas fa-bug has-text-danger" style="width: 1.2em;"></i> 现象：</strong>Pydantic 2.12+ (2025-10) 的严格 Schema 校验与 wandb 字段声明冲突，多进程下可能导致崩溃。</span>
+                  <span lang="en"><strong>Issue:</strong> Pydantic 2.12+ (2025-10) strict Schema validation conflicts with wandb field declarations, potentially causing crashes in multi-process modes.</span>
+              </p>
+              <p style="margin-bottom: 0;">
+                  <span lang="zh"><strong><i class="fas fa-check-circle has-text-success" style="width: 1.2em;"></i> 解决：</strong>配置文件已强制锁定 <code>pydantic&lt;2.12</code>。</span>
+                  <span lang="en"><strong>Solution:</strong> The configuration file forcefully locks <code>pydantic&lt;2.12</code>.</span>
+              </p>
+            </div>
+          </li>
+          <li style="margin-bottom: 1.5rem;">
+            <strong><span lang="zh">Wandb 系统兼容性 (glibc)</span><span lang="en">Wandb System Compatibility (glibc)</span></strong>
+            <div class="is-size-7" style="margin-top: 0.3rem; padding-left: 0.2rem;">
+              <p style="margin-bottom: 0.3rem;">
+                  <span lang="zh"><strong><i class="fas fa-bug has-text-danger" style="width: 1.2em;"></i> 现象：</strong><code>wandb&gt;=0.22.2</code> 停止提供针对 Ubuntu 18.04 (glibc 2.27) 的预编译包，导致安装失败。</span>
+                  <span lang="en"><strong>Issue:</strong> <code>wandb&gt;=0.22.2</code> stopped providing pre-built packages for Ubuntu 18.04 (glibc 2.27), causing installation failures.</span>
+              </p>
+              <p style="margin-bottom: 0;">
+                  <span lang="zh"><strong><i class="fas fa-check-circle has-text-success" style="width: 1.2em;"></i> 解决：</strong>需确保系统安装了 Go 编译器以支持源码编译，或升级操作系统。</span>
+                  <span lang="en"><strong>Solution:</strong> Ensure a Go compiler is installed for source compilation, or upgrade the OS.</span>
+              </p>
+            </div>
+          </li>
+          <li>
+            <strong><span lang="zh">SSL/TLS 证书错误 (内网/代理环境)</span><span lang="en">SSL/TLS Certificate Errors</span></strong>
+            <div class="is-size-7" style="margin-top: 0.3rem; padding-left: 0.2rem;">
+              <p style="margin-bottom: 0.3rem;">
+                  <span lang="zh"><strong><i class="fas fa-bug has-text-danger" style="width: 1.2em;"></i> 现象：</strong>运行 <code>uv add/sync</code> 时报错（Certificate Expired），因内网防火墙/代理的自签名证书不被 uv 默认的 Rust TLS 信任。</span>
+                  <span lang="en"><strong>Issue:</strong> <code>uv add/sync</code> fails (Certificate Expired) because self-signed certificates in intranet/proxy environments are not trusted by uv's default Rust TLS.</span>
+              </p>
+              <p style="margin-bottom: 0.5rem;">
+                  <span lang="zh"><strong><i class="fas fa-check-circle has-text-success" style="width: 1.2em;"></i> 解决方案：</strong>切换为系统原生 TLS 验证。</span>
+                  <span lang="en"><strong>Solution:</strong> Switch to system-native TLS validation.</span>
+              </p>
+              
+              <div style="margin-bottom: 0.8rem;">
+                <span class="tag is-warning is-light" style="height: 1.6em; margin-bottom: 0.2rem;">
+                  <span lang="zh">方案 A (临时单次)</span><span lang="en">Option A (Temporary)</span>
+                </span>
+                <div class="code-container" style="margin-bottom: 0;">
+                    <button class="button is-small is-light copy-btn" onclick="copyCode(this)" style="top: 2px; right: 2px; height: 24px; font-size: 0.7rem;"><span class="icon"><i class="fas fa-copy"></i></span><span>Copy</span></button>
+                    <pre style="padding: 0.6rem;"><code class="language-bash">uv add wandb --native-tls</code></pre>
+                </div>
+              </div>
+
+              <div>
+                <span class="tag is-success is-light" style="height: 1.6em; margin-bottom: 0.2rem;">
+                  <span lang="zh">方案 B (永久推荐)</span><span lang="en">Option B (Recommended)</span>
+                </span>
+                <div class="code-container" style="margin-bottom: 0;">
+                    <button class="button is-small is-light copy-btn" onclick="copyCode(this)" style="top: 2px; right: 2px; height: 24px; font-size: 0.7rem;"><span class="icon"><i class="fas fa-copy"></i></span><span>Copy</span></button>
+                    <pre style="padding: 0.6rem;"><code class="language-bash">export UV_NATIVE_TLS=1</code></pre>
+                </div>
+                <p class="help has-text-grey" style="margin-top: 0.2rem;">
+                  <span lang="zh">* 建议将此命令添加到 <code>~/.bashrc</code> 或 <code>~/.zshrc</code></span>
+                  <span lang="en">* Recommended to add this to <code>~/.bashrc</code> or <code>~/.zshrc</code></span>
+                </p>
+              </div>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </details>
+
+    <h3 class="subsection-title">
+        <span lang="zh">4. 激活环境</span><span lang="en">4. Activate Environment</span>
+    </h3>
+    <div class="code-container">
+      <button class="button is-small is-light copy-btn" onclick="copyCode(this)"><span class="icon"><i class="fas fa-copy"></i></span><span>Copy</span></button>
+      <pre><code class="language-bash">source .venv/bin/activate</code></pre>
+    </div>
+    
+    <p class="is-size-7 has-text-grey" style="margin-top: 0.5rem;">
+      <span lang="zh">注：推荐显式激活环境，以便进入交互式调试（如 Python REPL）及使用 pip 检查包状态。</span>
+      <span lang="en">Note: Explicit activation is recommended to enable interactive debugging (e.g., Python REPL) and checking package status via pip.</span>
+    </p>
+    
+    <p style="margin-top: 1rem;">
+        <span lang="zh">验证环境（应输出项目 <code>.venv</code> 目录下的路径）：</span><span lang="en">Verify environment (should output the path inside project <code>.venv</code>):</span>
+    </p>
+    <div class="code-container">
+      <button class="button is-small is-light copy-btn" onclick="copyCode(this)"><span class="icon"><i class="fas fa-copy"></i></span><span>Copy</span></button>
+      <pre><code class="language-bash">which python</code></pre>
+    </div>
+    <p class="is-size-7 has-text-grey" style="margin-top: 0.5rem;">
+      <span lang="zh">输出结果示例：<br><code>/data/Anon/Repo/gdkvm_20251215/.venv/bin/python</code></span>
+      <span lang="en">Example Output:<br><code>/data/Anon/Repo/gdkvm_20251215/.venv/bin/python</code></span>
+    </p>
+
+    <!-- ==================== 2. Data Preparation ==================== -->
+    <h2 class="section-title" id="data">
+        <span lang="zh">2. 数据准备</span><span lang="en">2. Data Preparation</span>
+    </h2>
+    <p>
+        <span lang="zh">我们使用 <strong>CAMUS</strong> 和 <strong>EchoNet-Dynamic</strong> 数据集。</span>
+        <span lang="en">We utilize the <strong>CAMUS</strong> and <strong>EchoNet-Dynamic</strong> datasets.</span>
+    </p>
+
+    <h3 class="subsection-title">
+        <span lang="zh">数据集下载</span><span lang="en">Dataset Download</span>
+    </h3>
+    
+    <div class="compact-card">
+      <div style="margin-bottom: 0.8rem; display: flex; flex-wrap: wrap; align-items: center; line-height: 1.8;">
+        <span style="font-weight: 700; color: #205cbe; margin-right: 0.8rem;">
+            <i class="fas fa-database"></i> <span lang="zh">已处理数据集</span><span lang="en">Processed Data</span>:
+        </span>
+        
+        <span style="margin-right: 1.2rem; white-space: nowrap;">
+          <strong style="font-weight: 600; color: #4a4a4a;">CAMUS</strong>
+          <a href="https://huggingface.co/datasets/miyuki17/camus_png256x256_10f_20250709" target="_blank" class="link-tag">
+            🤗 HuggingFace <i class="fas fa-external-link-alt"></i>
+          </a>
+        </span>
+        
+        <span style="white-space: nowrap;">
+          <strong style="font-weight: 600; color: #4a4a4a;">EchoNet-Dynamic</strong>
+          <a href="https://huggingface.co/datasets/miyuki17/EchoNet-Dynamic" target="_blank" class="link-tag">
+            todo
+          </a>
+        </span>
+      </div>
+
+      <div style="padding-top: 0.8rem; border-top: 1px dashed #eee; color: #999; font-size: 0.85rem; line-height: 1.6; display: flex; flex-wrap: wrap; align-items: center;">
+        <span style="font-weight: 700; margin-right: 0.8rem;">
+            <i class="fas fa-archive"></i> <span lang="zh">原始数据集</span><span lang="en">Raw Data</span>:
+        </span>
+        
+        <span style="margin-right: 1.2rem; white-space: nowrap;">
+          <strong style="font-weight: 600; color: #999;">CAMUS</strong> 
+          <a href="https://www.creatis.insa-lyon.fr/Challenge/camus/" target="_blank" class="link-subtle">
+            <span lang="zh">官方网站</span><span lang="en">Official</span>
+          </a>
+          <a href="https://huggingface.co/datasets/miyuki17/CAMUS_public" target="_blank" class="link-subtle">
+            🤗 <span lang="en">Mirror</span><span lang="zh">镜像</span>
+          </a>
+        </span>
+        
+        <span style="white-space: nowrap;">
+          <strong style="font-weight: 600; color: #999;">EchoNet-Dynamic</strong>
+          <a href="https://echonet.github.io/dynamic/" target="_blank" class="link-subtle">
+            <span lang="zh">官方网站</span><span lang="en">Official</span>
+          </a>
+          <a href="https://huggingface.co/datasets/miyuki17/EchoNet-Dynamic-zip" target="_blank" class="link-subtle">
+            🤗 <span lang="zh">镜像</span><span lang="en">Mirror</span>
+          </a>
+        </span>
+      </div>
+    </div>
+
+    <!-- ==================== 3. Training & Evaluation ==================== -->
+    <h2 class="section-title" id="training">
+        <span lang="zh">3. 模型训练与评估</span><span lang="en">3. Training & Evaluation</span>
+    </h2>
+
+    <h3 class="subsection-title">
+        <span lang="zh">3.1 模型训练</span><span lang="en">3.1 Model Training</span>
+    </h3>
+    
+    <p><strong><span lang="zh">1. 环境配置</span><span lang="en">1. Configuration</span></strong></p>
+    <p>
+        <span lang="zh">根据 Shell 环境（<code>zsh</code> 或 <code>bash</code>）选择相应的 <code>train.sh</code> 脚本，并配置以下环境变量以适配硬件环境：</span>
+        <span lang="en">Select the appropriate <code>train.sh</code> script based on your Shell environment (<code>zsh</code> or <code>bash</code>), and configure the following environment variables to adapt to your hardware:</span>
+    </p>
+    <div class="code-container">
+      <button class="button is-small is-light copy-btn" onclick="copyCode(this)"><span class="icon"><i class="fas fa-copy"></i></span><span>Copy</span></button>
+      <pre lang="en"><code class="language-bash">CUDA_VISIBLE_DEVICES: 0,1 # Specify GPU device IDs
+MASTER_PORT: 29500        # Port for distributed training</code></pre>
+      <pre lang="zh"><code class="language-bash">CUDA_VISIBLE_DEVICES: 0,1 # 指定使用的 GPU 设备编号
+MASTER_PORT: 29500        # 分布式训练的主端口号，避免冲突</code></pre>
+    </div>
+
+    <p><strong><span lang="zh">2. 参数设定</span><span lang="en">2. Hyperparameters</span></strong></p>
+    <p>
+        <span lang="zh">编辑配置文件 <code>config/config_gdkvm_01.yaml</code>，针对实验需求调整关键超参数：</span>
+        <span lang="en">Edit <code>config/config_gdkvm_01.yaml</code> to adjust key hyperparameters:</span>
+    </p>
+    <div class="code-container">
+      <button class="button is-small is-light copy-btn" onclick="copyCode(this)"><span class="icon"><i class="fas fa-copy"></i></span><span>Copy</span></button>
+      <pre lang="en"><code class="language-yaml">data_path: /data/Anon/dataset/camus_png256x256_10f_20250709/   # Dataset path
+batch_size: 8                                                  # Batch size
+learning_rate: 1.0e-4                                          # Learning rate
+num_iterations: 3000                                           # Total iterations
+eval_stage:
+  num_vis: 0                                                   # Visualization count
+wandb_mode: "offline"                                          # Set to "offline"</code></pre>
+      <pre lang="zh"><code class="language-yaml">data_path: /data/Anon/dataset/camus_png256x256_10f_20250709/   # 数据集的实际存放路径
+batch_size: 8                                                  # 单次训练的样本数量
+learning_rate: 1.0e-4                                          # 学习率
+num_iterations: 3000                                           # 总迭代次数
+eval_stage:
+  num_vis: 0                                                   # 可视化图片的数量
+wandb_mode: "offline"                                          # 设置为 "offline"</code></pre>
+    </div>
+
+    <p><strong><span lang="zh">3. 执行训练</span><span lang="en">3. Execute Training</span></strong></p>
+    <p>
+        <span lang="zh">赋予执行权限：</span><span lang="en">Grant execution permission:</span>
+    </p>
+    <div class="code-container">
+      <button class="button is-small is-light copy-btn" onclick="copyCode(this)"><span class="icon"><i class="fas fa-copy"></i></span><span>Copy</span></button>
+      <pre><code class="language-bash">chmod +x ./train.sh</code></pre>
+    </div>
+    
+    <p>
+        <span lang="zh">启动训练：</span><span lang="en">Start training:</span>
+    </p>
+    <div class="code-container">
+      <button class="button is-small is-light copy-btn" onclick="copyCode(this)"><span class="icon"><i class="fas fa-copy"></i></span><span>Copy</span></button>
+      <pre><code class="language-bash">./train.sh</code></pre>
+    </div>
+
+    <h3 class="subsection-title">
+        <span lang="zh">3.2 训练结果输出</span><span lang="en">3.2 Outputs</span>
+    </h3>
+    <p>
+        <span lang="zh">训练产物（模型权重、可视化结果等）将保存至 <code>train.sh</code> 中 <code>hydra.run.dir</code> 指定的目录。</span>
+        <span lang="en">Artifacts (weights, visualizations) are saved to the directory specified in <code>hydra.run.dir</code>.</span>
+    </p>
+    <pre><code>gdkvm_20251215/outputs</code></pre>
+
+    <h3 class="subsection-title">3.3 WandB <span lang="zh">监控</span><span lang="en"> Monitoring</span></h3>
+    <p>
+        <span lang="zh">实验采用 <a href="https://wandb.ai/site" target="_blank">Weights & Biases (WandB)</a> 进行离线日志记录。</span>
+        <span lang="en">Experiments use <a href="https://wandb.ai/site" target="_blank">Weights & Biases (WandB)</a> for offline logging.</span>
+    </p>
+    <ul>
+      <li><strong><span lang="zh">日志路径:</span><span lang="en">Log Path:</span></strong> <code>gdkvm_20251215/wandb</code></li>
+      <li><strong><span lang="zh">具体运行目录:</span><span lang="en">Run Directory:</span></strong> <span lang="zh">包含时间戳与哈希值的子文件夹（例如：<code>offline-run-20251215_123456-abcdef1gh</code>）。</span><span lang="en">Subfolders with timestamps and hashes (e.g., <code>offline-run-20251215_123456-abcdef1gh</code>).</span></li>
+    </ul>
+
+    <p style="margin-top: 1rem;"><strong><span lang="zh">上传离线日志</span><span lang="en">Upload Offline Logs</span></strong></p>
+    <p>
+        <span lang="zh">训练结束后，可以使用以下命令将离线数据同步到 WandB 云端：</span>
+        <span lang="en">After training, sync offline data to WandB cloud:</span>
+    </p>
+    <div class="code-container">
+      <button class="button is-small is-light copy-btn" onclick="copyCode(this)"><span class="icon"><i class="fas fa-copy"></i></span><span>Copy</span></button>
+      <pre lang="en"><code class="language-bash">wandb sync gdkvm_20251215/wandb/offline-run-20251215_123456-abcdef1gh</code></pre>
+      <pre lang="zh"><code class="language-bash">wandb sync gdkvm_20251215/wandb/offline-run-20251215_123456-abcdef1gh</code></pre>
+    </div>
+
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <p class="is-size-7 has-text-grey">
+        <span lang="zh">本说明的所有“今天”“现在”指的是 2025 年 12 月 15 日。</span>
+        <span lang="en">All references to "today" or "now" in this guide refer to December 15, 2025.</span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // --- Copy Code Function (Robust Version) ---
+  function copyCode(btn) {
+    const container = btn.closest('.code-container');
+    if (!container) return;
+
+    // Find all pre elements in the container
+    const pres = container.querySelectorAll('pre');
+    let targetPre = pres[0];
+
+    // Identify which pre is currently visible
+    // Simple logic based on html class
+    if (document.documentElement.classList.contains('lang-en')) {
+        const enPre = container.querySelector('pre[lang="en"]');
+        if (enPre) targetPre = enPre;
+    } else {
+        const zhPre = container.querySelector('pre[lang="zh"]');
+        if (zhPre) targetPre = zhPre;
+    }
+    
+    // If only one pre exists (shared code), it's already targetPre
+    const code = targetPre.querySelector('code');
+    const text = code.innerText;
+
+    // Helper to update button UI
+    const showSuccess = () => {
+        const icon = btn.querySelector('.icon i');
+        const textSpan = btn.querySelector('span:last-child');
+        const originalText = textSpan.innerText;
+        
+        icon.className = 'fas fa-check';
+        textSpan.innerText = (document.documentElement.className.includes('lang-zh')) ? '已复制' : 'Copied';
+        
+        btn.classList.remove('is-light');
+        btn.classList.add('is-success');
+
+        setTimeout(() => {
+            icon.className = 'fas fa-copy';
+            textSpan.innerText = originalText;
+            btn.classList.remove('is-success');
+            btn.classList.add('is-light');
+        }, 2000);
+    };
+
+    // Try Clipboard API first
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(showSuccess).catch(err => fallbackCopy(text));
+    } else {
+        fallbackCopy(text);
+    }
+
+    function fallbackCopy(text) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        // Ensure textarea is not visible but part of DOM
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        textarea.style.top = '0';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                showSuccess();
+            } else {
+                console.error('Fallback copy failed.');
+            }
+        } catch (err) {
+            console.error('Fallback copy error', err);
+        }
+        document.body.removeChild(textarea);
+    }
+  }
+  
+  // --- Highlight.js Init ---
+  document.addEventListener('DOMContentLoaded', (event) => {
+    hljs.highlightAll();
+  });
+
+  // --- Language Toggle Logic ---
+  const langBtn = document.getElementById('lang-toggle');
+  const htmlTag = document.documentElement;
+
+  if (langBtn) {
+    langBtn.addEventListener('click', () => {
+      // Add fade effect
+      const elements = document.querySelectorAll('.content, h1, h2, span, p');
+      // Remove animation class to restart it
+      const contentContainer = document.querySelector('.content');
+      contentContainer.classList.remove('fade-in');
+      void contentContainer.offsetWidth; // Trigger reflow
+
+      if (htmlTag.classList.contains('lang-en')) {
+        htmlTag.classList.replace('lang-en', 'lang-zh');
+        try { localStorage.setItem('lang', 'zh'); } catch (e) { console.warn('LocalStorage write failed:', e); }
+      } else {
+        htmlTag.classList.replace('lang-zh', 'lang-en');
+        try { localStorage.setItem('lang', 'en'); } catch (e) { console.warn('LocalStorage write failed:', e); }
+      }
+      
+      // Re-add fade effect
+      contentContainer.classList.add('fade-in');
+    });
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>模型训练与评估 - GDKVM 复现指南</title>
+  
+  <!-- External Stylesheets (CDNs) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  
+  <!-- Highlight.js for Syntax Highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+  <style>
+    /* Global Settings */
+    html { font-size: 14px; }
+    body { font-family: 'Noto Sans', 'Noto Sans SC', sans-serif; background-color: #ffffff; color: #4a4a4a; min-height: 100vh; display: flex; flex-direction: column; }
+    a { color: #3273dc; transition: color 0.2s; text-decoration: none; }
+    a:hover { color: #1a237e; text-decoration: underline; }
+
+    /* Typography */
+    .section-title { font-size: 1.5rem !important; margin-top: 2.5rem; margin-bottom: 1.5rem; font-weight: 600; color: #363636; border-bottom: 2px solid #f5f5f5; padding-bottom: 0.5rem; }
+    .subsection-title { font-size: 1.2rem !important; margin-top: 1.8rem; margin-bottom: 0.8rem; font-weight: 600; color: #4a4a4a; }
+    
+    .content { font-size: 1rem; }
+    
+    /* Code Block Styles */
+    .code-container {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+    
+    pre { 
+      background-color: #f5f5f5; 
+      padding: 1rem; 
+      border-radius: 4px; 
+      overflow-x: auto; 
+    }
+    
+    .copy-btn {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+      border: 1px solid #dbdbdb;
+      cursor: pointer;
+      z-index: 10;
+    }
+    
+    .copy-btn:hover {
+      opacity: 1;
+    }
+    
+    /* Footer sticks to bottom */
+    .section { flex: 1; }
+  </style>
+</head>
+<body>
+
+<section class="section">
+  <div class="container is-max-desktop content" id="training-content">
+    <!-- 3. 模型训练与评估 -->
+    <h2 class="section-title">3. 模型训练与评估</h2>
+
+    <h3 class="subsection-title">3.1 模型训练</h3>
+    
+    <p><strong>1. 环境配置</strong></p>
+    <p>根据 Shell 环境（zsh 或 bash）选择相应的 <code>train.sh</code> 脚本，并配置以下环境变量以适配硬件环境：</p>
+    <div class="code-container">
+      <button class="button is-small is-light copy-btn" onclick="copyCode(this)">
+        <span class="icon"><i class="fas fa-copy"></i></span>
+        <span>Copy</span>
+      </button>
+      <pre><code class="language-bash">CUDA_VISIBLE_DEVICES: 0,1 # 指定使用的 GPU 设备编号
+MASTER_PORT: 29500 # 分布式训练的主端口号，避免冲突</code></pre>
+    </div>
+
+    <p><strong>2. 参数设定</strong></p>
+    <p>编辑配置文件 <code>config/config_gdkvm_01.yaml</code>，针对实验需求调整关键超参数：</p>
+    <div class="code-container">
+      <button class="button is-small is-light copy-btn" onclick="copyCode(this)">
+        <span class="icon"><i class="fas fa-copy"></i></span>
+        <span>Copy</span>
+      </button>
+      <pre><code class="language-yaml">data_path: /data/Anon/dataset/camus_png256x256_10f_20250709/ # 数据集的实际存放路径
+batch_size: 8 # 单次训练的样本数量
+learning_rate: 1.0e-4 # 学习率
+num_iterations: 3000 # 总迭代次数
+eval_stage:
+  num_vis: 0 # 可视化图片的数量
+wandb_mode: "offline" # 设置为 "offline"</code></pre>
+    </div>
+
+    <p><strong>3. 执行训练</strong></p>
+    
+    <p>赋予执行权限：</p>
+    <div class="code-container">
+      <button class="button is-small is-light copy-btn" onclick="copyCode(this)">
+        <span class="icon"><i class="fas fa-copy"></i></span>
+        <span>Copy</span>
+      </button>
+      <pre><code class="language-bash">chmod +x ./train.sh</code></pre>
+    </div>
+
+    <p>启动训练：</p>
+    <div class="code-container">
+      <button class="button is-small is-light copy-btn" onclick="copyCode(this)">
+        <span class="icon"><i class="fas fa-copy"></i></span>
+        <span>Copy</span>
+      </button>
+      <pre><code class="language-bash">./train.sh</code></pre>
+    </div>
+
+    <h3 class="subsection-title">3.2 训练结果输出</h3>
+    <p>训练产物（模型权重、可视化结果等）将保存至 <code>train.sh</code> 中 <code>hydra.run.dir</code> 指定的目录。</p>
+    <pre><code>gdkvm_20251215/outputs</code></pre>
+
+    <h3 class="subsection-title">3.3 WandB 监控</h3>
+    <p>实验采用 Weights & Biases (WandB) 进行离线日志记录。</p>
+    <ul>
+      <li><strong>日志路径:</strong> <code>gdkvm_20251215/wandb</code></li>
+      <li><strong>具体运行目录:</strong> 包含时间戳与哈希值的子文件夹（例如：<code>offline-run-20251215_123456-abcdef1gh</code>）。</li>
+    </ul>
+
+    <p style="margin-top: 1rem;"><strong>上传离线日志</strong></p>
+    <p>训练结束后，可以使用以下命令将离线数据同步到 WandB 云端：</p>
+    <div class="code-container">
+      <button class="button is-small is-light copy-btn" onclick="copyCode(this)">
+        <span class="icon"><i class="fas fa-copy"></i></span>
+        <span>Copy</span>
+      </button>
+      <pre><code class="language-bash"># 格式：wandb sync [日志文件夹路径]
+wandb sync gdkvm_20251215/wandb/offline-run-20251215_123456-abcdef1gh</code></pre>
+    </div>
+  </div>
+</section>
+
+<script>
+  function copyCode(btn) {
+    const pre = btn.nextElementSibling;
+    const code = pre.querySelector('code');
+    const text = code.innerText;
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand('copy');
+      const icon = btn.querySelector('.icon i');
+      const textSpan = btn.querySelector('span:last-child');
+      const originalText = textSpan.innerText;
+      icon.className = 'fas fa-check';
+      textSpan.innerText = '已复制!';
+      btn.classList.remove('is-light');
+      btn.classList.add('is-success');
+      setTimeout(() => {
+        icon.className = 'fas fa-copy';
+        textSpan.innerText = originalText;
+        btn.classList.remove('is-success');
+        btn.classList.add('is-light');
+      }, 2000);
+    } catch (err) {
+      console.error('Failed to copy', err);
+    }
+    document.body.removeChild(textarea);
+  }
+  
+  document.addEventListener('DOMContentLoaded', (event) => {
+    hljs.highlightAll();
+  });
+</script>
+
+</body>
+</html>

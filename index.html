@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="GDKVM: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule">
+  <meta property="og:title" content="GDKVM (ICCV'25)">
+  <meta property="og:description" content="State-of-the-art Echocardiography Video Segmentation.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GDKVM | ICCV 2025</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  
+  <style>
+    /* --- 全局字体设置 --- */
+    html {
+      font-size: 14px;
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      font-family: 'Noto Sans', sans-serif;
+      background-color: #ffffff;
+      color: #4a4a4a;
+    }
+    
+    a { color: #3273dc; transition: color 0.2s; }
+    a:hover { color: #1a237e; }
+
+    /* --- 标题排版 --- */
+    .publication-title {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 2.2rem !important;
+      line-height: 1.3;
+      font-weight: 700;
+    }
+
+    .title.is-3 {
+      font-size: 1.75rem !important;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      font-family: 'Google Sans', sans-serif;
+    }
+    
+    .title.is-4 {
+      font-size: 1.4rem !important;
+      font-weight: 600; 
+      font-family: 'Google Sans', sans-serif;
+    }
+    
+    .publication-authors {
+      font-size: 1.2rem;
+      margin-top: 1.5rem;
+    }
+    
+    .institutional-affiliations {
+      font-size: 0.9rem !important;
+      margin-top: 1rem;
+      color: #666;
+    }
+
+    /* --- 标题渐变特效 --- */
+    .highlight-title {
+      background: linear-gradient(
+        45deg,
+        #ff3b30, /* Red */
+        #af52de, /* Purple */
+        #007aff, /* Blue */
+        #af52de, /* Purple */
+        #ff3b30  /* Red */
+      );
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: gradientShift 8s ease infinite;
+    }
+    
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* --- 摘要框样式 (Abstract Box) --- */
+    .abstract-box {
+      background-color: #f5f5f5;
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      margin-bottom: 1.5rem;
+    }
+    
+    /* --- 挑战图卡片样式 (已移除悬浮特效) --- */
+    .challenge-card {
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid #eee;
+        background: white;
+        /* 移除 transition, transform, hover 等动态效果 */
+    }
+    
+    .challenge-card img {
+        width: 100%;
+        display: block;
+    }
+    .challenge-caption {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #666;
+        padding: 5px 0;
+        background: #fafafa;
+    }
+
+    /* --- 按钮样式 --- */
+    .link-block a {
+        transition: transform 0.2s, box-shadow 0.2s;
+        border: 1px solid #363636;
+    }
+    .link-block a:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    }
+
+    /* --- 语言切换按钮 (右上角) --- */
+    .lang-btn {
+        position: fixed;
+        top: 1.5rem;   /* 修改：固定在顶部 */
+        right: 1.5rem; /* 修改：固定在右侧 */
+        z-index: 999;
+        background: #434343;
+        border: 1px solid #dbdbdb;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        border-radius: 50px;
+        padding: 0.5rem 1.2rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: 'Google Sans', sans-serif;
+    }
+    .lang-btn:hover {
+        background: #f5f5f5;
+        color: #3273dc;
+    }
+
+    /* --- ICCV Logo 样式控制 --- */
+    .iccv-logo-container {
+        /* 移动端默认样式：居中 */
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .iccv-logo-img {
+        height: 60px;
+        width: auto;
+    }
+
+    /* --- 桌面端特定的 Logo 位置 --- */
+    @media screen and (min-width: 1024px) {
+        .hero {
+            position: relative; /* 确保 hero 是定位参考点 */
+        }
+        .iccv-logo-container {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            margin-bottom: 0;
+            z-index: 10;
+        }
+    }
+
+    /* --- 移动端优化 --- */
+    @media screen and (max-width: 768px) {
+      .publication-title { font-size: 1.6rem !important; }
+      .publication-authors { font-size: 1rem; }
+      .institutional-affiliations { font-size: 0.75rem !important; }
+      .abstract-box { padding: 1.5rem !important; }
+      
+      /* 移动端语言按钮稍微小一点，位置微调 */
+      .lang-btn {
+          top: 1rem;
+          right: 1rem;
+          padding: 0.4rem 1rem;
+          font-size: 0.8rem;
+      }
+      
+      .publication-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+      .publication-links .button {
+        width: auto !important;
+        margin-bottom: 0 !important;
+      }
+    }
+
+    /* --- 显隐逻辑 --- */
+    [lang] { display: none; }
+    html.lang-en [lang="en"] { display: inline; }
+    html.lang-en div[lang="en"], html.lang-en p[lang="en"] { display: block; }
+    html.lang-zh [lang="zh"] { display: inline; }
+    html.lang-zh div[lang="zh"], html.lang-zh p[lang="zh"] { display: block; }
+    
+    .fade-in { animation: fadeIn 0.4s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    footer { padding: 3rem 0; background-color: #fafafa; margin-top: 4rem; }
+  </style>
+
+  <script>
+    // 初始化语言设置 (Wrapped in try-catch for robustness)
+    let savedLang = 'en';
+    try {
+        savedLang = localStorage.getItem('lang') || 'en';
+    } catch (e) {
+        console.warn('LocalStorage access denied or failed:', e);
+    }
+    document.documentElement.className = 'lang-' + savedLang;
+  </script>
+</head>
+
+<body>
+
+<section class="hero">
+  
+  <div class="iccv-logo-container">
+      <img src="assets/images/iccv2_logo/LogoColor.png" alt="ICCV Logo" class="iccv-logo-img">
+  </div>
+
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+
+          <h1 class="title is-1 publication-title" style="margin-top: 1rem;">
+            <span class="highlight-title">
+              <span lang="en">GDKVM: Echocardiography Video Segmentation via <br class="is-hidden-mobile"> Spatiotemporal Key-Value Memory with Gated Delta Rule</span>
+              <span lang="zh">GDKVM：含门控 Delta 规则的时空键值记忆的<br class="is-hidden-mobile">超声心动图视频分割</span>
+            </span>
+          </h1>
+          
+          <div class="publication-authors">
+            <span class="author-block">Rui Wang<sup>1</sup>,</span>
+            <span class="author-block">Yimu Sun<sup>1</sup>,</span>
+            <span class="author-block">Jingxing Guo<sup>1</sup>,</span>
+            <span class="author-block">Huisi Wu<sup>1,*</sup>,</span>
+            <span class="author-block">Jing Qin<sup>2</sup></span>
+          </div>
+
+          <div class="institutional-affiliations">
+             <div><sup>1</sup>College of Computer Science and Software Engineering, Shenzhen University</div>
+             <div><sup>2</sup>Centre for Smart Health, School of Nursing, The Hong Kong Polytechnic University</div>
+             
+             <div class="mt-2" style="font-size: 0.85rem; color: #555;">
+                2400101058@mails.szu.edu.cn, *Corresponding Author: hswu@szu.edu.cn
+             </div>
+          </div>
+
+          <div class="publication-links" style="margin-top: 2rem;">
+            <span class="link-block">
+              <a href="https://arxiv.org/abs/2512.10252" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                <span class="icon"><i class="ai ai-arxiv"></i></span>
+                <span>arXiv</span>
+              </a>
+            </span>
+            <span class="link-block">
+              <a href="https://github.com/wangrui2025/GDKVM" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                <span class="icon"><i class="fab fa-github"></i></span>
+                <span>Code</span>
+              </a>
+            </span>
+            <span class="link-block">
+              <a href="reprod/index.html" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                <span class="icon"><i class="fas fa-cogs"></i></span>
+                <span lang="en">Reproduction</span><span lang="zh">复现</span>
+              </a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <div class="box p-2" style="border: none; box-shadow: none;">
+            <img src="paper/fig/Met/gdkvm.png" alt="GDKVM Architecture" style="width: 100%; border-radius: 4px;">
+        </div>
+        <figcaption style="font-size: 0.95rem; color: #555; text-align: justify; margin-top: 1rem; line-height: 1.6;">
+            <span lang="en"><strong>Figure 1.</strong> An illustration of GDKVM architecture. Linear Key-Value Association defines frame-to-frame causal relations as the state transition matrix. Gated Delta Rule helps in dynamically managing memory. Key-Pixel Feature Fusion fuses the local key feature, the global key feature with the pixel feature.</span>
+            <span lang="zh"><strong>图 1.</strong> GDKVM 架构示意图。线性键值关联 (Linear Key-Value Association) 将帧与帧之间的因果关系定义为状态转移矩阵。门控 Delta 规则 (Gated Delta Rule) 有助于动态地管理记忆。键-像素特征融合 (Key-Pixel Feature Fusion) 将局部键特征、全局键特征与像素特征进行了融合。</span>
+        </figcaption>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="abstract-box">
+      <h2 class="title is-3 has-text-centered">
+        <span lang="en">Abstract</span><span lang="zh">摘要</span>
+      </h2>
+      <div class="content has-text-justified fade-in">
+         <div lang="en">
+             <p>Accurate segmentation of cardiac chambers in echocardiography sequences is crucial for the quantitative analysis of cardiac function, aiding in clinical diagnosis and treatment. The imaging noise, artifacts, and the deformation and motion of the heart pose challenges to segmentation algorithms.</p>
+             <p>While existing methods based on convolutional neural networks, Transformers and space-time memory networks, have improved segmentation accuracy, they often struggle with the trade-off between capturing long-range spatiotemporal dependencies and maintaining computational efficiency with fine-grained feature representation.</p>
+             <p>In this paper, we introduce <strong>GDKVM</strong>, a novel architecture for echocardiography video segmentation. The model employs Linear Key-Value Association (LKVA) to effectively model inter-frame correlations, and introduces Gated Delta Rule (GDR) to efficiently store intermediate memory states. Key-Pixel Feature Fusion (KPFF) module is designed to integrate local and global features at multiple scales, enhancing robustness against boundary blurring and noise interference.</p>
+             <p>We validated GDKVM on two mainstream echocardiography video datasets (CAMUS and EchoNet-Dynamic) and compared it with various state-of-the-art methods. Experimental results show that GDKVM outperforms existing approaches in terms of segmentation accuracy and robustness, while ensuring real-time performance.</p>
+         </div>
+         <div lang="zh">
+             <p>超声心动图序列中心脏腔室的精确分割对于心脏功能的定量分析至关重要，有助于临床诊断和治疗。成像噪声、伪影以及心脏的变形和运动给分割算法带来了挑战。</p>
+             <p>虽然现有的基于卷积神经网络、Transformer和时空记忆网络的方法提高了分割精度，但它们往往难以在捕捉长程时空依赖关系与保持细粒度特征表示的计算效率之间取得平衡。</p>
+             <p>在本文中，我们介绍了 <strong>GDKVM</strong>，一种用于超声心动图视频分割的新颖架构。该模型采用线性键值关联（LKVA）有效地建模帧间相关性，并引入门控Delta规则（GDR）以高效存储中间记忆状态。关键像素特征融合（KPFF）模块旨在整合多尺度的局部和全局特征，增强对边界模糊和噪声干扰的鲁棒性。</p>
+             <p>我们在两个主流超声心动图视频数据集（CAMUS和EchoNet-Dynamic）上验证了GDKVM，并将其与各种最先进的方法进行了比较。实验结果表明，GDKVM在分割精度和鲁棒性方面优于现有方法，同时确保了实时性能。</p>
+         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h3 class="title is-4 has-text-centered mb-5">
+        <span lang="en">Challenges in Echocardiography Segmentation</span>
+        <span lang="zh">超声心动图视频分割面临的挑战</span>
+    </h3>
+    <div class="content has-text-centered mb-4"> 
+      <p>
+        <span lang="en">Echocardiography segmentation faces several challenges such as low contrast, speckle noise, and signal dropout.</span>
+        <span lang="zh">超声心动图视频分割面临着诸如低对比度、斑点噪声和信号丢失等多重挑战。</span>
+      </p>
+    </div>
+    
+    <div class="columns is-multiline is-mobile has-text-centered">
+      <div class="column is-4-mobile is-2-tablet">
+        <div class="challenge-card">
+           <img src="paper/fig/challenge/cha_1.jpg" alt="Noise">
+           <div class="challenge-caption">(a)</div>
+        </div>
+      </div>
+      <div class="column is-4-mobile is-2-tablet">
+        <div class="challenge-card">
+           <img src="paper/fig/challenge/cha_2.jpg" alt="Blur">
+           <div class="challenge-caption">(b)</div>
+        </div>
+      </div>
+      <div class="column is-4-mobile is-2-tablet">
+        <div class="challenge-card">
+           <img src="paper/fig/challenge/cha_3.jpg" alt="Shape">
+           <div class="challenge-caption">(c)</div>
+        </div>
+      </div>
+      <div class="column is-4-mobile is-2-tablet">
+        <div class="challenge-card">
+           <img src="paper/fig/challenge/cha_4.jpg" alt="Scale">
+           <div class="challenge-caption">(d)</div>
+        </div>
+      </div>
+      <div class="column is-4-mobile is-2-tablet">
+        <div class="challenge-card">
+           <img src="paper/fig/challenge/cha_5.jpg" alt="Cycle">
+           <div class="challenge-caption">(e)</div>
+        </div>
+      </div>
+      <div class="column is-4-mobile is-2-tablet">
+        <div class="challenge-card">
+           <img src="paper/fig/challenge/cha_6.jpg" alt="Dropout">
+           <div class="challenge-caption">(f)</div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-4"> 
+      <p style="font-size: 0.9rem; color: #555; text-align: justify;"> 
+        <span lang="en"><strong>Figure 2.</strong> Illustrative challenges for echocardiography video segmentation: (a) speckle noise, (b) indistinct or blurred contours, and (c-f) the substantial changes in the target’s shape and scale throughout the cardiac cycle.</span>
+        <span lang="zh"><strong>图 2.</strong> 超声心动图视频分割面临的典型挑战：(a) 斑点噪声，(b) 轮廓不清或模糊，以及 (c-f) 在整个心动周期中目标的形状和尺度发生的显著变化。</span>
+      </p>
+   </div>
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-3 has-text-centered">
+        <span lang="en">BibTeX</span><span lang="zh">BibTeX 引用</span>
+    </h2>
+    <div style="position: relative;">
+      <button class="button is-small is-light copy-btn" onclick="copyBibtex()" style="position: absolute; top: 0.5rem; right: 0.5rem; z-index: 10;">
+        <span class="icon"><i class="fas fa-copy"></i></span>
+        <span>Copy</span>
+      </button>
+      <pre style="background-color: #f5f5f5; border-radius: 8px; padding: 1.5rem;"><code id="bibtex-content">@InProceedings{Wang_ICCV25_GDKVM,
+    author    = {Wang, Rui and Sun, Yimu and Guo, Jingxing and Wu, Huisi and Qin, Jing},
+    title     = {{GDKVM}: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule},
+    booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+    month     = {October},
+    year      = {2025},
+    pages     = {12191-12200}
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-bottom: 2rem;">
+  <div class="container is-max-desktop has-text-centered">
+    <h2 class="title is-3">
+        <span lang="en">Additional Resources</span><span lang="zh">更多资源</span>
+    </h2>
+    <div class="publication-links">
+        <span class="link-block">
+            <a href="https://openaccess.thecvf.com/content/ICCV2025/html/Wang_GDKVM_Echocardiography_Video_Segmentation_via_Spatiotemporal_Key-Value_Memory_with_Gated_ICCV_2025_paper.html" target="_blank" class="external-link button is-normal is-rounded is-dark mb-1">
+              <span class="icon"><i class="fas fa-file-pdf"></i></span>
+              <span>CVF Paper</span>
+            </a>
+        </span>
+        <span class="link-block">
+            <a href="https://iccv.thecvf.com/media/PosterPDFs/ICCV%202025/2134.png?t=1759901950.5662367" target="_blank" class="external-link button is-normal is-rounded is-dark mb-1">
+              <span class="icon"><i class="fas fa-image"></i></span>
+              <span>Poster</span>
+            </a>
+        </span>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top: 0; padding-bottom: 2rem;">
+  <div class="container is-max-desktop">
+    <div class="content has-text-centered is-size-7 has-text-grey-light" style="opacity: 0.7;">
+      <p class="mb-2" style="font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">To-Do List</p>
+      <ul style="list-style: none; margin: 0; padding: 0;">
+        <li class="mb-1"><i class="far fa-square mr-1"></i> <span lang="zh">问题设置流程图</span><span lang="en">Problem Formulation Flowchart</span></li>
+        <li><i class="far fa-square mr-1"></i> <span lang="zh">模型处理流程图</span><span lang="en">Model Processing Flowchart</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+  
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <p style="font-size: 0.9rem; color: #888;">
+        <span lang="en">Project page template from <a href="https://github.com/nerfies/nerfies.github.io" target="_blank">Nerfies</a>. Licensed under <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>.</span>
+        <span lang="zh">项目页面模板源自 <a href="https://github.com/nerfies/nerfies.github.io" target="_blank">Nerfies</a>。本网站根据 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a> 许可协议授权。</span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<button id="lang-toggle" class="lang-btn" title="Switch Language">
+    <img src="assets/images/translate.svg" alt="Translate" style="height: 1.2rem; width: auto;">
+</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+
+<script>
+  // Math rendering
+  document.addEventListener("DOMContentLoaded", function() {
+    if (typeof renderMathInElement !== 'undefined') {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "$", right: "$", display: false }
+          ],
+          throwOnError: false
+        });
+    }
+  });
+
+  // 1. BibTeX 复制功能 
+  function copyBibtex() {
+    const content = document.getElementById('bibtex-content').innerText;
+    
+    // Fallback approach using textarea, which is often more reliable in iframe environments
+    const textArea = document.createElement("textarea");
+    textArea.value = content;
+    
+    // Ensure the textarea is not visible but part of the DOM
+    textArea.style.position = "fixed";
+    textArea.style.left = "-9999px";
+    textArea.style.top = "0";
+    document.body.appendChild(textArea);
+    
+    textArea.focus();
+    textArea.select();
+
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            showCopySuccess();
+        } else {
+            console.error('Fallback: Copying text command was unsuccessful');
+        }
+    } catch (err) {
+        console.error('Fallback: Oops, unable to copy', err);
+    }
+    
+    document.body.removeChild(textArea);
+  }
+
+  function showCopySuccess() {
+    const btn = document.querySelector('.copy-btn');
+    const icon = btn.querySelector('.icon i');
+    const text = btn.querySelector('span:last-child');
+    
+    icon.className = 'fas fa-check';
+    text.innerText = 'Copied!';
+    btn.classList.remove('is-light');
+    btn.classList.add('is-success');
+
+    setTimeout(() => {
+        icon.className = 'fas fa-copy';
+        text.innerText = 'Copy';
+        btn.classList.remove('is-success');
+        btn.classList.add('is-light');
+    }, 2000);
+  }
+
+  // 2. 语言切换逻辑
+  const langBtn = document.getElementById('lang-toggle');
+  const htmlTag = document.documentElement;
+
+  if (langBtn) {
+    langBtn.addEventListener('click', () => {
+      const elements = document.querySelectorAll('.content, h1, h2, span, p');
+      elements.forEach(el => el.classList.remove('fade-in'));
+      void langBtn.offsetWidth; 
+
+      if (htmlTag.classList.contains('lang-en')) {
+        htmlTag.classList.replace('lang-en', 'lang-zh');
+        try { localStorage.setItem('lang', 'zh'); } catch(e) {}
+      } else {
+        htmlTag.classList.replace('lang-zh', 'lang-en');
+        try { localStorage.setItem('lang', 'en'); } catch(e) {}
+      }
+      
+      setTimeout(() => {
+          document.querySelectorAll('.content').forEach(el => el.classList.add('fade-in'));
+      }, 10);
+    });
+  }
+</script>
+
+</body>
+</html>

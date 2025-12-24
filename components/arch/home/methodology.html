@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>模型方法与流程 - GDKVM</title>
+  
+  <!-- External Stylesheets (CDNs) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <!-- External Scripts (CDNs) -->
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+  <style>
+    /* Global Settings */
+    html { font-size: 14px; }
+    body { font-family: 'Noto Sans', 'Noto Sans SC', sans-serif; background-color: #ffffff; color: #4a4a4a; min-height: 100vh; display: flex; flex-direction: column; }
+    
+    /* Typography */
+    .title.is-5 { font-size: 1.25rem !important; font-weight: 600; color: #1a237e; }
+    .title.is-6 { font-size: 1.0rem !important; font-weight: 600; }
+    .subtitle { font-family: 'Google Sans', sans-serif; }
+    .content { font-size: 1rem; line-height: 1.6; }
+
+    /* Visual Placeholders */
+    .img-placeholder {
+      background-color: #f0f2f5;
+      border: 2px dashed #dbdbdb;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      padding: 0.25rem;
+      transition: all 0.3s ease;
+      text-align: center;
+      max-width: 200px; 
+      margin: 0 auto; 
+    }
+    .img-placeholder:hover { border-color: #b5b5b5; background-color: #eef0f3; }
+    .img-placeholder i { font-size: 1.5rem; margin-bottom: 0.2rem; }
+    .img-placeholder.small-figure { width: 100%; }
+
+    /* Custom styles for LV simulation */
+    .lv-bg { background-color: #333 !important; color: white !important; position: relative; overflow: hidden; }
+    .lv-outline { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 30%; height: 30%; border-radius: 50%; border: 2px solid white; background: #666; }
+    .lv-gt-mask { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 25%; height: 25%; border-radius: 50%; background-color: rgba(0, 200, 0, 0.7); z-index: 10; }
+    .lv-predicted-mask { position: absolute; top: 55%; left: 55%; transform: translate(-50%, -50%); width: 25%; height: 25%; border-radius: 50%; background-color: rgba(255, 0, 0, 0.7); z-index: 11; }
+    .lv-text { z-index: 12; font-size: 0.7rem; }
+
+    /* Vertical Sequence Container Style */
+    .sequence-col { display: flex; flex-direction: column; gap: 2rem; align-items: center; justify-content: center; }
+    .frame-item { width: 100%; display: flex; justify-content: center; }
+    .training-frame-size { width: 110px !important; height: 110px !important; max-width: none !important; }
+
+    /* Scrollable Container for Diagrams */
+    .scrollable-container { overflow-x: auto; padding-bottom: 15px; -webkit-overflow-scrolling: touch; width: 100%; }
+    .scrollable-container::-webkit-scrollbar { height: 8px; }
+    .scrollable-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 4px; }
+    .scrollable-container::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 4px; }
+    .scrollable-container::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.3); }
+
+    /* Styles for Details/Summary (Accordion) */
+    details > summary { list-style: none; }
+    details > summary::-webkit-details-marker { display: none; }
+    details summary i.fa-angle-down { transition: transform 0.2s ease; }
+    details[open] summary i.fa-angle-down { transform: rotate(180deg); }
+    
+    /* Footer sticks to bottom */
+    .section { flex: 1; }
+  </style>
+</head>
+<body>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="box" style="padding: 0; overflow: hidden; border: 1px solid #dbdbdb;" id="methodology-content">
+      <details>
+        <summary class="title is-5 p-4 m-0 has-text-centered has-background-light" style="cursor: pointer; user-select: none;">
+            <span class="icon mr-2"><i class="fas fa-tools"></i></span>
+            【施工中】 模型方法与流程 (Model Methodology and Flow)
+            <span class="icon is-small is-pulled-right"><i class="fas fa-angle-down"></i></span>
+        </summary>
+        
+        <div class="content p-4 has-background-white" style="border-top: 1px solid #dbdbdb;">
+            <!-- Step 1: Data Processing -->
+            <h4 class="title is-5" style="margin-bottom: 0.5rem;">1. 数据处理 (Data Processing)</h4>
+            
+            <!-- Data Processing Flow Diagram -->
+            <div class="box p-4 mt-4 has-background-light">
+                <p class="subtitle is-6 mb-4 has-text-weight-bold has-text-centered" style="color:#1a237e;">数据处理流程示意图 (Simplified Data Processing Flow)</p>
+                <div class="columns is-vcentered has-text-centered is-mobile is-multiline">
+                  
+                  <!-- 1. Input Video -->
+                  <div class="column is-4-mobile is-2-tablet">
+                    <div class="img-placeholder" style="aspect-ratio: 4/3; width: 100%; padding: 1rem; background-color: #fcebeb; border-color: #ff3b30;">
+                        <i class="fas fa-video" style="color:#ff3b30;"></i>
+                        <span class="has-text-weight-bold is-size-7">病人视频片段</span>
+                    </div>
+                  </div>
+
+                  <!-- Arrow -->
+                  <div class="column is-hidden-mobile is-1-tablet">
+                    <i class="fas fa-arrow-right fa-2x" style="color:#3273dc;"></i>
+                  </div>
+                  
+                  <!-- 2. Data Processor -->
+                  <div class="column is-4-mobile is-2-tablet">
+                    <div class="box has-background-info-light has-text-info has-text-weight-bold p-3" style="border-radius: 8px;">
+                        <i class="fas fa-cogs mr-1"></i>数据处理
+                    </div>
+                  </div>
+
+                  <!-- Arrow -->
+                  <div class="column is-hidden-mobile is-1-tablet">
+                    <i class="fas fa-arrow-right fa-2x" style="color:#3273dc;"></i>
+                  </div>
+                  
+                  <!-- 3. Output 10 Frames (Horizontal) -->
+                  <div class="column is-12-mobile is-6-tablet">
+                    <p class="subtitle is-7 mb-2 has-text-weight-semibold">输出帧序列 $\mathbf{X}$ (10 Frames)</p>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                      
+                      <!-- Frame 1 -->
+                      <div style="position: relative; width: 18%;">
+                        <div class="img-placeholder small-figure lv-bg" style="aspect-ratio: 1; padding: 0.5rem; border-color: #dbdbdb;">
+                            <div class="lv-outline"></div>
+                            <span class="has-text-weight-semibold lv-text">F1</span>
+                        </div>
+                        <p style="font-size: 0.75rem; margin-top: 5px; color: #48c774; font-weight: bold;">有真值 (GT)</p>
+                      </div>
+
+                      <!-- Frame 2 -->
+                      <div style="width: 18%;">
+                        <div class="img-placeholder small-figure lv-bg" style="aspect-ratio: 1; padding: 0.5rem;">
+                            <div class="lv-outline"></div>
+                            <span class="has-text-weight-semibold lv-text">F2</span>
+                        </div>
+                        <p style="font-size: 0.75rem; margin-top: 5px;">&nbsp;</p>
+                      </div>
+                      
+                      <!-- Frame 3 -->
+                      <div style="width: 18%;">
+                        <div class="img-placeholder small-figure lv-bg" style="aspect-ratio: 1; padding: 0.5rem;">
+                            <div class="lv-outline"></div>
+                            <span class="has-text-weight-semibold lv-text">F3</span>
+                        </div>
+                        <p style="font-size: 0.75rem; margin-top: 5px;">&nbsp;</p>
+                      </div>
+
+                      <!-- ... -->
+                      <div style="width: 18%;">
+                        <div style="aspect-ratio: 1; padding: 0.5rem; display: flex; align-items: center; justify-content: center;">
+                            <span class="has-text-weight-bold is-size-5">...</span>
+                        </div>
+                        <p style="font-size: 0.75rem; margin-top: 5px;">共 10 帧</p>
+                      </div>
+
+                      <!-- Frame 10 -->
+                      <div style="position: relative; width: 18%;">
+                        <div class="img-placeholder small-figure lv-bg" style="aspect-ratio: 1; padding: 0.5rem; border-color: #dbdbdb;">
+                            <div class="lv-outline"></div>
+                            <span class="has-text-weight-semibold lv-text">F10</span>
+                        </div>
+                        <p style="font-size: 0.75rem; margin-top: 5px; color: #48c774; font-weight: bold;">有真值 (GT)</p>
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+            </div>
+            <!-- End Data Processing Flow Diagram -->
+
+            <!-- Step 2: Problem Formulation -->
+            <h4 class="title is-5" style="margin-top: 2rem; margin-bottom: 0.5rem;">2. 问题设定 (Problem Formulation)</h4>
+            
+            <!-- 2.1 Training Phase -->
+            <h5 class="title is-6" style="margin-top: 1.5rem; color: #ff3b30;">2.1 训练阶段 (Training Phase - Sparse Supervision)</h5>
+            
+            <p>在训练过程中，模型接收完整的 10 帧输入序列 $\mathbf{X}$（不包含真值 $\mathbf{Y}$）。模型预测出整个序列的 LV 分割掩膜 $\hat{\mathbf{Y}}$ 后，仅序列的第 1 帧 ($\hat{y}_1$) 和第 10 帧 ($\hat{y}_{10}$) 的预测结果与稀疏真值 ($y_1, y_{10}$) 进行比较以计算损失 ($\mathcal{L}$)。</p>
+
+            <!-- Training Flow Diagram (Vertical Strips / Horizontal Flow) -->
+            <div class="box p-4 mt-4 has-background-danger-light">
+              <p class="subtitle is-6 mb-4 has-text-weight-bold has-text-centered" style="color:#ff3b30;">训练过程示意图 (Training with Sparse Loss)</p>
+              
+              <!-- Scrollable Wrapper -->
+              <div class="scrollable-container">
+                  <!-- columns with is-mobile and min-width to force horizontal layout -->
+                  <div class="columns is-vcentered is-centered has-text-centered is-mobile" style="min-width: 800px;">
+
+                      <!-- Col 1: Input Sequence (Vertical) -->
+                      <div class="column is-narrow"> 
+                          <p class="subtitle is-7 mb-2 has-text-weight-semibold">输入 $\mathbf{X}$</p>
+                          <div class="sequence-col">
+                              <div class="frame-item">
+                                  <div class="img-placeholder lv-bg training-frame-size" style="aspect-ratio: 1; border-color: #dbdbdb;">
+                                      <div class="lv-outline"></div>
+                                      <span class="lv-text">F1</span>
+                                  </div>
+                              </div>
+                              <div class="frame-item">
+                                  <div class="img-placeholder lv-bg training-frame-size" style="aspect-ratio: 1;">
+                                      <div class="lv-outline"></div>
+                                      <span class="lv-text">F2</span>
+                                  </div>
+                              </div>
+                              <div class="frame-item">
+                                  <span class="has-text-grey-light is-size-5">...</span>
+                              </div>
+                              <div class="frame-item">
+                                  <div class="img-placeholder lv-bg training-frame-size" style="aspect-ratio: 1; border-color: #dbdbdb;">
+                                      <div class="lv-outline"></div>
+                                      <span class="lv-text">F10</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <!-- Arrow -->
+                      <div class="column is-narrow">
+                          <i class="fas fa-arrow-right fa-2x" style="color:#1a237e;"></i>
+                      </div>
+
+                      <!-- Col 2: Model -->
+                      <div class="column is-narrow">
+                          <div class="box has-background-primary has-text-white has-text-weight-bold p-3" style="border-radius: 10px;">
+                              Model
+                          </div>
+                      </div>
+
+                      <!-- Arrow -->
+                      <div class="column is-narrow">
+                          <i class="fas fa-arrow-right fa-2x" style="color:#ff3b30;"></i>
+                      </div>
+
+                      <!-- Col 3: Prediction (Vertical) -->
+                      <div class="column is-narrow"> 
+                          <p class="subtitle is-7 mb-2 has-text-weight-semibold">预测 $\hat{\mathbf{Y}}$</p>
+                          <div class="sequence-col">
+                              <div class="frame-item">
+                                  <div class="img-placeholder lv-bg training-frame-size" style="aspect-ratio: 1; border-color: #ff3b30;">
+                                      <div class="lv-predicted-mask"></div>
+                                      <span class="lv-text">$\hat{y}_1$</span>
+                                  </div>
+                              </div>
+                              <div class="frame-item">
+                                  <div class="img-placeholder lv-bg training-frame-size" style="aspect-ratio: 1; border-color: #ff3b30;">
+                                      <div class="lv-predicted-mask"></div>
+                                      <span class="lv-text">$\hat{y}_2$</span>
+                                  </div>
+                              </div>
+                              <div class="frame-item">
+                                  <span class="has-text-grey-light is-size-5">...</span>
+                              </div>
+                              <div class="frame-item">
+                                  <div class="img-placeholder lv-bg training-frame-size" style="aspect-ratio: 1; border-color: #ff3b30;">
+                                      <div class="lv-predicted-mask"></div>
+                                      <span class="lv-text">$\hat{y}_{10}$</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <!-- Arrow -->
+                      <div class="column is-narrow">
+                          <i class="fas fa-arrows-alt-h fa-lg" style="color:#f9a124;"></i>
+                      </div>
+
+                      <!-- Col 4: Loss (Vertical) -->
+                      <div class="column is-narrow"> 
+                          <p class="subtitle is-7 mb-2 has-text-weight-semibold">损失 $\mathcal{L}$</p>
+                          <div class="sequence-col">
+                              <div class="frame-item">
+                                  <div class="img-placeholder lv-bg training-frame-size" style="aspect-ratio: 1; border-color: #f9a124; border-width: 2px;">
+                                      <div class="lv-gt-mask"></div>
+                                      <div class="lv-predicted-mask"></div> 
+                                      <span class="lv-text">F1</span>
+                                  </div>
+                              </div>
+                              <div class="frame-item" style="height: 110px; visibility: hidden;">
+                                  <!-- Spacer for alignment, height matches frame size -->
+                              </div>
+                              <div class="frame-item">
+                                  <span class="has-text-grey-light is-size-5">...</span>
+                              </div>
+                              <div class="frame-item">
+                                  <div class="img-placeholder lv-bg training-frame-size" style="aspect-ratio: 1; border-color: #f9a124; border-width: 2px;">
+                                      <div class="lv-gt-mask"></div>
+                                      <div class="lv-predicted-mask"></div> 
+                                      <span class="lv-text">F10</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+                  </div>
+              </div>
+              <!-- Mobile Hint -->
+              <p class="is-hidden-tablet has-text-centered is-size-7 has-text-grey mt-2">
+                  <i class="fas fa-hand-pointer"></i> 左右滑动查看完整流程
+              </p>
+            </div>
+            <!-- End Training Flow Diagram -->
+            
+            <!-- 2.2 Evaluation Phase -->
+            <h5 class="title is-6" style="margin-top: 3rem; color: #007aff;">2.2 评估阶段 (Evaluation Phase - Clinical Scenario)</h5>
+            
+            <!-- Evaluation Flow Diagram (Vertical Strips / Horizontal Flow) -->
+            <div class="box p-4 mt-4 has-background-info-light">
+              <p class="subtitle is-6 mb-4 has-text-weight-bold has-text-centered" style="color:#007aff;">评估过程示意图 (Inference)</p>
+              
+              <!-- Scrollable Wrapper -->
+              <div class="scrollable-container">
+                  <!-- columns with is-mobile and min-width -->
+                  <div class="columns is-vcentered is-centered has-text-centered is-mobile" style="min-width: 800px;">
+                      
+                      <!-- Col 1: Input Sequence (Vertical) -->
+                      <div class="column is-narrow"> 
+                          <p class="subtitle is-7 mb-2 has-text-weight-semibold">输入 $\mathbf{X}$ (无真值)</p>
+                          <div class="sequence-col">
+                              <div class="frame-item">
+                                  <div class="img-placeholder lv-bg training-frame-size" style="aspect-ratio: 1; border-color: #dbdbdb;"> 
+                                      <div class="lv-outline"></div>
+                                      <span class="lv-text">F1</span>
+                                  </div>
+                              </div>
+                              <div class="frame-item">
+                                  <div class="img-placeholder lv-bg training-frame-size" style="aspect-ratio: 1;"> 
+                                      <div class="lv-outline"></div>
+                                      <span class="lv-text">F2</span>
+                                  </div>
+                              </div>
+                              <div class="frame-item">
+                                  <span class="has-text-grey-light is-size-5">...</span>
+                              </div>
+                              <div class="frame-item">
+                                  <div class="img-placeholder lv-bg training-frame-size" style="aspect-ratio: 1; border-color: #dbdbdb;"> 
+                                      <div class="lv-outline"></div>
+                                      <span class="lv-text">F10</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      
+                      <!-- Arrow -->
+                      <div class="column is-narrow">
+                          <i class="fas fa-arrow-right fa-2x" style="color:#1a237e;"></i>
+                      </div>
+
+                      <!-- Col 2: Model -->
+                      <div class="column is-narrow">
+                          <div class="box has-background-primary has-text-white has-text-weight-bold p-3" style="border-radius: 10px;">
+                              Model / <i class="fas fa-user-md"></i>
+                          </div>
+                      </div>
+                      
+                      <!-- Arrow -->
+                      <div class="column is-narrow">
+                          <i class="fas fa-arrow-right fa-2x" style="color:#ff3b30;"></i>
+                      </div>
+
+                      <!-- Col 3: Prediction (Vertical) -->
+                      <div class="column is-narrow"> 
+                          <p class="subtitle is-7 mb-2 has-text-weight-semibold">预测输出 $\hat{\mathbf{Y}}$</p>
+                          <div class="sequence-col">
+                              <div class="frame-item">
+                                  <div class="img-placeholder lv-bg training-frame-size" style="aspect-ratio: 1; border-color: #ff3b30;"> 
+                                      <div class="lv-predicted-mask"></div>
+                                      <span class="lv-text">$\hat{y}_1$</span>
+                                  </div>
+                              </div>
+                              <div class="frame-item">
+                                  <div class="img-placeholder lv-bg training-frame-size" style="aspect-ratio: 1; border-color: #ff3b30;"> 
+                                      <div class="lv-predicted-mask"></div>
+                                      <span class="lv-text">$\hat{y}_2$</span>
+                                  </div>
+                              </div>
+                              <div class="frame-item">
+                                  <span class="has-text-grey-light is-size-5">...</span>
+                              </div>
+                              <div class="frame-item">
+                                  <div class="img-placeholder lv-bg training-frame-size" style="aspect-ratio: 1; border-color: #ff3b30;"> 
+                                      <div class="lv-predicted-mask"></div>
+                                      <span class="lv-text">$\hat{y}_{10}$</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!-- Mobile Hint -->
+              <p class="is-hidden-tablet has-text-centered is-size-7 has-text-grey mt-2">
+                  <i class="fas fa-hand-pointer"></i> 左右滑动查看完整流程
+              </p>
+            </div>
+            <!-- End Evaluation Flow Diagram -->
+            
+            <!-- Step 3: GDKVM Processing Details -->
+            <h4 class="title is-5" style="margin-top: 2rem; margin-bottom: 0.5rem;">3. GDKVM 模型对视频序列的具体处理</h4>
+            
+            <!-- GDKVM Processing Flow Diagram -->
+            <div class="columns is-vcentered is-mobile is-multiline has-text-centered" style="margin-top: 1.5rem; margin-bottom: 1rem;">
+                <!-- Column 1: Input Frame x_t -->
+                <div class="column is-2-mobile is-2-tablet" style="padding: 0.5rem;">
+                    <div class="img-placeholder" style="aspect-ratio: 1; width: 100%; padding: 0.5rem; background-color: #f7f9fc;">
+                        <i class="fas fa-image" style="color:#3273dc;"></i>
+                        <span class="has-text-weight-bold is-size-7">当前帧 $x_t$</span>
+                    </div>
+                </div>
+                
+                <!-- Arrow 1 -->
+                <div class="column is-1-mobile is-1-tablet" style="padding: 0.5rem;">
+                    <i class="fas fa-arrow-right fa-2x" style="color:#3273dc;"></i>
+                </div>
+                
+                <!-- Column 2: Encoder & Query -->
+                <div class="column is-4-mobile is-3-tablet" style="padding: 0.5rem;">
+                    <div class="box has-background-primary-light has-text-primary has-text-weight-bold p-3" style="border-radius: 8px; font-size: 0.85rem;">
+                        特征编码器 (Encoder) $\to$ Query $Q_t$
+                    </div>
+                </div>
+
+                <!-- Column 3: Memory Read & Update Block (Vertical Flow) -->
+                <div class="column is-5-mobile is-6-tablet" style="padding: 0.5rem;">
+                    <div class="is-flex is-flex-direction-column is-align-items-center">
+                        
+                        <!-- Memory Box M_t-1 -->
+                        <div class="box has-background-warning-light has-text-warning-dark p-2 mb-2" style="border-radius: 8px; font-size: 0.8rem; width: 100%; max-width: 200px; margin-left: auto; margin-right: auto;">
+                            记忆库 $M_{t-1}$ (Key & Value)
+                        </div>
+
+                        <div class="is-flex is-justify-content-space-between is-align-items-center" style="width: 100%;">
+                            
+                            <!-- Query Arrow In (Read) -->
+                            <div style="flex-grow: 0;">
+                                <i class="fas fa-search fa-lg" style="color:#f9a124;"></i> <span class="is-size-7 has-text-warning-dark">读取 (Read)</span>
+                            </div>
+                            
+                            <!-- Process Block (LKVA + KPFF) -->
+                            <div class="box has-background-success-light has-text-success-dark has-text-weight-bold p-2" style="border-radius: 8px; flex-grow: 1; margin: 0 0.5rem; font-size: 0.85rem;">
+                                LKVA + KPFF (计算)
+                            </div>
+                            
+                            <!-- Update Arrow Out (GDR Update) -->
+                            <div style="flex-grow: 0;">
+                                <i class="fas fa-upload fa-lg" style="color:#48c774;"></i> <span class="is-size-7 has-text-success-dark">GDR 更新 (Update)</span>
+                            </div>
+                        </div>
+                        
+                        <!-- New Memory Box M_t -->
+                        <div class="box has-background-warning-light has-text-warning-dark p-2 mt-2" style="border-radius: 8px; font-size: 0.8rem; width: 100%; max-width: 200px; margin-left: auto; margin-right: auto;">
+                            新记忆库 $M_{t}$
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End GDKVM Processing Flow Diagram -->
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+
+</body>
+</html>

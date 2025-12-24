@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predictable Scale</title>
+    <link rel="stylesheet" href="assets/css/toolstyle.css">
+</head>
+<body>
+    <div class="tab-container">
+        <nav class="tab-nav">
+            <button class="tab-button active" data-tab="tab1">Step Law</button>
+            <button class="tab-button" data-tab="tab2">Loss Heatmap</button>
+            <!-- <button class="tab-button" data-tab="tab3">tab3</button> -->
+        </nav>
+
+        <div class="tab-content">
+            <div id="tab1" class="tab-pane active">
+                <!-- <h2>Title1</h2> -->
+                <form id="modelForm">
+                    <div class="select-item">
+                        <label for="modelSize">N(Model Size)</label>
+                        <input type="number" id="modelSize" placeholder="e.g.1000000 or 1e6" required>
+                    </div>
+                    <div class="select-item">
+                        <label for="trainingTokens">D(Training Token Size)</label>
+                        <input type="number" id="trainingTokens" placeholder="e.g.5000000 or 5e6" required>
+                    </div>
+                    <button type="submit">Calculate</button>
+                </form>
+
+                <div id="result">
+                    <h3>Results</h3>
+                    <p id="bsValue">Optimal Token Wise BatchSize: -</p>
+                    <p id="lrValue">Learning Rate: -</p>
+                </div>
+            </div>
+
+            <div id="tab2" class="tab-pane">
+                <!-- <h2>Title2</h2> -->
+                <div class="configurator">
+                    <div class="selector-group" id="selectorGroup">
+                        <div class="select-item">
+                            <label>Model Type</label>
+                            <select id="modelType" class="styled-select">
+                                <option value="Moe">Moe</option>
+                                <option value="Dense">Dense</option>
+                            </select>
+                        </div>
+                        <div class="select-item">
+                            <label>N(Model Size)</label>
+                            <select id="nValue" class="styled-select"></select>
+                        </div>
+                        <div class="select-item" id="naItem" style="display: none;">
+                            <label>Na(Activate Parameters)</label>
+                            <select id="naValue" class="styled-select"></select>
+                        </div>
+                        <div class="select-item">
+                            <label>D(Training Token Size)</label>
+                            <select id="dValue" class="styled-select"></select>
+                        </div>
+                    </div>
+                    <button id="generateBtn" class="visualize-btn">Show</button>
+                    <div id="visualization" class="visualization-container">
+                        <div class="placeholder-graph">Please select parameters and click "Show"</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div id="tab3" class="tab-pane">
+                <h2>Title3</h2>
+            </div> -->
+        </div>
+    </div>
+
+    <script src="assets/js/tool.js"></script>
+</body>
+</html>

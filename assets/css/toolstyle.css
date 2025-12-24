@@ -1,0 +1,397 @@
+/* 基础样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+:root {
+    --primary: #2B6CB0;
+    --secondary: #4299E1;
+    --accent: #63B3ED;
+    --surface: #FFFFFF;
+    --background: #F7FAFC;
+    --text-primary: #2D3748;
+    --text-secondary: #718096;
+}
+
+body {
+    background-color: #f5f5f5;
+    padding: 2rem;
+}
+
+/* 选项卡容器 */
+.tab-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: var(--surface);
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+}
+
+/* 选项卡导航 */
+.tab-nav {
+    display: flex;
+    gap: 0.5rem;
+    border-bottom: 2px solid #EBF8FF;
+    margin-bottom: 2rem;
+}
+
+.tab-button {
+    padding: 1rem 2rem;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.tab-button::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: var(--primary);
+    transition: width 0.3s ease;
+}
+
+.tab-button.active {
+    color: var(--primary);
+}
+
+.tab-button.active::after {
+    width: 100%;
+}
+
+/* 选项卡内容 */
+.tab-content {
+    padding: 2rem;
+    min-height: 300px;
+}
+
+/* 表单样式 */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+input {
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+}
+
+button {
+    padding: 0.8rem;
+    background-color: #0366d6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0350a1;
+}
+
+/* 结果区域 */
+#result {
+    margin-top: 20px;
+    font-size: 1.1rem;
+}
+
+#result p {
+    margin: 5px 0;
+}
+
+/* Tab 内容 */
+.tab-pane {
+    display: none;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+.tab-pane.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* styles.css 添加新样式 */
+/* 配置器样式 */
+.configurator {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.selector-group {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    transition: grid-template-columns 0.3s ease, gap 0.3s ease;
+    grid-auto-flow: dense; /* 防止出现空白区域 */
+  }
+/* 当包含Na选项时的布局 */
+.selector-group.has-na {
+    grid-template-columns: repeat(4, minmax(200px, 1fr));
+  }
+  
+  /* 响应式调整 */
+  @media (max-width: 1200px) {
+    .selector-group {
+      grid-template-columns: repeat(2, minmax(180px, 1fr));
+    }
+    .selector-group.has-na {
+      grid-template-columns: repeat(3, minmax(180px, 1fr));
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .selector-group {
+      grid-template-columns: 1fr;
+    }
+    .selector-group.has-na {
+      grid-template-columns: 1fr;
+    }
+  }
+
+
+.select-item {
+    background: var(--background);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#naItem {
+    display: block;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 1;
+    transform: scale(1);
+}
+
+#naItem.hidden {
+    display: none !important;
+    opacity: 0;
+    transform: scale(0.95);
+}
+
+.select-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99,179,237,0.1);
+}
+
+.styled-select {
+    width: 100%;
+    padding: 0.875rem;
+    border: 2px solid #CBD5E0;
+    border-radius: 0.5rem;
+    background: var(--surface);
+    font-size: 1rem;
+    margin-top: 0.75rem;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23718096'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    transition: border-color 0.3s ease;
+}
+
+.styled-select:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+.visualize-btn {
+    display: block;
+    width: 200px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.visualize-btn:hover {
+    background: #1557b0;
+    transform: scale(1.05);
+}
+
+.visualization-container {
+    background: var(--background);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-top: 2rem;
+    position: relative;
+    min-height: 600px;
+}
+
+.placeholder-graph {
+    width: 100%;
+    height: 400px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* 动态生成的图表样式 */
+.generated-graph {
+    width: 100%;
+    height: 400px;
+    background: white;
+    border-radius: 8px;
+    position: relative;
+}
+
+.graph-label {
+    position: absolute;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.generated-pdf {
+    width: 100%;
+    height: 600px;
+    border-radius: 0.75rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+}
+
+.pdf-error {
+    color: #dc3545;
+    padding: 2rem;
+    text-align: center;
+}
+
+.pdf-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* 添加输入提示 */
+input::placeholder {
+    color: #999;
+    font-style: italic;
+    font-size: 0.9em;
+  }
+
+@media (max-width: 768px) {
+    .tool-container {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+
+    .tab-nav {
+        flex-wrap: wrap;
+    }
+
+    .tab-button {
+        flex: 1 1 45%;
+        text-align: center;
+        padding: 0.75rem;
+    }
+
+    .selector-group {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* 图片加载状态 */
+.image-loading {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    color: #6e7fcd;
+  }
+  
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(110, 127, 205, 0.2);
+    border-top-color: #6e7fcd;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  /* 错误提示 */
+  .image-error {
+    position: absolute;
+    display: none;
+    align-items: center;
+    padding: 1.5rem;
+    background: #fff0f0;
+    border-radius: 8px;
+    border: 1px solid #ffcccc;
+    max-width: 80%;
+  }
+  
+  .error-message {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .error-message p {
+    margin: 0;
+    color: #dc3545;
+    font-weight: 500;
+  }
+  
+  .error-message small {
+    color: #666;
+    font-size: 0.875em;
+  }
+  
+  /* 图片容器 */
+  .generated-image-container {
+    position: relative;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: opacity 0.3s ease;
+  }
+  
+  .generated-image {
+    transition: opacity 0.3s ease;
+  }

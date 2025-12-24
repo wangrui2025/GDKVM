@@ -1,0 +1,16 @@
+<p>
+  Accurate segmentation of cardiac chambers in echocardiography sequences is crucial for the quantitative analysis of cardiac function, aiding in clinical diagnosis and treatment.
+  The imaging noise, artifacts, and the deformation and motion of the heart pose challenges to segmentation algorithms.
+</p>
+<p>
+  While existing methods based on convolutional neural networks, Transformers and space-time memory networks, have improved segmentation accuracy, they often struggle with the trade-off between capturing long-range spatiotemporal dependencies and maintaining computational efficiency with fine-grained feature representation.
+</p>
+<p>
+  In this paper, we introduce <strong>GDKVM</strong>, a novel architecture for echocardiography video segmentation.
+  The model employs Linear Key-Value Association (LKVA) to effectively model inter-frame correlations, and introduces Gated Delta Rule (GDR) to efficiently store intermediate memory states. Key-Pixel Feature Fusion (KPFF) module is designed to integrate local and global features at multiple scales, enhancing robustness against boundary blurring and noise interference.
+</p>
+<p>
+  We validated GDKVM on two mainstream echocardiography video datasets (CAMUS and EchoNet-Dynamic) and compared it with various state-of-the-art methods.
+  Experimental results show that GDKVM outperforms existing approaches in terms of segmentation accuracy and robustness, while ensuring real-time performance.
+  Codes are available at <a href="https://github.com/wangrui2025/GDKVM" target="_blank">https://github.com/wangrui2025/GDKVM</a>.
+</p>

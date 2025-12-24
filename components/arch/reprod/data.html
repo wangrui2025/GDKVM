@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Data Preparation - GDKVM Reproduction Guide | 数据准备 - GDKVM 复现指南</title>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+  <style>
+    /* Global Settings */
+    html { font-size: 14px; }
+    body { font-family: 'Noto Sans', 'Noto Sans SC', sans-serif; background-color: #ffffff; color: #4a4a4a; min-height: 100vh; display: flex; flex-direction: column; }
+    a { color: #3273dc; transition: color 0.2s; text-decoration: none; }
+    a:hover { color: #1a237e; text-decoration: underline; }
+
+    /* Typography */
+    .section-title { font-size: 1.5rem !important; margin-top: 2.5rem; margin-bottom: 1.5rem; font-weight: 600; color: #363636; border-bottom: 2px solid #f5f5f5; padding-bottom: 0.5rem; }
+    .subsection-title { font-size: 1.2rem !important; margin-top: 1.8rem; margin-bottom: 0.8rem; font-weight: 600; color: #4a4a4a; }
+    
+    .content { font-size: 1rem; }
+    
+    /* Helper for bilingual spacing */
+    .en-text {
+        font-size: 0.9em;
+        color: #666;
+        margin-left: 0.5rem;
+        font-weight: 400;
+    }
+    .en-block {
+        display: block;
+        font-size: 0.9em;
+        color: #666;
+        margin-top: 0.2rem;
+    }
+
+    /* Code Block Styles */
+    .code-container {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+    
+    pre { 
+      background-color: #f5f5f5; 
+      padding: 1rem; 
+      border-radius: 4px; 
+      overflow-x: auto; 
+    }
+    
+    /* Ensure code inside is not affected by font changes */
+    pre code {
+        font-family: monospace;
+    }
+    
+    .copy-btn {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+      border: 1px solid #dbdbdb;
+      cursor: pointer;
+      z-index: 10;
+    }
+    
+    .copy-btn:hover {
+      opacity: 1;
+    }
+
+    /* Data List Styles */
+    .compact-card {
+      background: #fff;
+      border: 1px solid #ededed;
+      border-radius: 6px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.2rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      font-size: 0.95rem;
+    }
+    
+    .link-tag {
+      background-color: #f5f5f5;
+      padding: 0.1rem 0.5rem;
+      border-radius: 3px;
+      font-size: 0.85rem;
+      color: #3273dc;
+      display: inline-flex;
+      align-items: center;
+      transition: background-color 0.2s;
+      border: 1px solid transparent;
+    }
+    .link-tag:hover {
+      background-color: #e8f0fe;
+      border-color: #b5d0ff;
+      text-decoration: none;
+    }
+    .link-tag i { margin-left: 0.3rem; font-size: 0.8em; }
+
+    /* Subtle Link Style for Raw Data */
+    .link-subtle {
+      color: #999;
+      text-decoration: none;
+      margin-left: 0.4rem;
+      transition: color 0.2s;
+      border-bottom: 1px dotted #ccc;
+    }
+    .link-subtle:hover {
+      color: #3273dc;
+      border-bottom-color: #3273dc;
+    }
+    
+    /* Footer sticks to bottom */
+    .section { flex: 1; }
+  </style>
+</head>
+<body>
+
+<section class="section">
+  <div class="container is-max-desktop content" id="data-content">
+    
+    <h2 class="section-title">
+        2. 数据准备 <span class="en-text">Data Preparation</span>
+    </h2>
+    <p>
+        我们使用 <strong>CAMUS</strong> 和 <strong>EchoNet-Dynamic</strong> 数据集。
+        <span class="en-block">We utilize the <strong>CAMUS</strong> and <strong>EchoNet-Dynamic</strong> datasets.</span>
+    </p>
+
+    <h3 class="subsection-title">
+        数据集下载 <span class="en-text">Dataset Download</span>
+    </h3>
+    
+    <div class="compact-card">
+      <div style="margin-bottom: 0.8rem; display: flex; flex-wrap: wrap; align-items: center; line-height: 1.8;">
+        <span style="font-weight: 700; color: #205cbe; margin-right: 0.8rem;">
+            <i class="fas fa-database"></i> 已处理数据集 <small style="font-weight:400; opacity:0.8;">(Processed)</small>:
+        </span>
+        
+        <span style="margin-right: 1.2rem; white-space: nowrap;">
+          <strong style="font-weight: 600; color: #4a4a4a;">CAMUS</strong>
+          <a href="https://huggingface.co/datasets/miyuki17/camus_png256x256_10f_20250709" target="_blank" class="link-tag">
+            🤗 HuggingFace <i class="fas fa-external-link-alt"></i>
+          </a>
+        </span>
+
+        <span style="white-space: nowrap;">
+          <strong style="font-weight: 600; color: #4a4a4a;">EchoNet-Dynamic</strong>
+          <a href="https://huggingface.co/datasets/miyuki17/EchoNet-Dynamic" target="_blank" class="link-tag">
+            todo
+          </a>
+        </span>
+      </div>
+
+      <div style="padding-top: 0.8rem; border-top: 1px dashed #eee; color: #999; font-size: 0.85rem; line-height: 1.6; display: flex; flex-wrap: wrap; align-items: center;">
+        <span style="font-weight: 700; margin-right: 0.8rem;">
+            <i class="fas fa-archive"></i> 原始数据集 <small style="font-weight:400; opacity:0.8;">(Raw Data)</small>:
+        </span>
+        
+        <span style="margin-right: 1.2rem; white-space: nowrap;">
+          <strong style="font-weight: 600; color: #999;">CAMUS</strong> 
+          <a href="https://www.creatis.insa-lyon.fr/Challenge/camus/" target="_blank" class="link-subtle">
+            官方网站 (Official)
+          </a>
+          <a href="https://huggingface.co/datasets/miyuki17/CAMUS_public" target="_blank" class="link-subtle">
+            🤗 Huggingface (镜像/Mirror)
+          </a>
+        </span>
+
+        <span style="white-space: nowrap;">
+          <strong style="font-weight: 600; color: #999;">EchoNet-Dynamic</strong>
+          <a href="https://echonet.github.io/dynamic/" target="_blank" class="link-subtle">
+            官方网站 (Official)
+          </a>
+          <a href="https://huggingface.co/datasets/miyuki17/EchoNet-Dynamic-zip" target="_blank" class="link-subtle">
+            🤗 Huggingface (镜像/Mirror)
+          </a>
+        </span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  function copyCode(btn) {
+    const pre = btn.nextElementSibling;
+    const code = pre.querySelector('code');
+    const text = code.innerText; // Keeps code content exact
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand('copy');
+      const icon = btn.querySelector('.icon i');
+      const textSpan = btn.querySelector('span:last-child');
+      const originalText = textSpan.innerText;
+      
+      icon.className = 'fas fa-check';
+      // Bilingual Feedback
+      textSpan.innerText = 'Copied! / 已复制!';
+      
+      btn.classList.remove('is-light');
+      btn.classList.add('is-success');
+      setTimeout(() => {
+        icon.className = 'fas fa-copy';
+        textSpan.innerText = originalText;
+        btn.classList.remove('is-success');
+        btn.classList.add('is-light');
+      }, 2000);
+    } catch (err) {
+      console.error('Failed to copy', err);
+    }
+    document.body.removeChild(textarea);
+  }
+  
+  document.addEventListener('DOMContentLoaded', (event) => {
+    hljs.highlightAll();
+  });
+</script>
+
+</body>
+</html>
