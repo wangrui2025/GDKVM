@@ -1,0 +1,85 @@
+defaults:
+  - _self_
+  - model: base  # Keep this line if using model sub-configurations
+
+# =======================
+# General Configuration
+# =======================
+exp_id: "gdkvm_camus_10f"         # Experiment ID
+seed: 42                     # Random seed
+debug: false                 # Debug mode
+wandb_mode: "offline"        # WandB mode: "online", "offline", "disabled"
+cudnn_benchmark: true
+log_text_interval: 10        # Text logging interval
+log_image_interval: 50       # Image logging interval
+save: 0                      # Enable model saving
+save_weights_interval: 200    # Weight saving interval (iterations)
+save_checkpoint_interval: 200 # Checkpoint saving interval (iterations)
+
+# =======================
+# Data & Distributed
+# =======================
+data_path: "/data/Anon/dataset/camus_png256x256_10f_20250709/"
+# data_path: "/data/Anon/dataset/Echo_128_20240214/"
+
+# =======================
+# Training Configuration
+# =======================
+main_training:
+  name: "main_training"
+  enabled: true
+  batch_size: 16 # Batch size (e.g., 16 for 2x 2080Ti on Camus)
+  num_workers: 24
+  amp: true
+  num_iterations: 3000         # Total training iterations
+  learning_rate: 1.0e-4
+  lr_schedule: step            # Options: "constant", "poly", "step"
+  lr_schedule_gamma: 0.1
+  point_supervision: true
+  train_num_points: 12544
+  oversample_ratio: 3.0
+  importance_sample_ratio: 0.75
+
+  clip_grad_norm: 3.0 
+  weight_decay: 0.001
+  embed_weight_decay: 0.0
+  backbone_lr_ratio: 0.1
+  lr_schedule_steps: [1000, 2000]
+
+  num_ref_frames: 10
+  seq_length: 10
+  num_objects: 1
+  crop_size: [256, 256]  
+
+  # Custom Loss / Hyperparameters
+  pos_weight_val: 2.0
+
+# Pre-training configuration (optional)
+pre_training:
+  enabled: false
+
+# =======================
+# Validation / Inference Configuration
+# =======================
+val:
+  enabled: true  # Enable validation during training
+
+# Evaluation stage configuration
+eval_stage:
+  name: "eval_stage"
+  amp: false
+  # batch_size: 
+  # num_workers: 
+  eval_interval: 20
+  num_vis: 0
+  crop_size: [256, 256]
+  learning_rate: 1e-4
+  weight_decay: 1e-3
+  lr_schedule: "constant"
+  clip_grad_norm: 0.0
+  point_supervision: false
+  train_num_points: 0
+  oversample_ratio: 3.0
+  importance_sample_ratio: 0.75
+  embed_weight_decay: 0.0
+  backbone_lr_ratio: 0.1

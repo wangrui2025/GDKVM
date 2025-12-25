@@ -28,4 +28,4 @@ If you find this work helpful for your research, please cite our paper:
 
 ## 🙌 Acknowledgement
 
-This repository is built upon the [Cutie](https://github.com/hkchengrex/Cutie). We appreciate the authors for their well-maintained code and contribution to the community.
+This repository is built upon [Cutie](https://github.com/hkchengrex/Cutie) and [LiVOS](https://github.com/uncbiag/LiVOS). We appreciate the authors for their well-maintained code and contribution to the community.

@@ -1,0 +1,81 @@
+run
+```bash
+uv pip list
+```
+
+```bash
+Package                  Version
+------------------------ ------------
+absl-py                  2.3.1
+annotated-types          0.7.0
+antlr4-python3-runtime   4.9.3
+certifi                  2025.11.12
+charset-normalizer       3.4.4
+click                    8.3.1
+contourpy                1.3.3
+cycler                   0.12.1
+filelock                 3.20.1
+fonttools                4.61.1
+fsspec                   2025.12.0
+gitdb                    4.0.12
+gitpython                3.1.45
+grpcio                   1.76.0
+hydra-core               1.3.2
+idna                     3.11
+jinja2                   3.1.6
+kiwisolver               1.4.9
+llvmlite                 0.46.0
+markdown                 3.10
+markupsafe               3.0.3
+matplotlib               3.10.8
+monai                    1.5.1
+mpmath                   1.3.0
+networkx                 3.6.1
+numba                    0.63.1
+numpy                    2.2.6
+nvidia-cublas-cu12       12.8.4.1
+nvidia-cuda-cupti-cu12   12.8.90
+nvidia-cuda-nvrtc-cu12   12.8.93
+nvidia-cuda-runtime-cu12 12.8.90
+nvidia-cudnn-cu12        9.10.2.21
+nvidia-cufft-cu12        11.3.3.83
+nvidia-cufile-cu12       1.13.1.3
+nvidia-curand-cu12       10.3.9.90
+nvidia-cusolver-cu12     11.7.3.90
+nvidia-cusparse-cu12     12.5.8.93
+nvidia-cusparselt-cu12   0.7.1
+nvidia-nccl-cu12         2.27.5
+nvidia-nvjitlink-cu12    12.8.93
+nvidia-nvshmem-cu12      3.3.20
+nvidia-nvtx-cu12         12.8.90
+omegaconf                2.3.0
+opencv-python            4.12.0.88
+packaging                25.0
+pillow                   12.0.0
+platformdirs             4.5.1
+protobuf                 6.33.2
+pydantic                 2.11.10
+pydantic-core            2.33.2
+pyparsing                3.2.5
+python-dateutil          2.9.0.post0
+pyyaml                   6.0.3
+requests                 2.32.5
+ruff                     0.14.10
+scipy                    1.16.3
+sentry-sdk               2.47.0
+setuptools               80.9.0
+six                      1.17.0
+smmap                    5.0.2
+sympy                    1.14.0
+tensorboard              2.20.0
+tensorboard-data-server  0.7.2
+torch                    2.9.0+cu128
+torchvision              0.24.0+cu128
+tqdm                     4.67.1
+triton                   3.5.0
+typing-extensions        4.15.0
+typing-inspection        0.4.2
+urllib3                  2.6.2
+wandb                    0.23.1
+werkzeug                 3.1.4
+```
