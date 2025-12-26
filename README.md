@@ -7,7 +7,7 @@
 **GDKVM: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule**
 
 [![arXiv](https://img.shields.io/badge/arXiv-2512.10252-b31b1b.svg)](https://arxiv.org/abs/2512.10252)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 </div>
 
