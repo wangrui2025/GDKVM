@@ -1,0 +1,137 @@
+/* Typography */
+.publication-title {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 2.2rem !important;
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+.title.is-3 {
+  font-size: 1.75rem !important;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  font-family: 'Google Sans', sans-serif;
+}
+
+.title.is-4 {
+  font-size: 1.4rem !important;
+  font-weight: 600;
+  font-family: 'Google Sans', sans-serif;
+}
+
+.publication-authors {
+  font-size: 1.2rem;
+  margin-top: 1.5rem;
+}
+
+.institutional-affiliations {
+  font-size: 0.9rem !important;
+  margin-top: 1rem;
+  color: #666;
+}
+
+/* Highlight Title Gradient */
+.highlight-title {
+  background: linear-gradient(
+    45deg,
+    #ff3b30,
+    #af52de,
+    #007aff,
+    #af52de,
+    #ff3b30
+  );
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradientShift 8s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Abstract Box */
+.abstract-box {
+  background-color: #f5f5f5;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  margin-bottom: 1.5rem;
+}
+
+/* Challenge Cards */
+.challenge-card {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #eee;
+  background: white;
+}
+
+.challenge-card img {
+  width: 100%;
+  display: block;
+}
+
+.challenge-caption {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #666;
+  padding: 5px 0;
+  background: #fafafa;
+}
+
+/* Link Blocks */
+.link-block a {
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid #363636;
+}
+.link-block a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+/* ICCV Logo */
+.iccv-logo-container {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.iccv-logo-img {
+  height: 60px;
+  width: auto;
+}
+
+@media screen and (min-width: 1024px) {
+  .hero {
+    position: relative;
+  }
+  .iccv-logo-container {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    margin-bottom: 0;
+    z-index: 10;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 768px) {
+  .publication-title { font-size: 1.6rem !important; }
+  .publication-authors { font-size: 1rem; }
+  .institutional-affiliations { font-size: 0.75rem !important; }
+  .abstract-box { padding: 1.5rem !important; }
+
+  .publication-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .publication-links .button {
+    width: auto !important;
+    margin-bottom: 0 !important;
+  }
+}

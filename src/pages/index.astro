@@ -1,0 +1,227 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/home.css';
+---
+
+<BaseLayout title="GDKVM | ICCV 2025" needsKatex={true}>
+  <section class="hero">
+    <div class="iccv-logo-container">
+      <img src="/GDKVM/assets/images/iccv2_logo/LogoColor.png" alt="ICCV Logo" class="iccv-logo-img">
+    </div>
+
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title" style="margin-top: 1rem;">
+              <span class="highlight-title">
+                <span lang="en">GDKVM: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule</span>
+                <span lang="zh">GDKVM：含门控 Delta 规则的时空键值记忆的超声心动图视频分割</span>
+              </span>
+            </h1>
+
+            <div class="publication-authors">
+              <span class="author-block">Rui Wang<sup>1</sup>,</span>
+              <span class="author-block">Yimu Sun<sup>1</sup>,</span>
+              <span class="author-block">Jingxing Guo<sup>1</sup>,</span>
+              <span class="author-block">Huisi Wu<sup>1,*</sup>,</span>
+              <span class="author-block">Jing Qin<sup>2</sup></span>
+            </div>
+
+            <div class="institutional-affiliations">
+              <div><sup>1</sup>College of Computer Science and Software Engineering, Shenzhen University</div>
+              <div><sup>2</sup>Centre for Smart Health, School of Nursing, The Hong Kong Polytechnic University</div>
+              <div class="mt-2" style="font-size: 0.85rem; color: #555;">
+                2400101058@mails.szu.edu.cn, *Corresponding Author: hswu@szu.edu.cn
+              </div>
+            </div>
+
+            <div class="publication-links" style="margin-top: 2rem;">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2512.10252" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/wangrui2025/GDKVM" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="/GDKVM/reprod/index.html" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-cogs"></i></span>
+                  <span lang="en">Reproduction</span><span lang="zh">复现</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <div class="box p-2" style="border: none; box-shadow: none;">
+            <img src="/GDKVM/paper/fig/Met/gdkvm.png" alt="GDKVM Architecture" style="width: 100%; border-radius: 4px;">
+          </div>
+          <figcaption style="font-size: 0.95rem; color: #555; text-align: justify; margin-top: 1rem; line-height: 1.6;">
+            <span lang="en"><strong>Figure 1.</strong> An illustration of GDKVM architecture. Linear Key-Value Association defines frame-to-frame causal relations as the state transition matrix. Gated Delta Rule helps in dynamically managing memory. Key-Pixel Feature Fusion fuses the local key feature, the global key feature with the pixel feature.</span>
+            <span lang="zh"><strong>图 1.</strong> GDKVM 架构示意图。线性键值关联 (Linear Key-Value Association) 将帧与帧之间的因果关系定义为状态转移矩阵。门控 Delta 规则 (Gated Delta Rule) 有助于动态地管理记忆。关键像素特征融合 (Key-Pixel Feature Fusion) 将局部键特征、全局键特征与像素特征进行了融合。</span>
+          </figcaption>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="abstract-box">
+        <h2 class="title is-3 has-text-centered">
+          <span lang="en">Abstract</span><span lang="zh">摘要</span>
+        </h2>
+        <div class="content has-text-justified fade-in">
+          <div lang="en">
+            <p>Accurate segmentation of cardiac chambers in echocardiography sequences is crucial for the quantitative analysis of cardiac function, aiding in clinical diagnosis and treatment. The imaging noise, artifacts, and the deformation and motion of the heart pose challenges to segmentation algorithms.</p>
+            <p>While existing methods based on convolutional neural networks, Transformers and space-time memory networks, have improved segmentation accuracy, they often struggle with the trade-off between capturing long-range spatiotemporal dependencies and maintaining computational efficiency with fine-grained feature representation.</p>
+            <p>In this paper, we introduce <strong>GDKVM</strong>, a novel architecture for echocardiography video segmentation. The model employs Linear Key-Value Association (LKVA) to effectively model inter-frame correlations, and introduces Gated Delta Rule (GDR) to efficiently store intermediate memory states. Key-Pixel Feature Fusion (KPFF) module is designed to integrate local and global features at multiple scales, enhancing robustness against boundary blurring and noise interference.</p>
+            <p>We validated GDKVM on two mainstream echocardiography video datasets (CAMUS and EchoNet-Dynamic) and compared it with various state-of-the-art methods. Experimental results show that GDKVM outperforms existing approaches in terms of segmentation accuracy and robustness, while ensuring real-time performance.</p>
+          </div>
+          <div lang="zh">
+            <p>超声心动图序列中心脏腔室的精确分割对于心脏功能的定量分析至关重要，有助于临床诊断和治疗。成像噪声、伪影以及心脏的变形和运动给分割算法带来了挑战。</p>
+            <p>虽然现有的基于卷积神经网络、Transformer和时空记忆网络的方法提高了分割精度，但它们往往难以在捕捉长程时空依赖关系与保持细粒度特征表示的计算效率之间取得平衡。</p>
+            <p>在本文中，我们介绍了 <strong>GDKVM</strong>，一种用于超声心动图视频分割的新颖架构。该模型采用线性键值关联（LKVA）有效地建模帧间相关性，并引入门控Delta规则（GDR）以高效存储中间记忆状态。关键像素特征融合（KPFF）模块旨在整合多尺度的局部和全局特征，增强对边界模糊和噪声干扰的鲁棒性。</p>
+            <p>我们在两个主流超声心动图视频数据集（CAMUS和EchoNet-Dynamic）上验证了GDKVM，并将其与各种最先进的方法进行了比较。实验结果表明，GDKVM在分割精度和鲁棒性方面优于现有方法，同时确保了实时性能。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h3 class="title is-4 has-text-centered mb-5">
+        <span lang="en">Challenges in Echocardiography Segmentation</span>
+        <span lang="zh">超声心动图视频分割面临的挑战</span>
+      </h3>
+      <div class="content has-text-centered mb-4">
+        <p>
+          <span lang="en">Echocardiography segmentation faces several challenges such as low contrast, speckle noise, and signal dropout.</span>
+          <span lang="zh">超声心动图视频分割面临着诸如低对比度、斑点噪声和信号丢失等多重挑战。</span>
+        </p>
+      </div>
+
+      <div class="columns is-multiline is-mobile has-text-centered">
+        <div class="column is-4-mobile is-2-tablet">
+          <div class="challenge-card">
+            <img src="/GDKVM/paper/fig/challenge/cha_1.jpg" alt="Noise">
+            <div class="challenge-caption">(a)</div>
+          </div>
+        </div>
+        <div class="column is-4-mobile is-2-tablet">
+          <div class="challenge-card">
+            <img src="/GDKVM/paper/fig/challenge/cha_2.jpg" alt="Blur">
+            <div class="challenge-caption">(b)</div>
+          </div>
+        </div>
+        <div class="column is-4-mobile is-2-tablet">
+          <div class="challenge-card">
+            <img src="/GDKVM/paper/fig/challenge/cha_3.jpg" alt="Shape">
+            <div class="challenge-caption">(c)</div>
+          </div>
+        </div>
+        <div class="column is-4-mobile is-2-tablet">
+          <div class="challenge-card">
+            <img src="/GDKVM/paper/fig/challenge/cha_4.jpg" alt="Scale">
+            <div class="challenge-caption">(d)</div>
+          </div>
+        </div>
+        <div class="column is-4-mobile is-2-tablet">
+          <div class="challenge-card">
+            <img src="/GDKVM/paper/fig/challenge/cha_5.jpg" alt="Cycle">
+            <div class="challenge-caption">(e)</div>
+          </div>
+        </div>
+        <div class="column is-4-mobile is-2-tablet">
+          <div class="challenge-card">
+            <img src="/GDKVM/paper/fig/challenge/cha_6.jpg" alt="Dropout">
+            <div class="challenge-caption">(f)</div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-4">
+        <p style="font-size: 0.9rem; color: #555; text-align: justify;">
+          <span lang="en"><strong>Figure 2.</strong> Illustrative challenges for echocardiography video segmentation: (a) speckle noise, (b) indistinct or blurred contours, and (c-f) the substantial changes in the target's shape and scale throughout the cardiac cycle.</span>
+          <span lang="zh"><strong>图 2.</strong> 超声心动图视频分割面临的典型挑战：(a) 斑点噪声，(b) 轮廓不清或模糊，以及 (c-f) 在整个心动周期中目标的形状和尺度发生的显著变化。</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title is-3 has-text-centered">
+        <span lang="en">BibTeX</span><span lang="zh">BibTeX 引用</span>
+      </h2>
+      <div style="position: relative;">
+        <button class="button is-small is-light copy-btn" id="bibtex-copy-btn" style="position: absolute; top: 0.5rem; right: 0.5rem; z-index: 10;">
+          <span class="icon"><i class="fas fa-copy"></i></span>
+          <span>Copy</span>
+        </button>
+        <pre style="background-color: #f5f5f5; border-radius: 8px; padding: 1.5rem;"><code id="bibtex-content">@InProceedings&#123;Wang_ICCV25_GDKVM,
+    author    = &#123;Wang, Rui and Sun, Yimu and Guo, Jingxing and Wu, Huisi and Qin, Jing&#125;,
+    title     = &#123;&#123;GDKVM&#125;: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule&#125;,
+    booktitle = &#123;Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)&#125;,
+    month     = &#123;October&#125;,
+    year      = &#123;2025&#125;,
+    pages     = &#123;12191-12200&#125;
+&#125;</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-bottom: 2rem;">
+    <div class="container is-max-desktop has-text-centered">
+      <h2 class="title is-3">
+        <span lang="en">Additional Resources</span>
+        <span lang="zh">更多资源</span>
+      </h2>
+      <div class="publication-links">
+        <span class="link-block">
+          <a href="https://openaccess.thecvf.com/content/ICCV2025/html/Wang_GDKVM_Echocardiography_Video_Segmentation_via_Spatiotemporal_Key-Value_Memory_with_Gated_ICCV_2025_paper.html" target="_blank" class="external-link button is-normal is-rounded is-dark mb-1">
+            <span class="icon"><i class="fas fa-file-pdf"></i></span>
+            <span>CVF Paper</span>
+          </a>
+        </span>
+        <span class="link-block">
+          <a href="https://iccv.thecvf.com/media/PosterPDFs/ICCV%202025/2134.png?t=1759901950.5662367" target="_blank" class="external-link button is-normal is-rounded is-dark mb-1">
+            <span class="icon"><i class="fas fa-image"></i></span>
+            <span>Poster</span>
+          </a>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0; padding-bottom: 2rem;">
+    <div class="container is-max-desktop">
+      <div class="content has-text-centered is-size-7 has-text-grey-light" style="opacity: 0.7;">
+        <p class="mb-2" style="font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">To-Do List</p>
+        <ul style="list-style: none; margin: 0; padding: 0;">
+          <li class="mb-1"><i class="far fa-square mr-1"></i> <span lang="zh">问题设置流程图</span><span lang="en">Problem Formulation Flowchart</span></li>
+          <li><i class="far fa-square mr-1"></i> <span lang="zh">模型处理流程图</span><span lang="en">Model Processing Flowchart</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+
+  <!-- BibTeX copy button: external script to avoid {} in template -->
+  <script is:inline src="/GDKVM/assets/js/index-bundle.js"></script>
+</BaseLayout>
