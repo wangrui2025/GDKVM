@@ -1,0 +1,20 @@
+---
+export interface Props {
+  href: string;
+  icon?: string;
+  target?: string;
+}
+
+const { href, icon, target } = Astro.props;
+const isExternal = target === '_blank' || href.startsWith('http');
+---
+
+<a
+  href={href}
+  target={target}
+  rel={isExternal ? 'noopener noreferrer' : undefined}
+  class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-800 text-white hover:-translate-y-0.5 hover:shadow-lg transition"
+>
+  {icon && <i class={icon}></i>}
+  <slot />
+</a>

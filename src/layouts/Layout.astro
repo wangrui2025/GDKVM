@@ -1,15 +1,22 @@
 ---
-import { getRelativeLocaleUrl } from 'astro:i18n';
+import { ClientRouter } from 'astro:transitions';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import LangSwitcher from '../components/LangSwitcher.astro';
 import Footer from '../components/Footer.astro';
+import '../styles/global.css';
 
 interface Props {
   title: string;
   description?: string;
   showFooter?: boolean;
 }
-const { title, description = "GDKVM: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule", showFooter = true } = Astro.props;
+
+const {
+  title,
+  description = 'GDKVM: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule',
+  showFooter = true,
+} = Astro.props;
+
 const lang = Astro.currentLocale ?? 'en';
 ---
 
@@ -24,14 +31,19 @@ const lang = Astro.currentLocale ?? 'en';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
     <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
-    <style>
-      html { font-size: 14px; scroll-behavior: smooth; }
-      body { font-family: 'Noto Sans', sans-serif; }
-    </style>
+    <ClientRouter />
     <script is:inline>
-      (function() {
-        const theme = localStorage.getItem('theme') || 'light';
-        if (theme === 'dark') document.documentElement.classList.add('dark');
+      (function () {
+        function applyTheme() {
+          const theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+          } else if (theme === 'light') {
+            document.documentElement.classList.remove('dark');
+          }
+        }
+        applyTheme();
+        document.addEventListener('astro:after-swap', applyTheme);
       })();
     </script>
   </head>

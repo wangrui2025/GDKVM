@@ -1,5 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import Section from '../../components/Section.astro';
+import ActionButton from '../../components/ActionButton.astro';
+import CopyButton from '../../components/CopyButton.astro';
 import { t } from '../../i18n';
 
 export function getStaticPaths() {
@@ -16,7 +19,11 @@ const { lang } = Astro.params;
       <div class="text-center">
         <!-- ICCV Logo -->
         <div class="mb-6">
-          <img src={`${import.meta.env.BASE_URL}/assets/images/iccv2_logo/LogoColor.png`} alt="ICCV Logo" class="h-14 w-auto mx-auto lg:absolute lg:top-8 lg:left-8 lg:mx-0">
+          <img
+            src={`${import.meta.env.BASE_URL}/assets/images/iccv2_logo/LogoColor.png`}
+            alt="ICCV Logo"
+            class="h-14 w-auto mx-auto lg:absolute lg:top-8 lg:left-8 lg:mx-0"
+          />
         </div>
 
         <h1 class="publication-title mt-4">
@@ -38,60 +45,57 @@ const { lang } = Astro.params;
         </div>
 
         <div class="flex flex-wrap justify-center gap-3 mt-8">
-          <a href="https://arxiv.org/abs/2512.10252" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-800 text-white hover:-translate-y-0.5 hover:shadow-lg transition">
-            <i class="ai ai-arxiv"></i>
-            <span>{t(lang, 'home.arxiv')}</span>
-          </a>
-          <a href="https://github.com/wangrui2025/GDKVM" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-800 text-white hover:-translate-y-0.5 hover:shadow-lg transition">
-            <i class="fab fa-github"></i>
-            <span>{t(lang, 'home.code')}</span>
-          </a>
-          <a href={`${import.meta.env.BASE_URL}/${lang}/reprod/`} class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-800 text-white hover:-translate-y-0.5 hover:shadow-lg transition">
-            <i class="fas fa-cogs"></i>
-            <span>{t(lang, 'home.reproduction')}</span>
-          </a>
+          <ActionButton href="https://arxiv.org/abs/2512.10252" icon="ai ai-arxiv" target="_blank">
+            {t(lang, 'home.arxiv')}
+          </ActionButton>
+          <ActionButton href="https://github.com/wangrui2025/GDKVM" icon="fab fa-github" target="_blank">
+            {t(lang, 'home.code')}
+          </ActionButton>
+          <ActionButton href={`${import.meta.env.BASE_URL}/${lang}/reprod/`} icon="fas fa-cogs">
+            {t(lang, 'home.reproduction')}
+          </ActionButton>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Architecture Figure -->
-  <section class="py-12 px-4">
-    <div class="max-w-5xl mx-auto">
-      <div class="p-2">
-        <img src={`${import.meta.env.BASE_URL}/paper/fig/Met/gdkvm.png`} alt="GDKVM Architecture" class="w-full rounded">
-      </div>
-      <figcaption class="text-sm text-gray-600 dark:text-gray-400 text-justify mt-4 leading-relaxed">
-        <strong>Figure 1.</strong> {t(lang, 'home.fig1Caption')}
-      </figcaption>
+  <Section>
+    <div class="p-2">
+      <img
+        src={`${import.meta.env.BASE_URL}/paper/fig/Met/gdkvm.png`}
+        alt="GDKVM Architecture"
+        class="w-full rounded"
+      />
     </div>
-  </section>
+    <figcaption class="text-sm text-gray-600 dark:text-gray-400 text-justify mt-4 leading-relaxed">
+      <strong>Figure 1.</strong> {t(lang, 'home.fig1Caption')}
+    </figcaption>
+  </Section>
 
   <!-- Abstract -->
-  <section class="py-12 px-4">
-    <div class="max-w-5xl mx-auto">
-      <div class="abstract-box">
-        <h2 class="text-3xl font-semibold text-center mb-6 font-[Google_Sans]">{t(lang, 'home.abstractTitle')}</h2>
-        <div class="text-justify fade-in space-y-4">
-          <p>{t(lang, 'home.abstractP1')}</p>
-          <p>{t(lang, 'home.abstractP2')}</p>
-          <p set:html={t(lang, 'home.abstractP3')}></p>
-          <p>{t(lang, 'home.abstractP4')}</p>
-        </div>
+  <Section>
+    <div class="abstract-box">
+      <h2 class="text-3xl font-semibold text-center mb-6 font-[Google_Sans]">{t(lang, 'home.abstractTitle')}</h2>
+      <div class="text-justify fade-in space-y-4">
+        <p>{t(lang, 'home.abstractP1')}</p>
+        <p>{t(lang, 'home.abstractP2')}</p>
+        <p set:html={t(lang, 'home.abstractP3')}></p>
+        <p>{t(lang, 'home.abstractP4')}</p>
       </div>
     </div>
-  </section>
+  </Section>
 
   <!-- Challenges -->
-  <section class="py-12 px-4">
-    <div class="max-w-5xl mx-auto">
-      <h3 class="text-2xl font-semibold text-center mb-6 font-[Google_Sans]">{t(lang, 'home.challengesTitle')}</h3>
-      <div class="text-center mb-6">
-        <p>{t(lang, 'home.challengesDesc')}</p>
-      </div>
+  <Section>
+    <h3 class="text-2xl font-semibold text-center mb-6 font-[Google_Sans]">{t(lang, 'home.challengesTitle')}</h3>
+    <div class="text-center mb-6">
+      <p>{t(lang, 'home.challengesDesc')}</p>
+    </div>
 
-      <div class="flex flex-wrap justify-center">
-        {[
+    <div class="flex flex-wrap justify-center">
+      {
+        [
           { src: 'paper/fig/challenge/cha_1.jpg', alt: 'Noise', cap: '(a)' },
           { src: 'paper/fig/challenge/cha_2.jpg', alt: 'Blur', cap: '(b)' },
           { src: 'paper/fig/challenge/cha_3.jpg', alt: 'Shape', cap: '(c)' },
@@ -105,109 +109,81 @@ const { lang } = Astro.params;
               <div class="challenge-caption text-center">{cap}</div>
             </div>
           </div>
-        ))}
-      </div>
-
-      <div class="mt-6">
-        <p class="text-sm text-gray-600 dark:text-gray-400 text-justify">
-          <strong>Figure 2.</strong> {t(lang, 'home.fig2Caption')}
-        </p>
-      </div>
+        ))
+      }
     </div>
-  </section>
+
+    <div class="mt-6">
+      <p class="text-sm text-gray-600 dark:text-gray-400 text-justify">
+        <strong>Figure 2.</strong> {t(lang, 'home.fig2Caption')}
+      </p>
+    </div>
+  </Section>
 
   <!-- BibTeX -->
-  <section class="py-12 px-4" id="BibTeX">
-    <div class="max-w-5xl mx-auto">
-      <h2 class="text-3xl font-semibold text-center mb-6 font-[Google_Sans]">{t(lang, 'home.bibtexTitle')}</h2>
-      <div class="relative">
-        <button id="copy-bibtex" class="copy-btn absolute top-2 right-2 z-10 bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs">
-          <i class="fas fa-copy mr-1"></i>
-          <span>{t(lang, 'home.copy')}</span>
-        </button>
-        <pre class="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 text-sm overflow-x-auto" is:raw><code id="bibtex-content">@InProceedings{Wang_ICCV25_GDKVM,
-    author    = {Wang, Rui and Sun, Yimu and Guo, Jingxing and Wu, Huisi and Qin, Jing},
-    title     = {{GDKVM}: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule},
-    booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
-    month     = {October},
-    year      = {2025},
-    pages     = {12191-12200}
-}</code></pre>
-      </div>
+  <Section id="BibTeX">
+    <h2 class="text-3xl font-semibold text-center mb-6 font-[Google_Sans]">{t(lang, 'home.bibtexTitle')}</h2>
+    <div class="relative">
+      <CopyButton targetId="bibtex-content" label={t(lang, 'home.copy')} successLabel={t(lang, 'home.copied')} />
+      <pre
+        class="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 text-sm overflow-x-auto"
+        is:raw
+      ><code id="bibtex-content">@InProceedings&#123;Wang_ICCV25_GDKVM,
+    author    = &#123;Wang, Rui and Sun, Yimu and Guo, Jingxing and Wu, Huisi and Qin, Jing&#125;,
+    title     = &#123;&#123;GDKVM&#125;: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule&#125;,
+    booktitle = &#123;Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)&#125;,
+    month     = &#123;October&#125;,
+    year      = &#123;2025&#125;,
+    pages     = &#123;12191-12200&#125;
+&#125;</code></pre>
     </div>
-  </section>
+  </Section>
 
   <!-- Additional Resources -->
-  <section class="py-12 px-4 pb-8">
-    <div class="max-w-5xl mx-auto text-center">
+  <Section class="pb-8">
+    <div class="text-center">
       <h2 class="text-3xl font-semibold mb-6 font-[Google_Sans]">{t(lang, 'home.resourcesTitle')}</h2>
       <div class="flex flex-wrap justify-center gap-3">
-        <a href="https://openaccess.thecvf.com/content/ICCV2025/html/Wang_GDKVM_Echocardiography_Video_Segmentation_via_Spatiotemporal_Key-Value_Memory_with_Gated_ICCV_2025_paper.html" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-800 text-white hover:-translate-y-0.5 hover:shadow-lg transition">
-          <i class="fas fa-file-pdf"></i>
-          <span>{t(lang, 'home.cvfPaper')}</span>
-        </a>
-        <a href="https://iccv.thecvf.com/media/PosterPDFs/ICCV%202025/2134.png?t=1759901950.5662367" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-800 text-white hover:-translate-y-0.5 hover:shadow-lg transition">
-          <i class="fas fa-image"></i>
-          <span>{t(lang, 'home.poster')}</span>
-        </a>
+        <ActionButton
+          href="https://openaccess.thecvf.com/content/ICCV2025/html/Wang_GDKVM_Echocardiography_Video_Segmentation_via_Spatiotemporal_Key-Value_Memory_with_Gated_ICCV_2025_paper.html"
+          icon="fas fa-file-pdf"
+          target="_blank"
+        >
+          {t(lang, 'home.cvfPaper')}
+        </ActionButton>
+        <ActionButton
+          href="https://iccv.thecvf.com/media/PosterPDFs/ICCV%202025/2134.png?t=1759901950.5662367"
+          icon="fas fa-image"
+          target="_blank"
+        >
+          {t(lang, 'home.poster')}
+        </ActionButton>
       </div>
     </div>
-  </section>
+  </Section>
 
   <!-- To-Do List -->
-  <section class="py-8 px-4">
-    <div class="max-w-5xl mx-auto text-center">
+  <Section class="py-8">
+    <div class="text-center">
       <p class="mb-2 text-xs font-semibold uppercase tracking-widest text-gray-400">{t(lang, 'home.todoTitle')}</p>
       <ul class="list-none text-sm text-gray-400 opacity-70">
         <li class="mb-1"><i class="far fa-square mr-1"></i> {t(lang, 'home.todo1')}</li>
         <li><i class="far fa-square mr-1"></i> {t(lang, 'home.todo2')}</li>
       </ul>
     </div>
-  </section>
-
-  <script is:inline>
-    (function() {
-      const btn = document.getElementById('copy-bibtex');
-      if (!btn) return;
-      btn.addEventListener('click', function() {
-        const content = document.getElementById('bibtex-content').innerText;
-        const textArea = document.createElement('textarea');
-        textArea.value = content;
-        textArea.style.position = 'fixed';
-        textArea.style.left = '-9999px';
-        textArea.style.top = '0';
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        try {
-          const successful = document.execCommand('copy');
-          if (successful) {
-            const icon = btn.querySelector('i');
-            const text = btn.querySelector('span');
-            icon.className = 'fas fa-check mr-1';
-            text.innerText = 'Copied!';
-            setTimeout(function() {
-              icon.className = 'fas fa-copy mr-1';
-              text.innerText = 'Copy';
-            }, 2000);
-          }
-        } catch (err) {}
-        document.body.removeChild(textArea);
-      });
-    })();
-  </script>
+  </Section>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js" is:inline></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js" is:inline></script>
   <script is:inline>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener('astro:page-load', function () {
       if (typeof renderMathInElement !== 'undefined') {
         renderMathInElement(document.body, {
           delimiters: [
-            { left: "$$", right: "$$", display: true },
-            { left: "$", right: "$", display: false }
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false },
           ],
-          throwOnError: false
+          throwOnError: false,
         });
       }
     });
