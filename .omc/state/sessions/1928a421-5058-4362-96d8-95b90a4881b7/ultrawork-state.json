@@ -1,0 +1,9 @@
+{
+  "active": true,
+  "started_at": "2026-04-15T10:25:39.991Z",
+  "original_prompt": "加上下面这些东西：\n/Users/myk/Repo/mykcs/gdkvm\n\n  当前分支是 astro-migrate，main 分支保持可工作的静态 HTML 版本。main 分支备份一份，然后直接在 main 上改\n启动ultrawork\n在每个 Phase 完成后不要暂停，直接确认\n\n然后给我完整的计划",
+  "session_id": "1928a421-5058-4362-96d8-95b90a4881b7",
+  "project_path": "/Users/myk/Repo/mykcs/gdkvm",
+  "reinforcement_count": 0,
+  "last_checked_at": "2026-04-15T10:25:39.992Z"
+}
