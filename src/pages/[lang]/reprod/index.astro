@@ -1,0 +1,371 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { t } from '../../../i18n';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'en' } }, { params: { lang: 'zh' } }];
+}
+
+const { lang } = Astro.params;
+const homeUrl = getRelativeLocaleUrl(lang, '/');
+---
+
+<Layout title={t(lang, 'reprod.title')} showFooter={false}>
+  <!-- Hero -->
+  <section class="bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 mb-8">
+    <div class="max-w-5xl mx-auto px-4 py-12 text-center">
+      <h1 class="text-4xl font-bold font-[Google_Sans] mb-4">
+        {t(lang, 'reprod.pageTitle')}
+      </h1>
+      <p class="text-xl text-gray-600 dark:text-gray-300 mt-2">
+        {t(lang, 'reprod.subtitle')}
+      </p>
+      <div class="mt-6">
+        <a href={homeUrl} class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-800 text-white hover:-translate-y-0.5 hover:shadow-lg transition">
+          <i class="fas fa-arrow-left"></i>
+          <span>{t(lang, 'reprod.backHome')}</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="px-4 pb-12">
+    <div class="max-w-5xl mx-auto fade-in">
+      <!-- 1. Environment Setup -->
+      <h2 class="text-2xl font-semibold mt-10 mb-6 pb-2 border-b-2 border-gray-100 dark:border-gray-700 font-[Google_Sans]" id="environment">
+        {t(lang, 'reprod.envTitle')}
+      </h2>
+
+      <h3 class="text-xl font-semibold mt-8 mb-4 text-gray-700 dark:text-gray-300">
+        {t(lang, 'reprod.cleanTitle')}
+      </h3>
+      <p class="mb-4">{t(lang, 'reprod.cleanP1')}</p>
+
+      <p class="mb-2">{t(lang, 'reprod.cleanConda')}</p>
+      <div class="relative mb-4">
+        <button class="copy-btn absolute top-2 right-2 z-10 bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs" onclick="copyCode(this)">
+          <i class="fas fa-copy mr-1"></i><span>Copy</span>
+        </button>
+        <pre class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-bash">conda deactivate</code></pre>
+      </div>
+
+      <p class="mb-2">{t(lang, 'reprod.cleanVenv')}</p>
+      <div class="relative mb-4">
+        <button class="copy-btn absolute top-2 right-2 z-10 bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs" onclick="copyCode(this)">
+          <i class="fas fa-copy mr-1"></i><span>Copy</span>
+        </button>
+        <pre class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-bash">deactivate</code></pre>
+      </div>
+
+      <p class="text-xs text-gray-500 dark:text-gray-400 mt-2 mb-6">{t(lang, 'reprod.cleanNote')}</p>
+
+      <h3 class="text-xl font-semibold mt-8 mb-4 text-gray-700 dark:text-gray-300">
+        {t(lang, 'reprod.installUvTitle')}
+      </h3>
+      <p class="mb-4">{t(lang, 'reprod.installUvDesc')}</p>
+
+      <p class="mb-2">{t(lang, 'reprod.installUvNoNet')}</p>
+      <div class="relative mb-4">
+        <button class="copy-btn absolute top-2 right-2 z-10 bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs" onclick="copyCode(this)">
+          <i class="fas fa-copy mr-1"></i><span>Copy</span>
+        </button>
+        <pre class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-bash">pip install uv</code></pre>
+      </div>
+
+      <p class="mb-2">{t(lang, 'reprod.installUvUpgrade')}</p>
+      <div class="relative mb-4">
+        <button class="copy-btn absolute top-2 right-2 z-10 bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs" onclick="copyCode(this)">
+          <i class="fas fa-copy mr-1"></i><span>Copy</span>
+        </button>
+        <pre class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-bash">pip install --upgrade uv</code></pre>
+      </div>
+
+      <p class="mb-2">{t(lang, 'reprod.installUvVerify')}</p>
+      <div class="relative mb-4">
+        <button class="copy-btn absolute top-2 right-2 z-10 bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs" onclick="copyCode(this)">
+          <i class="fas fa-copy mr-1"></i><span>Copy</span>
+        </button>
+        <pre class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-bash">uv -V</code></pre>
+      </div>
+      <p class="text-xs text-gray-500 dark:text-gray-400 mb-6">{t(lang, 'reprod.installUvBaseline')}</p>
+
+      <h3 class="text-xl font-semibold mt-8 mb-4 text-gray-700 dark:text-gray-300">
+        {t(lang, 'reprod.getCodeTitle')}
+      </h3>
+      <p class="mb-4">{t(lang, 'reprod.getCodeDesc')}</p>
+      <div class="relative mb-4">
+        <button class="copy-btn absolute top-2 right-2 z-10 bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs" onclick="copyCode(this)">
+          <i class="fas fa-copy mr-1"></i><span>Copy</span>
+        </button>
+        <pre class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-bash">git clone https://github.com/wangrui2025/GDKVM.git gdkvm_20251215</code></pre>
+      </div>
+
+      <p class="mb-2">{t(lang, 'reprod.getCodeEnter')}</p>
+      <div class="relative mb-4">
+        <button class="copy-btn absolute top-2 right-2 z-10 bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs" onclick="copyCode(this)">
+          <i class="fas fa-copy mr-1"></i><span>Copy</span>
+        </button>
+        <pre class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-bash">cd gdkvm_20251215</code></pre>
+      </div>
+
+      <p class="mb-2">{t(lang, 'reprod.getCodeStructure')}</p>
+      <div class="relative mb-6">
+        <pre class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-bash">.
+├── .python-version    # {lang === 'zh' ? '指定项目使用的 Python 版本' : 'Specifies the Python version'}
+├── pyproject.toml     # {lang === 'zh' ? '项目的主配置文件' : 'Main project configuration file'}
+├── uv.lock            # {lang === 'zh' ? '锁定文件 (确保环境一致性)' : 'Lock file (Ensures consistency)'}
+└── ...                # {lang === 'zh' ? '其他项目源代码文件' : 'Other source code files'}</code></pre>
+      </div>
+
+      <h3 class="text-xl font-semibold mt-8 mb-4 text-gray-700 dark:text-gray-300">
+        {t(lang, 'reprod.initTitle')}
+      </h3>
+      <p class="mb-4">{t(lang, 'reprod.initDesc')}</p>
+      <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">{t(lang, 'reprod.initNote')}</p>
+
+      <div class="relative mb-4">
+        <button class="copy-btn absolute top-2 right-2 z-10 bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs" onclick="copyCode(this)">
+          <i class="fas fa-copy mr-1"></i><span>Copy</span>
+        </button>
+        <pre class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-bash">uv sync</code></pre>
+      </div>
+
+      <!-- Troubleshooting box -->
+      <div class="advanced-box">
+        <div class="font-bold text-yellow-800 dark:text-yellow-200 mb-3 flex items-center">
+          <i class="fas fa-tools mr-2"></i>
+          {t(lang, 'reprod.installUvDesc').replace('uv ', 'Troubleshooting: Python Installation in Intranet')}
+        </div>
+        <p class="mb-4 text-sm">
+          <strong>{lang === 'zh' ? '场景：' : 'Scenario:'}</strong> {lang === 'zh' ? '若执行 uv sync 时报错（如 SSL 错误、连接超时），通常系网络策略限制导致 uv 无法自动下载 Python 解释器。' : 'If uv sync fails (e.g., SSL errors, timeouts), it is usually due to network policies preventing uv from automatically downloading the Python interpreter.'}
+        </p>
+        <p class="mb-4 text-sm">
+          <strong>{lang === 'zh' ? '解决方案：' : 'Solution:'}</strong> {lang === 'zh' ? '通过镜像源手动安装 Python。' : 'Manually install Python via a mirror source.'}
+        </p>
+        <p class="mb-2 text-sm">{lang === 'zh' ? '查看可用版本：' : 'Check available versions:'}</p>
+        <div class="relative mb-4">
+          <button class="copy-btn absolute top-2 right-2 z-10 bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs" onclick="copyCode(this)">
+            <i class="fas fa-copy mr-1"></i><span>Copy</span>
+          </button>
+          <pre class="bg-white/50 dark:bg-gray-800/50 rounded p-3 text-sm"><code class="language-bash">uv python list</code></pre>
+        </div>
+        <p class="mb-2 text-sm">{lang === 'zh' ? '通过镜像源安装（以 3.12.12 为例）：' : 'Install via mirror (e.g., 3.12.12):'}</p>
+        <div class="relative mb-4">
+          <button class="copy-btn absolute top-2 right-2 z-10 bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs" onclick="copyCode(this)">
+            <i class="fas fa-copy mr-1"></i><span>Copy</span>
+          </button>
+          <pre class="bg-white/50 dark:bg-gray-800/50 rounded p-3 text-sm"><code class="language-bash">uv python install 3.12.12 --mirror https://github-proxy.lixxing.top/https://github.com/astral-sh/python-build-standalone/releases/download</code></pre>
+        </div>
+        <p class="text-sm">{t(lang, 'reprod.installUvUpgrade').replace('或更新至最新版', '安装成功后，再次运行 uv sync。').replace('Or update to the latest version:', 'After successful installation, run uv sync again.')}</p>
+      </div>
+
+      <!-- Compatibility details -->
+      <details class="compatibility-box">
+        <summary class="compatibility-header">
+          <span><i class="fas fa-exclamation-triangle mr-2"></i> {t(lang, 'reprod.versionConstraints')}</span>
+          <span class="icon"><i class="fas fa-chevron-down"></i></span>
+        </summary>
+        <div class="compatibility-content">
+          <ol class="list-decimal pl-5 space-y-4 text-sm">
+            <li>
+              <strong>Pydantic {lang === 'zh' ? '版本冲突' : 'Version Conflict'} &lt;2.12</strong>
+              <div class="mt-1 pl-1 text-xs">
+                <p class="mb-1"><strong><i class="fas fa-bug text-red-500 w-4"></i> {lang === 'zh' ? '现象：' : 'Issue:'}</strong> {lang === 'zh' ? 'Pydantic 2.12+ (2025-10) 的严格 Schema 校验与 wandb 字段声明冲突，多进程下可能导致崩溃。' : 'Pydantic 2.12+ (2025-10) strict Schema validation conflicts with wandb field declarations, potentially causing crashes in multi-process modes.'}</p>
+                <p><strong><i class="fas fa-check-circle text-green-500 w-4"></i> {lang === 'zh' ? '解决：' : 'Solution:'}</strong> {lang === 'zh' ? '配置文件已强制锁定 pydantic&lt;2.12。' : 'The configuration file forcefully locks pydantic&lt;2.12.'}</p>
+              </div>
+            </li>
+            <li>
+              <strong>Wandb {lang === 'zh' ? '系统兼容性 (glibc)' : 'System Compatibility (glibc)'}</strong>
+              <div class="mt-1 pl-1 text-xs">
+                <p class="mb-1"><strong><i class="fas fa-bug text-red-500 w-4"></i> {lang === 'zh' ? '现象：' : 'Issue:'}</strong> {lang === 'zh' ? 'wandb>=0.22.2 停止提供针对 Ubuntu 18.04 (glibc 2.27) 的预编译包，导致安装失败。' : 'wandb>=0.22.2 stopped providing pre-built packages for Ubuntu 18.04 (glibc 2.27), causing installation failures.'}</p>
+                <p><strong><i class="fas fa-check-circle text-green-500 w-4"></i> {lang === 'zh' ? '解决：' : 'Solution:'}</strong> {lang === 'zh' ? '需确保系统安装了 Go 编译器以支持源码编译，或升级操作系统。' : 'Ensure a Go compiler is installed for source compilation, or upgrade the OS.'}</p>
+              </div>
+            </li>
+            <li>
+              <strong>SSL/TLS {lang === 'zh' ? '证书错误 (内网/代理环境)' : 'Certificate Errors'}</strong>
+              <div class="mt-1 pl-1 text-xs">
+                <p class="mb-1"><strong><i class="fas fa-bug text-red-500 w-4"></i> {lang === 'zh' ? '现象：' : 'Issue:'}</strong> {lang === 'zh' ? '运行 uv add/sync 时报错（Certificate Expired），因内网防火墙/代理的自签名证书不被 uv 默认的 Rust TLS 信任。' : 'uv add/sync fails (Certificate Expired) because self-signed certificates in intranet/proxy environments are not trusted by uv\'s default Rust TLS.'}</p>
+                <p class="mb-2"><strong><i class="fas fa-check-circle text-green-500 w-4"></i> {lang === 'zh' ? '解决方案：' : 'Solution:'}</strong> {lang === 'zh' ? '切换为系统原生 TLS 验证。' : 'Switch to system-native TLS validation.'}</p>
+                <div class="mb-2">
+                  <span class="inline-block bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs px-2 py-0.5 rounded mb-1">{lang === 'zh' ? '方案 A (临时单次)' : 'Option A (Temporary)'}</span>
+                  <div class="relative">
+                    <button class="copy-btn absolute top-1 right-1 z-10 bg-white dark:bg-gray-700 rounded px-2 py-0.5 text-xs" onclick="copyCode(this)" style="height:24px;font-size:0.7rem;"><i class="fas fa-copy mr-1"></i><span>Copy</span></button>
+                    <pre class="bg-white/50 dark:bg-gray-800/50 rounded p-2 text-sm"><code class="language-bash">uv add wandb --native-tls</code></pre>
+                  </div>
+                </div>
+                <div>
+                  <span class="inline-block bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs px-2 py-0.5 rounded mb-1">{lang === 'zh' ? '方案 B (永久推荐)' : 'Option B (Recommended)'}</span>
+                  <div class="relative">
+                    <button class="copy-btn absolute top-1 right-1 z-10 bg-white dark:bg-gray-700 rounded px-2 py-0.5 text-xs" onclick="copyCode(this)" style="height:24px;font-size:0.7rem;"><i class="fas fa-copy mr-1"></i><span>Copy</span></button>
+                    <pre class="bg-white/50 dark:bg-gray-800/50 rounded p-2 text-sm"><code class="language-bash">export UV_NATIVE_TLS=1</code></pre>
+                  </div>
+                  <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">* {lang === 'zh' ? '建议将此命令添加到 ~/.bashrc 或 ~/.zshrc' : 'Recommended to add this to ~/.bashrc or ~/.zshrc'}</p>
+                </div>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </details>
+
+      <h3 class="text-xl font-semibold mt-8 mb-4 text-gray-700 dark:text-gray-300">
+        {t(lang, 'reprod.activateTitle')}
+      </h3>
+      <div class="relative mb-4">
+        <button class="copy-btn absolute top-2 right-2 z-10 bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs" onclick="copyCode(this)">
+          <i class="fas fa-copy mr-1"></i><span>Copy</span>
+        </button>
+        <pre class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-bash">source .venv/bin/activate</code></pre>
+      </div>
+      <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">{t(lang, 'reprod.activateNote')}</p>
+      <p class="mb-2">{t(lang, 'reprod.activateVerify')}</p>
+      <div class="relative mb-4">
+        <button class="copy-btn absolute top-2 right-2 z-10 bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs" onclick="copyCode(this)">
+          <i class="fas fa-copy mr-1"></i><span>Copy</span>
+        </button>
+        <pre class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-bash">which python</code></pre>
+      </div>
+      <p class="text-xs text-gray-500 dark:text-gray-400 mb-6">{t(lang, 'reprod.activateExample')}<br><code>/data/Anon/Repo/gdkvm_20251215/.venv/bin/python</code></p>
+
+      <!-- 2. Data Preparation -->
+      <h2 class="text-2xl font-semibold mt-10 mb-6 pb-2 border-b-2 border-gray-100 dark:border-gray-700 font-[Google_Sans]" id="data">
+        {t(lang, 'reprod.dataTitle')}
+      </h2>
+      <p class="mb-4">{t(lang, 'reprod.dataDesc')}</p>
+
+      <h3 class="text-xl font-semibold mt-6 mb-4 text-gray-700 dark:text-gray-300">{t(lang, 'reprod.datasetDownload')}</h3>
+      <div class="compact-card">
+        <div class="mb-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+          <span class="font-bold text-blue-700 dark:text-blue-400"><i class="fas fa-database mr-1"></i> {t(lang, 'reprod.processedData')}:</span>
+          <span class="whitespace-nowrap"><strong>CAMUS</strong> <a href="https://huggingface.co/datasets/miyuki17/camus_png256x256_10f_20250709" target="_blank" class="link-tag">HuggingFace <i class="fas fa-external-link-alt"></i></a></span>
+          <span class="whitespace-nowrap"><strong>EchoNet-Dynamic</strong> <a href="https://huggingface.co/datasets/miyuki17/EchoNet-Dynamic" target="_blank" class="link-tag">todo</a></span>
+        </div>
+        <div class="pt-3 border-t border-dashed border-gray-200 dark:border-gray-600 text-xs text-gray-500 flex flex-wrap items-center gap-x-4 gap-y-2">
+          <span class="font-bold"><i class="fas fa-archive mr-1"></i> {t(lang, 'reprod.rawData')}:</span>
+          <span class="whitespace-nowrap"><strong>CAMUS</strong> <a href="https://www.creatis.insa-lyon.fr/Challenge/camus/" target="_blank" class="link-subtle">{lang === 'zh' ? '官方网站' : 'Official'}</a> <a href="https://huggingface.co/datasets/miyuki17/CAMUS_public" target="_blank" class="link-subtle">HuggingFace {lang === 'zh' ? '镜像' : 'Mirror'}</a></span>
+          <span class="whitespace-nowrap"><strong>EchoNet-Dynamic</strong> <a href="https://echonet.github.io/dynamic/" target="_blank" class="link-subtle">{lang === 'zh' ? '官方网站' : 'Official'}</a> <a href="https://huggingface.co/datasets/miyuki17/EchoNet-Dynamic-zip" target="_blank" class="link-subtle">{lang === 'zh' ? '镜像' : 'Mirror'}</a></span>
+        </div>
+      </div>
+
+      <!-- 3. Training & Evaluation -->
+      <h2 class="text-2xl font-semibold mt-10 mb-6 pb-2 border-b-2 border-gray-100 dark:border-gray-700 font-[Google_Sans]" id="training">
+        {t(lang, 'reprod.trainingTitle')}
+      </h2>
+
+      <h3 class="text-xl font-semibold mt-6 mb-4 text-gray-700 dark:text-gray-300">{t(lang, 'reprod.trainingModelTitle')}</h3>
+
+      <p class="mb-2 font-semibold">{t(lang, 'reprod.trainingConfig')}</p>
+      <p class="mb-4">{t(lang, 'reprod.trainingConfigDesc')}</p>
+      <div class="relative mb-6">
+        <button class="copy-btn absolute top-2 right-2 z-10 bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs" onclick="copyCode(this)">
+          <i class="fas fa-copy mr-1"></i><span>Copy</span>
+        </button>
+        <pre class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-bash">CUDA_VISIBLE_DEVICES: 0,1 # {lang === 'zh' ? '指定使用的 GPU 设备编号' : 'Specify GPU device IDs'}
+MASTER_PORT: 29500        # {lang === 'zh' ? '分布式训练的主端口号，避免冲突' : 'Port for distributed training'}</code></pre>
+      </div>
+
+      <p class="mb-2 font-semibold">{t(lang, 'reprod.trainingHyper')}</p>
+      <p class="mb-4">{t(lang, 'reprod.trainingHyperDesc')}</p>
+      <div class="relative mb-6">
+        <button class="copy-btn absolute top-2 right-2 z-10 bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs" onclick="copyCode(this)">
+          <i class="fas fa-copy mr-1"></i><span>Copy</span>
+        </button>
+        <pre class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-yaml">data_path: /data/Anon/dataset/camus_png256x256_10f_20250709/   # {lang === 'zh' ? '数据集的实际存放路径' : 'Dataset path'}
+batch_size: 8                                                  # {lang === 'zh' ? '单次训练的样本数量' : 'Batch size'}
+learning_rate: 1.0e-4                                          # {lang === 'zh' ? '学习率' : 'Learning rate'}
+num_iterations: 3000                                           # {lang === 'zh' ? '总迭代次数' : 'Total iterations'}
+eval_stage:
+  num_vis: 0                                                   # {lang === 'zh' ? '可视化图片的数量' : 'Visualization count'}
+  wandb_mode: "offline"                                        # {lang === 'zh' ? '设置为 "offline"' : 'Set to "offline"'}</code></pre>
+      </div>
+
+      <p class="mb-2 font-semibold">{t(lang, 'reprod.trainingExec')}</p>
+      <p class="mb-2">{t(lang, 'reprod.trainingExecPerm')}</p>
+      <div class="relative mb-4">
+        <button class="copy-btn absolute top-2 right-2 z-10 bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs" onclick="copyCode(this)">
+          <i class="fas fa-copy mr-1"></i><span>Copy</span>
+        </button>
+        <pre class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-bash">chmod +x ./train.sh</code></pre>
+      </div>
+      <p class="mb-2">{t(lang, 'reprod.trainingExecStart')}</p>
+      <div class="relative mb-6">
+        <button class="copy-btn absolute top-2 right-2 z-10 bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs" onclick="copyCode(this)">
+          <i class="fas fa-copy mr-1"></i><span>Copy</span>
+        </button>
+        <pre class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-bash">./train.sh</code></pre>
+      </div>
+
+      <h3 class="text-xl font-semibold mt-6 mb-4 text-gray-700 dark:text-gray-300">{t(lang, 'reprod.outputsTitle')}</h3>
+      <p class="mb-4">{t(lang, 'reprod.outputsDesc')}</p>
+      <pre class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm mb-6"><code>gdkvm_20251215/outputs</code></pre>
+
+      <h3 class="text-xl font-semibold mt-6 mb-4 text-gray-700 dark:text-gray-300">{t(lang, 'reprod.wandbTitle')}</h3>
+      <p class="mb-4">{t(lang, 'reprod.wandbDesc')}</p>
+      <ul class="list-disc pl-5 mb-4 space-y-1">
+        <li><strong>{t(lang, 'reprod.wandbLogPath')}</strong> <code>gdkvm_20251215/wandb</code></li>
+        <li><strong>{t(lang, 'reprod.wandbRunDir')}</strong> {lang === 'zh' ? '包含时间戳与哈希值的子文件夹（例如：offline-run-20251215_123456-abcdef1gh）。' : 'Subfolders with timestamps and hashes (e.g., offline-run-20251215_123456-abcdef1gh).'}</li>
+      </ul>
+      <p class="mb-2 font-semibold">{t(lang, 'reprod.wandbUpload')}</p>
+      <p class="mb-4">{t(lang, 'reprod.wandbUploadDesc')}</p>
+      <div class="relative mb-6">
+        <button class="copy-btn absolute top-2 right-2 z-10 bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs" onclick="copyCode(this)">
+          <i class="fas fa-copy mr-1"></i><span>Copy</span>
+        </button>
+        <pre class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-bash">wandb sync gdkvm_20251215/wandb/offline-run-20251215_123456-abcdef1gh</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <footer class="py-8 bg-gray-50 dark:bg-gray-800 mt-8">
+    <div class="max-w-5xl mx-auto px-4 text-center">
+      <p class="text-xs text-gray-500 dark:text-gray-400">{t(lang, 'reprod.footerNote')}</p>
+    </div>
+  </footer>
+
+  <script is:inline>
+    function copyCode(btn) {
+      const container = btn.closest('.relative');
+      if (!container) return;
+      const pre = container.querySelector('pre');
+      const code = pre.querySelector('code');
+      const text = code.innerText;
+
+      const showSuccess = () => {
+        const icon = btn.querySelector('i');
+        const textSpan = btn.querySelector('span');
+        const originalText = textSpan.innerText;
+        icon.className = 'fas fa-check mr-1';
+        textSpan.innerText = 'Copied';
+        btn.classList.remove('is-light');
+        btn.classList.add('is-success');
+        setTimeout(() => {
+          icon.className = 'fas fa-copy mr-1';
+          textSpan.innerText = originalText;
+          btn.classList.remove('is-success');
+          btn.classList.add('is-light');
+        }, 2000);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(showSuccess).catch(() => fallbackCopy(text));
+      } else {
+        fallbackCopy(text);
+      }
+
+      function fallbackCopy(text) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        textarea.style.top = '0';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        try {
+          if (document.execCommand('copy')) showSuccess();
+        } catch (err) {}
+        document.body.removeChild(textarea);
+      }
+    }
+  </script>
+</Layout>

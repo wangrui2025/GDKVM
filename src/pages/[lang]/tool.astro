@@ -1,0 +1,75 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { t } from '../../i18n';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'en' } }, { params: { lang: 'zh' } }];
+}
+
+const { lang } = Astro.params;
+---
+
+<Layout title={t(lang, 'tool.title')} showFooter={false}>
+  <link rel="stylesheet" href={`${import.meta.env.BASE_URL}/assets/css/toolstyle.css`} />
+
+  <div class="tab-container">
+    <nav class="tab-nav">
+      <button class="tab-button active" data-tab="tab1">{t(lang, 'tool.tab1')}</button>
+      <button class="tab-button" data-tab="tab2">{t(lang, 'tool.tab2')}</button>
+    </nav>
+
+    <div class="tab-content">
+      <div id="tab1" class="tab-pane active">
+        <form id="modelForm">
+          <div class="select-item">
+            <label for="modelSize">{t(lang, 'tool.modelSize')}</label>
+            <input type="text" id="modelSize" placeholder="e.g.1000000 or 1e6" required>
+          </div>
+          <div class="select-item">
+            <label for="trainingTokens">{t(lang, 'tool.trainingTokens')}</label>
+            <input type="text" id="trainingTokens" placeholder="e.g.5000000 or 5e6" required>
+          </div>
+          <button type="submit">{t(lang, 'tool.calculate')}</button>
+        </form>
+
+        <div id="result">
+          <h3>{t(lang, 'tool.results')}</h3>
+          <p id="bsValue">{t(lang, 'tool.optimalBs')}</p>
+          <p id="lrValue">{t(lang, 'tool.lr')}</p>
+        </div>
+      </div>
+
+      <div id="tab2" class="tab-pane">
+        <div class="configurator">
+          <div class="selector-group" id="selectorGroup">
+            <div class="select-item">
+              <label>{t(lang, 'tool.modelType')}</label>
+              <select id="modelType" class="styled-select">
+                <option value="Moe">{t(lang, 'tool.moe')}</option>
+                <option value="Dense">{t(lang, 'tool.dense')}</option>
+              </select>
+            </div>
+            <div class="select-item">
+              <label>{t(lang, 'tool.modelSize')}</label>
+              <select id="nValue" class="styled-select"></select>
+            </div>
+            <div class="select-item" id="naItem" style="display: none;">
+              <label>{t(lang, 'tool.na')}</label>
+              <select id="naValue" class="styled-select"></select>
+            </div>
+            <div class="select-item">
+              <label>{t(lang, 'tool.trainingTokens')}</label>
+              <select id="dValue" class="styled-select"></select>
+            </div>
+          </div>
+          <button id="generateBtn" class="visualize-btn">{t(lang, 'tool.show')}</button>
+          <div id="visualization" class="visualization-container">
+            <div class="placeholder-graph">{t(lang, 'tool.placeholder')}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src={`${import.meta.env.BASE_URL}/assets/js/tool.js`} is:inline></script>
+</Layout>

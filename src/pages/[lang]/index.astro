@@ -1,0 +1,215 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { t } from '../../i18n';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'en' } }, { params: { lang: 'zh' } }];
+}
+
+const { lang } = Astro.params;
+---
+
+<Layout title={t(lang, 'home.title')} description={t(lang, 'home.description')}>
+  <!-- Hero -->
+  <section class="relative bg-gray-50 dark:bg-gray-800 pb-12 pt-8">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="text-center">
+        <!-- ICCV Logo -->
+        <div class="mb-6">
+          <img src={`${import.meta.env.BASE_URL}/assets/images/iccv2_logo/LogoColor.png`} alt="ICCV Logo" class="h-14 w-auto mx-auto lg:absolute lg:top-8 lg:left-8 lg:mx-0">
+        </div>
+
+        <h1 class="publication-title mt-4">
+          <span class="highlight-title">{t(lang, 'home.publicationTitle')}</span>
+        </h1>
+
+        <div class="text-lg mt-6">
+          <span class="mx-1">Rui Wang<sup>1</sup>,</span>
+          <span class="mx-1">Yimu Sun<sup>1</sup>,</span>
+          <span class="mx-1">Jingxing Guo<sup>1</sup>,</span>
+          <span class="mx-1">Huisi Wu<sup>1,*</sup>,</span>
+          <span class="mx-1">Jing Qin<sup>2</sup></span>
+        </div>
+
+        <div class="text-sm mt-3 text-gray-500 dark:text-gray-400">
+          <div><sup>1</sup>{t(lang, 'home.affiliation1')}</div>
+          <div><sup>2</sup>{t(lang, 'home.affiliation2')}</div>
+          <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">{t(lang, 'home.email')}</div>
+        </div>
+
+        <div class="flex flex-wrap justify-center gap-3 mt-8">
+          <a href="https://arxiv.org/abs/2512.10252" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-800 text-white hover:-translate-y-0.5 hover:shadow-lg transition">
+            <i class="ai ai-arxiv"></i>
+            <span>{t(lang, 'home.arxiv')}</span>
+          </a>
+          <a href="https://github.com/wangrui2025/GDKVM" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-800 text-white hover:-translate-y-0.5 hover:shadow-lg transition">
+            <i class="fab fa-github"></i>
+            <span>{t(lang, 'home.code')}</span>
+          </a>
+          <a href={`${import.meta.env.BASE_URL}/${lang}/reprod/`} class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-800 text-white hover:-translate-y-0.5 hover:shadow-lg transition">
+            <i class="fas fa-cogs"></i>
+            <span>{t(lang, 'home.reproduction')}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture Figure -->
+  <section class="py-12 px-4">
+    <div class="max-w-5xl mx-auto">
+      <div class="p-2">
+        <img src={`${import.meta.env.BASE_URL}/paper/fig/Met/gdkvm.png`} alt="GDKVM Architecture" class="w-full rounded">
+      </div>
+      <figcaption class="text-sm text-gray-600 dark:text-gray-400 text-justify mt-4 leading-relaxed">
+        <strong>Figure 1.</strong> {t(lang, 'home.fig1Caption')}
+      </figcaption>
+    </div>
+  </section>
+
+  <!-- Abstract -->
+  <section class="py-12 px-4">
+    <div class="max-w-5xl mx-auto">
+      <div class="abstract-box">
+        <h2 class="text-3xl font-semibold text-center mb-6 font-[Google_Sans]">{t(lang, 'home.abstractTitle')}</h2>
+        <div class="text-justify fade-in space-y-4">
+          <p>{t(lang, 'home.abstractP1')}</p>
+          <p>{t(lang, 'home.abstractP2')}</p>
+          <p set:html={t(lang, 'home.abstractP3')}></p>
+          <p>{t(lang, 'home.abstractP4')}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Challenges -->
+  <section class="py-12 px-4">
+    <div class="max-w-5xl mx-auto">
+      <h3 class="text-2xl font-semibold text-center mb-6 font-[Google_Sans]">{t(lang, 'home.challengesTitle')}</h3>
+      <div class="text-center mb-6">
+        <p>{t(lang, 'home.challengesDesc')}</p>
+      </div>
+
+      <div class="flex flex-wrap justify-center">
+        {[
+          { src: 'paper/fig/challenge/cha_1.jpg', alt: 'Noise', cap: '(a)' },
+          { src: 'paper/fig/challenge/cha_2.jpg', alt: 'Blur', cap: '(b)' },
+          { src: 'paper/fig/challenge/cha_3.jpg', alt: 'Shape', cap: '(c)' },
+          { src: 'paper/fig/challenge/cha_4.jpg', alt: 'Scale', cap: '(d)' },
+          { src: 'paper/fig/challenge/cha_5.jpg', alt: 'Cycle', cap: '(e)' },
+          { src: 'paper/fig/challenge/cha_6.jpg', alt: 'Dropout', cap: '(f)' },
+        ].map(({ src, alt, cap }) => (
+          <div class="w-1/2 md:w-1/4 lg:w-1/6 p-2">
+            <div class="challenge-card">
+              <img src={`${import.meta.env.BASE_URL}/${src}`} alt={alt} />
+              <div class="challenge-caption text-center">{cap}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-6">
+        <p class="text-sm text-gray-600 dark:text-gray-400 text-justify">
+          <strong>Figure 2.</strong> {t(lang, 'home.fig2Caption')}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BibTeX -->
+  <section class="py-12 px-4" id="BibTeX">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-3xl font-semibold text-center mb-6 font-[Google_Sans]">{t(lang, 'home.bibtexTitle')}</h2>
+      <div class="relative">
+        <button id="copy-bibtex" class="copy-btn absolute top-2 right-2 z-10 bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs">
+          <i class="fas fa-copy mr-1"></i>
+          <span>{t(lang, 'home.copy')}</span>
+        </button>
+        <pre class="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 text-sm overflow-x-auto" is:raw><code id="bibtex-content">@InProceedings{Wang_ICCV25_GDKVM,
+    author    = {Wang, Rui and Sun, Yimu and Guo, Jingxing and Wu, Huisi and Qin, Jing},
+    title     = {{GDKVM}: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule},
+    booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+    month     = {October},
+    year      = {2025},
+    pages     = {12191-12200}
+}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Additional Resources -->
+  <section class="py-12 px-4 pb-8">
+    <div class="max-w-5xl mx-auto text-center">
+      <h2 class="text-3xl font-semibold mb-6 font-[Google_Sans]">{t(lang, 'home.resourcesTitle')}</h2>
+      <div class="flex flex-wrap justify-center gap-3">
+        <a href="https://openaccess.thecvf.com/content/ICCV2025/html/Wang_GDKVM_Echocardiography_Video_Segmentation_via_Spatiotemporal_Key-Value_Memory_with_Gated_ICCV_2025_paper.html" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-800 text-white hover:-translate-y-0.5 hover:shadow-lg transition">
+          <i class="fas fa-file-pdf"></i>
+          <span>{t(lang, 'home.cvfPaper')}</span>
+        </a>
+        <a href="https://iccv.thecvf.com/media/PosterPDFs/ICCV%202025/2134.png?t=1759901950.5662367" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-800 text-white hover:-translate-y-0.5 hover:shadow-lg transition">
+          <i class="fas fa-image"></i>
+          <span>{t(lang, 'home.poster')}</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- To-Do List -->
+  <section class="py-8 px-4">
+    <div class="max-w-5xl mx-auto text-center">
+      <p class="mb-2 text-xs font-semibold uppercase tracking-widest text-gray-400">{t(lang, 'home.todoTitle')}</p>
+      <ul class="list-none text-sm text-gray-400 opacity-70">
+        <li class="mb-1"><i class="far fa-square mr-1"></i> {t(lang, 'home.todo1')}</li>
+        <li><i class="far fa-square mr-1"></i> {t(lang, 'home.todo2')}</li>
+      </ul>
+    </div>
+  </section>
+
+  <script is:inline>
+    (function() {
+      const btn = document.getElementById('copy-bibtex');
+      if (!btn) return;
+      btn.addEventListener('click', function() {
+        const content = document.getElementById('bibtex-content').innerText;
+        const textArea = document.createElement('textarea');
+        textArea.value = content;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-9999px';
+        textArea.style.top = '0';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+          const successful = document.execCommand('copy');
+          if (successful) {
+            const icon = btn.querySelector('i');
+            const text = btn.querySelector('span');
+            icon.className = 'fas fa-check mr-1';
+            text.innerText = 'Copied!';
+            setTimeout(function() {
+              icon.className = 'fas fa-copy mr-1';
+              text.innerText = 'Copy';
+            }, 2000);
+          }
+        } catch (err) {}
+        document.body.removeChild(textArea);
+      });
+    })();
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js" is:inline></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js" is:inline></script>
+  <script is:inline>
+    document.addEventListener("DOMContentLoaded", function() {
+      if (typeof renderMathInElement !== 'undefined') {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "$", right: "$", display: false }
+          ],
+          throwOnError: false
+        });
+      }
+    });
+  </script>
+</Layout>

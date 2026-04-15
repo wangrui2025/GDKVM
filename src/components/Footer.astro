@@ -1,0 +1,19 @@
+---
+const lang = Astro.currentLocale ?? 'en';
+---
+
+<footer class="py-8 bg-gray-50 dark:bg-gray-800 mt-8">
+  <div class="max-w-5xl mx-auto px-4 text-center">
+    <p class="text-sm text-gray-500 dark:text-gray-400">
+      {lang === 'zh' ? (
+        <>
+          项目页面模板源自 <a href="https://github.com/nerfies/nerfies.github.io" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">Nerfies</a>。本网站根据 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">CC BY-SA 4.0</a> 许可协议授权。
+        </>
+      ) : (
+        <>
+          Project page template from <a href="https://github.com/nerfies/nerfies.github.io" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">Nerfies</a>. Licensed under <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">CC BY-SA 4.0</a>.
+        </>
+      )}
+    </p>
+  </div>
+</footer>

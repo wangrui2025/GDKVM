@@ -1,0 +1,17 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+const currentLocale = Astro.currentLocale ?? 'en';
+const targetLocale = currentLocale === 'en' ? 'zh' : 'en';
+const currentPath = Astro.url.pathname.replace(/^\/GDKVM\/(en|zh)/, '').replace(/\/$/, '') || '/';
+const targetUrl = getRelativeLocaleUrl(targetLocale, currentPath);
+---
+
+<a
+  href={targetUrl}
+  class="flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-white rounded-full px-4 py-2 text-sm font-bold transition-colors shadow-md"
+  title="Switch Language"
+>
+  <img src={`${import.meta.env.BASE_URL}/assets/images/translate.svg`} alt="Translate" class="h-4 w-auto" />
+  <span>{targetLocale === 'zh' ? '中文' : 'EN'}</span>
+</a>
