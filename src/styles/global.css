@@ -28,6 +28,14 @@ a:hover {
   color: var(--color-primary-dark);
 }
 
+.dark a {
+  color: #58a6ff;
+}
+
+.dark a:hover {
+  color: #79b8ff;
+}
+
 /* Animations ---------------------------------------------------------------- */
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }

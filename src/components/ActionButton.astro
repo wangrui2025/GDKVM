@@ -13,7 +13,7 @@ const isExternal = target === '_blank' || href.startsWith('http');
   href={href}
   target={target}
   rel={isExternal ? 'noopener noreferrer' : undefined}
-  class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-800 text-white hover:-translate-y-0.5 hover:shadow-lg transition"
+  class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-800 text-white dark:bg-gray-200 dark:text-gray-900 hover:-translate-y-0.5 hover:shadow-lg transition"
 >
   {icon && <i class={icon}></i>}
   <slot />

@@ -395,3 +395,92 @@ input::placeholder {
   .generated-image {
     transition: opacity 0.3s ease;
   }
+
+/* Dark mode support --------------------------------------------------------- */
+.dark .tab-container {
+    background: #1f2937;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.dark .tab-nav {
+    border-bottom-color: #374151;
+}
+
+.dark .tab-button {
+    color: #9ca3af;
+}
+
+.dark .tab-button.active {
+    color: #58a6ff;
+}
+
+.dark .tab-button.active::after {
+    background: #58a6ff;
+}
+
+.dark input {
+    background-color: #111827;
+    color: #e5e7eb;
+    border-color: #4b5563;
+}
+
+.dark input::placeholder {
+    color: #6b7280;
+}
+
+.dark .select-item {
+    background: #1f2937;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.dark .styled-select {
+    background: #111827;
+    color: #e5e7eb;
+    border-color: #4b5563;
+}
+
+.dark .visualize-btn {
+    background: #3b82f6;
+}
+
+.dark .visualize-btn:hover {
+    background: #2563eb;
+}
+
+.dark .visualization-container {
+    background: #1f2937;
+}
+
+.dark .placeholder-graph {
+    background: #374151;
+}
+
+.dark .generated-graph {
+    background: #1f2937;
+}
+
+.dark .generated-image-container {
+    background: #1f2937;
+}
+
+.dark .image-loading {
+    color: #9ca3af;
+}
+
+.dark .loading-spinner {
+    border-color: rgba(156, 163, 175, 0.2);
+    border-top-color: #9ca3af;
+}
+
+.dark .image-error {
+    background: #451a03;
+    border-color: #7f1d1d;
+}
+
+.dark .error-message p {
+    color: #f87171;
+}
+
+.dark .error-message small {
+    color: #9ca3af;
+}
