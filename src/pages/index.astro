@@ -1,0 +1,8 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+export const prerender = true;
+
+const defaultLocaleUrl = getRelativeLocaleUrl('en', '/');
+return Astro.redirect(defaultLocaleUrl, 302);
+---
