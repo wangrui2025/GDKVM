@@ -1,2 +1,19 @@
 /Echo_128_20240214
 .DS_Store
+
+# Build output
+dist/
+
+# Dependencies
+node_modules/
+
+# Astro build cache
+.astro/
+
+# OS files
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~

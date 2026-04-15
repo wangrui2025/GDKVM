@@ -1,0 +1,102 @@
+---
+export interface Props {
+  title: string;
+  description?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  needsKatex?: boolean;
+}
+
+const {
+  title,
+  description = "GDKVM: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule",
+  ogTitle = "GDKVM (ICCV'25)",
+  ogDescription = "State-of-the-art Echocardiography Video Segmentation.",
+  needsKatex = false,
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content={description}>
+  <meta property="og:title" content={ogTitle}>
+  <meta property="og:description" content={ogDescription}>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  {needsKatex && (
+    <Fragment>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"/>
+      <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+      <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+    </Fragment>
+  )}
+
+  <script is:inline>
+    let savedLang = 'en';
+    try {
+      savedLang = localStorage.getItem('lang') || 'en';
+    } catch (e) {
+      console.warn('LocalStorage access denied:', e);
+    }
+    document.documentElement.className = 'lang-' + savedLang;
+  </script>
+</head>
+
+<body>
+  <slot />
+
+  <button id="lang-toggle" class="lang-btn" title="Switch Language">
+    <img src="/GDKVM/assets/images/translate.svg" alt="Translate" style="height: 1.2rem; width: auto;">
+  </button>
+
+  <script is:inline>
+    (function() {
+      const langBtn = document.getElementById('lang-toggle');
+      const htmlTag = document.documentElement;
+      if (!langBtn) return;
+
+      langBtn.addEventListener('click', () => {
+        const contents = document.querySelectorAll('.content');
+        contents.forEach(el => el.classList.remove('fade-in'));
+        void langBtn.offsetWidth;
+
+        if (htmlTag.classList.contains('lang-en')) {
+          htmlTag.classList.replace('lang-en', 'lang-zh');
+          try { localStorage.setItem('lang', 'zh'); } catch(e) {}
+        } else {
+          htmlTag.classList.replace('lang-zh', 'lang-en');
+          try { localStorage.setItem('lang', 'en'); } catch(e) {}
+        }
+
+        setTimeout(() => {
+          document.querySelectorAll('.content').forEach(el => el.classList.add('fade-in'));
+        }, 10);
+      });
+    })();
+  </script>
+
+  {needsKatex && (
+    <script is:inline>
+      document.addEventListener("DOMContentLoaded", function() {
+        if (typeof renderMathInElement !== 'undefined') {
+          renderMathInElement(document.body, {
+            delimiters: [
+              { left: "$$", right: "$$", display: true },
+              { left: "$", right: "$", display: false }
+            ],
+            throwOnError: false
+          });
+        }
+      });
+    </script>
+  )}
+</body>
+</html>
