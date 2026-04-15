@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"gh api repos/wangrui2025/GDKVM/actions/runs?per_page=3 --jq '.workflow_runs[:3] | .[] | \\\"\\\\(.name) - \\\\(.status) - \\\\(.conclusion // \\\"none\\\") - \\\\(.head_sha[0:7]) - \\\\(.created_at[0:10])...",
+  "error": "Exit code 1\n(eval):1: no matches found: repos/wangrui2025/GDKVM/actions/runs?per_page=3",
+  "timestamp": "2026-04-15T09:28:36.638Z",
+  "retry_count": 2
+}
