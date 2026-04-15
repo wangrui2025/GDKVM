@@ -23,6 +23,21 @@ const lang = Astro.currentLocale ?? 'en';
 <!DOCTYPE html>
 <html lang={lang}>
   <head>
+    <!-- FOUC prevention -->
+    <style is:inline>
+      html { opacity: 0; transition: opacity 0.1s ease-out; }
+      html.loaded { opacity: 1; }
+    </style>
+    <script is:inline>
+      (function () {
+        function show() { document.documentElement.classList.add('loaded'); }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', show);
+        } else {
+          show();
+        }
+      })();
+    </script>
     <meta charset="utf-8">
     <meta name="description" content={description}>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
