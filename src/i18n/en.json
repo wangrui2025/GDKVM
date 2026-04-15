@@ -46,6 +46,8 @@
     "installUvUpgrade": "Or update to the latest version:",
     "installUvVerify": "Verify installation:",
     "installUvBaseline": "Baseline version: Today's version 0.9.10.",
+    "troubleshootingTitle": "Troubleshooting: Python Installation in Intranet",
+    "troubleshootingAfterInstall": "After successful installation, run uv sync again.",
     "getCodeTitle": "2. Get Project Code",
     "getCodeDesc": "Clone the repository and specify the local directory name.",
     "getCodeEnter": "Enter the project directory:",

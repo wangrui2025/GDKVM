@@ -135,7 +135,7 @@ const homeUrl = getRelativeLocaleUrl(lang, '/');
       <div class="advanced-box">
         <div class="font-bold text-yellow-800 dark:text-yellow-200 mb-3 flex items-center">
           <i class="fas fa-tools mr-2"></i>
-          {t(lang, 'reprod.installUvDesc').replace('uv ', 'Troubleshooting: Python Installation in Intranet')}
+          {t(lang, 'reprod.troubleshootingTitle')}
         </div>
         <p class="mb-4 text-sm">
           <strong>{lang === 'zh' ? '场景：' : 'Scenario:'}</strong> {lang === 'zh' ? '若执行 uv sync 时报错（如 SSL 错误、连接超时），通常系网络策略限制导致 uv 无法自动下载 Python 解释器。' : 'If uv sync fails (e.g., SSL errors, timeouts), it is usually due to network policies preventing uv from automatically downloading the Python interpreter.'}
@@ -157,7 +157,7 @@ const homeUrl = getRelativeLocaleUrl(lang, '/');
           </button>
           <pre class="bg-white/50 dark:bg-gray-800/50 rounded p-3 text-sm"><code class="language-bash">uv python install 3.12.12 --mirror https://github-proxy.lixxing.top/https://github.com/astral-sh/python-build-standalone/releases/download</code></pre>
         </div>
-        <p class="text-sm">{t(lang, 'reprod.installUvUpgrade').replace('或更新至最新版', '安装成功后，再次运行 uv sync。').replace('Or update to the latest version:', 'After successful installation, run uv sync again.')}</p>
+        <p class="text-sm">{t(lang, 'reprod.troubleshootingAfterInstall')}</p>
       </div>
 
       <!-- Compatibility details -->

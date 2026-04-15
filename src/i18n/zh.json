@@ -46,6 +46,8 @@
     "installUvUpgrade": "或更新至最新版：",
     "installUvVerify": "验证安装：",
     "installUvBaseline": "基准版本：今天的版本 0.9.10。",
+    "troubleshootingTitle": "故障排除：内网/受限网络下的 Python 安装",
+    "troubleshootingAfterInstall": "安装成功后，再次运行 uv sync。",
     "getCodeTitle": "2. 获取项目代码",
     "getCodeDesc": "克隆代码仓库并指定本地目录名。",
     "getCodeEnter": "进入项目目录：",
