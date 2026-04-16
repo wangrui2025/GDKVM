@@ -85,6 +85,10 @@
     "wandbUploadDesc": "After training, sync offline data to WandB cloud:",
     "footerNote": "All references to \"today\" or \"now\" in this guide refer to December 15, 2025."
   },
+  "footer": {
+    "templateFrom": "Project page template from",
+    "licensedUnder": "Licensed under"
+  },
   "tool": {
     "title": "Predictable Scale",
     "tab1": "Step Law",

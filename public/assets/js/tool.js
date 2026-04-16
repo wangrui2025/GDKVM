@@ -249,73 +249,7 @@ function initVisualization() {
     });
   }
 
-//   // 初始化可视化功能 pdf
-//   function initVisualization() {
-//     const generateBtn = document.getElementById('generateBtn');
-//     const vizContainer = document.getElementById('visualization');
-  
-//     generateBtn.addEventListener('click', () => {
-//         // 获取参数值
-//         const modelType = document.getElementById('modelType').value;
-//         const nValue = document.getElementById('nValue').value;
-//         const dValue = document.getElementById('dValue').value;
-  
-//         // 清除旧内容
-//         vizContainer.innerHTML = '';
-  
-//         // 创建PDF容器
-//         const container = document.createElement('div');
-//         container.className = 'generated-pdf-container';
-      
-//         // 生成文件名（根据实际文件命名规则调整）
-//         let fileName;
-//         if (modelType === 'Dense') {
-//           fileName = `heatmap_N${nValue}_D${dValue}.pdf`;
-//         } else {
-//           const naValue = document.getElementById('naValue').value;
-//           fileName = `heatmap_N${nValue}_D${dValue}_Na${naValue}.pdf`;
-//         }
-//         // const fileName = `logo.png`
-//         const pdfPath = `./static/images/${fileName}`;
-  
-//         // 创建PDF展示元素
-//         const embed = document.createElement('embed');
-//         embed.className = 'generated-pdf';
-//         embed.setAttribute('src', pdfPath);
-//         embed.setAttribute('type', 'application/pdf');
-//         embed.setAttribute('width', '100%');
-//         embed.setAttribute('height', '100%');
-  
-//         // 错误处理
-//         const errorMsg = document.createElement('div');
-//         errorMsg.className = 'pdf-error';
-//         errorMsg.style.display = 'none';
-//         errorMsg.textContent = `文件 ${fileName} 加载失败，请检查参数组合`;
-  
-//         // 加载状态
-//         const loading = document.createElement('div');
-//         loading.className = 'pdf-loading';
-//         loading.textContent = '正在加载可视化文件...';
-//         container.appendChild(loading);
-  
-//         // 检测PDF加载状态
-//         embed.onload = () => {
-//             loading.style.display = 'none';
-//             errorMsg.style.display = 'none';
-//         };
-//         embed.onerror = () => {
-//             loading.style.display = 'none';
-//             errorMsg.style.display = 'block';
-//         };
-  
-//         container.appendChild(embed);
-//         container.appendChild(errorMsg);
-//         vizContainer.appendChild(container);
-//     });
-//   }
-  
-  
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('astro:page-load', () => {
     initTabs();          // 只需初始化一次
     initDependentSelects();
     initVisualization();

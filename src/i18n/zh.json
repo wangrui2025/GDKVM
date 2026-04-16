@@ -85,6 +85,10 @@
     "wandbUploadDesc": "训练结束后，可以使用以下命令将离线数据同步到 WandB 云端：",
     "footerNote": "本说明的所有\"今天\"\"现在\"指的是 2025 年 12 月 15 日。"
   },
+  "footer": {
+    "templateFrom": "项目页面模板源自",
+    "licensedUnder": "本网站根据"
+  },
   "tool": {
     "title": "Predictable Scale",
     "tab1": "Step Law",

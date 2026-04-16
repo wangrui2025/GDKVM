@@ -4,7 +4,8 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check": "astro check"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.2",
@@ -13,6 +14,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
+    "@astrojs/sitemap": "^3.7.2",
     "playwright": "^1.59.1",
     "typescript": "^5.9.3"
   }
