@@ -2,17 +2,17 @@
 import Layout from '../../layouts/Layout.astro';
 import Section from '../../components/Section.astro';
 import { t } from '../../i18n';
+import '../../styles/toolstyle.css';
+import toolScriptUrl from '../../scripts/tool.ts?url';
 
 export function getStaticPaths() {
   return [{ params: { lang: 'en' } }, { params: { lang: 'zh' } }];
 }
 
-const { lang } = Astro.params;
+const lang = Astro.params.lang as 'en' | 'zh';
 ---
 
 <Layout title={t(lang, 'tool.title')} showFooter={false}>
-  <link rel="stylesheet" href={`${import.meta.env.BASE_URL}/assets/css/toolstyle.css`} />
-
   <Section>
     <div class="tab-container">
     <nav class="tab-nav">
@@ -72,6 +72,7 @@ const { lang } = Astro.params;
       </div>
     </div>
   </div>
+  </Section>
 
-  <script src={`${import.meta.env.BASE_URL}/assets/js/tool.js`} is:inline></script>
+  <script src={toolScriptUrl} type="module"></script>
 </Layout>

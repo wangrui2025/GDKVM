@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'astro-icon/components';
+
 export interface Props {
   href: string;
   icon?: string;
@@ -7,6 +9,17 @@ export interface Props {
 
 const { href, icon, target } = Astro.props;
 const isExternal = target === '_blank' || href.startsWith('http');
+
+const iconMap: Record<string, string> = {
+  'ai ai-arxiv': 'academicons:arxiv',
+  'fab fa-github': 'simple-icons:github',
+  'fas fa-cogs': 'lucide:settings',
+  'fas fa-file-pdf': 'lucide:file-text',
+  'fas fa-image': 'lucide:image',
+  'fas fa-arrow-left': 'lucide:arrow-left',
+};
+
+const iconName = icon ? (iconMap[icon] || icon) : undefined;
 ---
 
 <a
@@ -15,6 +28,6 @@ const isExternal = target === '_blank' || href.startsWith('http');
   rel={isExternal ? 'noopener noreferrer' : undefined}
   class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-800 text-white dark:bg-gray-200 dark:text-gray-900 hover:-translate-y-0.5 hover:shadow-lg transition"
 >
-  {icon && <i class={icon}></i>}
+  {iconName && <Icon name={iconName} class="w-4 h-4" />}
   <slot />
 </a>

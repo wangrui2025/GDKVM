@@ -3,6 +3,7 @@ import Layout from '../../../layouts/Layout.astro';
 import Section from '../../../components/Section.astro';
 import ActionButton from '../../../components/ActionButton.astro';
 import CopyButton from '../../../components/CopyButton.astro';
+import { Icon } from 'astro-icon/components';
 import { t } from '../../../i18n';
 
 export function getStaticPaths() {
@@ -119,7 +120,7 @@ const homeUrl = lang === 'en' ? `${import.meta.env.BASE_URL}/` : `${import.meta.
       <!-- Troubleshooting box -->
       <div class="advanced-box">
         <div class="font-bold text-yellow-800 dark:text-yellow-200 mb-3 flex items-center">
-          <i class="fas fa-tools mr-2"></i>
+          <Icon name="lucide:wrench" class="mr-2" />
           {t(lang, 'reprod.troubleshootingTitle')}
         </div>
         <p class="mb-4 text-sm">
@@ -144,30 +145,30 @@ const homeUrl = lang === 'en' ? `${import.meta.env.BASE_URL}/` : `${import.meta.
       <!-- Compatibility details -->
       <details class="compatibility-box">
         <summary class="compatibility-header">
-          <span><i class="fas fa-exclamation-triangle mr-2"></i> {t(lang, 'reprod.versionConstraints')}</span>
-          <span class="icon"><i class="fas fa-chevron-down"></i></span>
+          <span><Icon name="lucide:triangle-alert" class="mr-2" /> {t(lang, 'reprod.versionConstraints')}</span>
+          <span class="icon"><Icon name="lucide:chevron-down" /></span>
         </summary>
         <div class="compatibility-content">
           <ol class="list-decimal pl-5 space-y-4 text-sm">
             <li>
               <strong>Pydantic {lang === 'zh' ? '版本冲突' : 'Version Conflict'} &lt;2.12</strong>
               <div class="mt-1 pl-1 text-xs">
-                <p class="mb-1"><strong><i class="fas fa-bug text-red-500 w-4"></i> {lang === 'zh' ? '现象：' : 'Issue:'}</strong> {lang === 'zh' ? 'Pydantic 2.12+ (2025-10) 的严格 Schema 校验与 wandb 字段声明冲突，多进程下可能导致崩溃。' : 'Pydantic 2.12+ (2025-10) strict Schema validation conflicts with wandb field declarations, potentially causing crashes in multi-process modes.'}</p>
-                <p><strong><i class="fas fa-check-circle text-green-500 w-4"></i> {lang === 'zh' ? '解决：' : 'Solution:'}</strong> {lang === 'zh' ? '配置文件已强制锁定 pydantic&lt;2.12。' : 'The configuration file forcefully locks pydantic&lt;2.12.'}</p>
+                <p class="mb-1"><strong><Icon name="lucide:bug" class="text-red-500 w-4" /> {lang === 'zh' ? '现象：' : 'Issue:'}</strong> {lang === 'zh' ? 'Pydantic 2.12+ (2025-10) 的严格 Schema 校验与 wandb 字段声明冲突，多进程下可能导致崩溃。' : 'Pydantic 2.12+ (2025-10) strict Schema validation conflicts with wandb field declarations, potentially causing crashes in multi-process modes.'}</p>
+                <p><strong><Icon name="lucide:circle-check" class="text-green-500 w-4" /> {lang === 'zh' ? '解决：' : 'Solution:'}</strong> {lang === 'zh' ? '配置文件已强制锁定 pydantic&lt;2.12。' : 'The configuration file forcefully locks pydantic&lt;2.12.'}</p>
               </div>
             </li>
             <li>
               <strong>Wandb {lang === 'zh' ? '系统兼容性 (glibc)' : 'System Compatibility (glibc)'}</strong>
               <div class="mt-1 pl-1 text-xs">
-                <p class="mb-1"><strong><i class="fas fa-bug text-red-500 w-4"></i> {lang === 'zh' ? '现象：' : 'Issue:'}</strong> {lang === 'zh' ? 'wandb>=0.22.2 停止提供针对 Ubuntu 18.04 (glibc 2.27) 的预编译包，导致安装失败。' : 'wandb>=0.22.2 stopped providing pre-built packages for Ubuntu 18.04 (glibc 2.27), causing installation failures.'}</p>
-                <p><strong><i class="fas fa-check-circle text-green-500 w-4"></i> {lang === 'zh' ? '解决：' : 'Solution:'}</strong> {lang === 'zh' ? '需确保系统安装了 Go 编译器以支持源码编译，或升级操作系统。' : 'Ensure a Go compiler is installed for source compilation, or upgrade the OS.'}</p>
+                <p class="mb-1"><strong><Icon name="lucide:bug" class="text-red-500 w-4" /> {lang === 'zh' ? '现象：' : 'Issue:'}</strong> {lang === 'zh' ? 'wandb>=0.22.2 停止提供针对 Ubuntu 18.04 (glibc 2.27) 的预编译包，导致安装失败。' : 'wandb>=0.22.2 stopped providing pre-built packages for Ubuntu 18.04 (glibc 2.27), causing installation failures.'}</p>
+                <p><strong><Icon name="lucide:circle-check" class="text-green-500 w-4" /> {lang === 'zh' ? '解决：' : 'Solution:'}</strong> {lang === 'zh' ? '需确保系统安装了 Go 编译器以支持源码编译，或升级操作系统。' : 'Ensure a Go compiler is installed for source compilation, or upgrade the OS.'}</p>
               </div>
             </li>
             <li>
               <strong>SSL/TLS {lang === 'zh' ? '证书错误 (内网/代理环境)' : 'Certificate Errors'}</strong>
               <div class="mt-1 pl-1 text-xs">
-                <p class="mb-1"><strong><i class="fas fa-bug text-red-500 w-4"></i> {lang === 'zh' ? '现象：' : 'Issue:'}</strong> {lang === 'zh' ? '运行 uv add/sync 时报错（Certificate Expired），因内网防火墙/代理的自签名证书不被 uv 默认的 Rust TLS 信任。' : 'uv add/sync fails (Certificate Expired) because self-signed certificates in intranet/proxy environments are not trusted by uv\'s default Rust TLS.'}</p>
-                <p class="mb-2"><strong><i class="fas fa-check-circle text-green-500 w-4"></i> {lang === 'zh' ? '解决方案：' : 'Solution:'}</strong> {lang === 'zh' ? '切换为系统原生 TLS 验证。' : 'Switch to system-native TLS validation.'}</p>
+                <p class="mb-1"><strong><Icon name="lucide:bug" class="text-red-500 w-4" /> {lang === 'zh' ? '现象：' : 'Issue:'}</strong> {lang === 'zh' ? '运行 uv add/sync 时报错（Certificate Expired），因内网防火墙/代理的自签名证书不被 uv 默认的 Rust TLS 信任。' : 'uv add/sync fails (Certificate Expired) because self-signed certificates in intranet/proxy environments are not trusted by uv\'s default Rust TLS.'}</p>
+                <p class="mb-2"><strong><Icon name="lucide:circle-check" class="text-green-500 w-4" /> {lang === 'zh' ? '解决方案：' : 'Solution:'}</strong> {lang === 'zh' ? '切换为系统原生 TLS 验证。' : 'Switch to system-native TLS validation.'}</p>
                 <div class="mb-2">
                   <span class="inline-block bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs px-2 py-0.5 rounded mb-1">{lang === 'zh' ? '方案 A (临时单次)' : 'Option A (Temporary)'}</span>
                   <div class="relative">
@@ -213,12 +214,12 @@ const homeUrl = lang === 'en' ? `${import.meta.env.BASE_URL}/` : `${import.meta.
       <h3 class="text-xl font-semibold mt-6 mb-4 text-gray-700 dark:text-gray-300">{t(lang, 'reprod.datasetDownload')}</h3>
       <div class="compact-card">
         <div class="mb-3 flex flex-wrap items-center gap-x-4 gap-y-2">
-          <span class="font-bold text-blue-700 dark:text-blue-400"><i class="fas fa-database mr-1"></i> {t(lang, 'reprod.processedData')}:</span>
-          <span class="whitespace-nowrap"><strong>CAMUS</strong> <a href="https://huggingface.co/datasets/miyuki17/camus_png256x256_10f_20250709" target="_blank" class="link-tag">HuggingFace <i class="fas fa-external-link-alt"></i></a></span>
+          <span class="font-bold text-blue-700 dark:text-blue-400"><Icon name="lucide:database" class="mr-1" /> {t(lang, 'reprod.processedData')}:</span>
+          <span class="whitespace-nowrap"><strong>CAMUS</strong> <a href="https://huggingface.co/datasets/miyuki17/camus_png256x256_10f_20250709" target="_blank" class="link-tag">HuggingFace <Icon name="lucide:external-link" /></a></span>
           <span class="whitespace-nowrap"><strong>EchoNet-Dynamic</strong> <a href="https://huggingface.co/datasets/miyuki17/EchoNet-Dynamic" target="_blank" class="link-tag">todo</a></span>
         </div>
         <div class="pt-3 border-t border-dashed border-gray-200 dark:border-gray-600 text-xs text-gray-500 flex flex-wrap items-center gap-x-4 gap-y-2">
-          <span class="font-bold"><i class="fas fa-archive mr-1"></i> {t(lang, 'reprod.rawData')}:</span>
+          <span class="font-bold"><Icon name="lucide:archive" class="mr-1" /> {t(lang, 'reprod.rawData')}:</span>
           <span class="whitespace-nowrap"><strong>CAMUS</strong> <a href="https://www.creatis.insa-lyon.fr/Challenge/camus/" target="_blank" class="link-subtle">{lang === 'zh' ? '官方网站' : 'Official'}</a> <a href="https://huggingface.co/datasets/miyuki17/CAMUS_public" target="_blank" class="link-subtle">HuggingFace {lang === 'zh' ? '镜像' : 'Mirror'}</a></span>
           <span class="whitespace-nowrap"><strong>EchoNet-Dynamic</strong> <a href="https://echonet.github.io/dynamic/" target="_blank" class="link-subtle">{lang === 'zh' ? '官方网站' : 'Official'}</a> <a href="https://huggingface.co/datasets/miyuki17/EchoNet-Dynamic-zip" target="_blank" class="link-subtle">{lang === 'zh' ? '镜像' : 'Mirror'}</a></span>
         </div>

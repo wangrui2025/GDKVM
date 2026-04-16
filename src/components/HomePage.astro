@@ -1,27 +1,44 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import Section from './Section.astro';
 import ActionButton from './ActionButton.astro';
 import CopyButton from './CopyButton.astro';
+import { Icon } from 'astro-icon/components';
+import { getScholarlyArticleSchema } from '../utils/structuredData';
 import { t } from '../i18n';
 
 interface Props {
-  lang: string;
+  lang: 'en' | 'zh';
 }
 
 const { lang } = Astro.props;
+
+const schema = getScholarlyArticleSchema({
+  title: t(lang, 'home.publicationTitle'),
+  authors: ['Rui Wang', 'Yimu Sun', 'Jingxing Guo', 'Huisi Wu', 'Jing Qin'],
+  description: t(lang, 'home.description'),
+  url: `${Astro.site}${Astro.url.pathname}`,
+  image: `${Astro.site}${import.meta.env.BASE_URL}/paper/fig/Met/gdkvm.png`,
+  datePublished: '2025-10-01',
+  venue: 'ICCV 2025',
+  pdfUrl: 'https://openaccess.thecvf.com/content/ICCV2025/html/Wang_GDKVM_Echocardiography_Video_Segmentation_via_Spatiotemporal_Key-Value_Memory_with_Gated_ICCV_2025_paper.html',
+  codeUrl: 'https://github.com/wangrui2025/GDKVM',
+});
 ---
 
-<Layout title={t(lang, 'home.title')} description={t(lang, 'home.description')}>
+<Layout title={t(lang, 'home.title')} description={t(lang, 'home.description')} structuredData={schema}>
   <!-- Hero -->
   <section class="relative bg-gray-50 dark:bg-gray-800 pb-12 pt-8">
     <div class="max-w-5xl mx-auto px-4">
       <div class="text-center">
         <!-- ICCV Logo -->
         <div class="mb-6">
-          <img
-            src={`${import.meta.env.BASE_URL}/assets/images/iccv2_logo/LogoColor.png`}
+          <Image
+            src="/assets/images/iccv2_logo/LogoColor.png"
             alt="ICCV Logo"
+            width={200}
+            height={56}
             class="h-14 w-auto mx-auto lg:absolute lg:top-8 lg:left-8 lg:mx-0"
           />
         </div>
@@ -62,9 +79,11 @@ const { lang } = Astro.props;
   <!-- Architecture Figure -->
   <Section>
     <div class="p-2">
-      <img
-        src={`${import.meta.env.BASE_URL}/paper/fig/Met/gdkvm.png`}
+      <Image
+        src="/paper/fig/Met/gdkvm.png"
         alt="GDKVM Architecture"
+        width={1200}
+        height={600}
         class="w-full rounded"
       />
     </div>
@@ -96,16 +115,16 @@ const { lang } = Astro.props;
     <div class="flex flex-wrap justify-center">
       {
         [
-          { src: 'paper/fig/challenge/cha_1.jpg', alt: 'Noise', cap: '(a)' },
-          { src: 'paper/fig/challenge/cha_2.jpg', alt: 'Blur', cap: '(b)' },
-          { src: 'paper/fig/challenge/cha_3.jpg', alt: 'Shape', cap: '(c)' },
-          { src: 'paper/fig/challenge/cha_4.jpg', alt: 'Scale', cap: '(d)' },
-          { src: 'paper/fig/challenge/cha_5.jpg', alt: 'Cycle', cap: '(e)' },
-          { src: 'paper/fig/challenge/cha_6.jpg', alt: 'Dropout', cap: '(f)' },
+          { src: '/paper/fig/challenge/cha_1.jpg', alt: 'Noise', cap: '(a)' },
+          { src: '/paper/fig/challenge/cha_2.jpg', alt: 'Blur', cap: '(b)' },
+          { src: '/paper/fig/challenge/cha_3.jpg', alt: 'Shape', cap: '(c)' },
+          { src: '/paper/fig/challenge/cha_4.jpg', alt: 'Scale', cap: '(d)' },
+          { src: '/paper/fig/challenge/cha_5.jpg', alt: 'Cycle', cap: '(e)' },
+          { src: '/paper/fig/challenge/cha_6.jpg', alt: 'Dropout', cap: '(f)' },
         ].map(({ src, alt, cap }) => (
           <div class="w-1/2 md:w-1/4 lg:w-1/6 p-2">
             <div class="challenge-card">
-              <img src={`${import.meta.env.BASE_URL}/${src}`} alt={alt} width="370" height="370" loading="lazy" />
+              <Image src={src} alt={alt} width={370} height={370} loading="lazy" />
               <div class="challenge-caption text-center">{cap}</div>
             </div>
           </div>
@@ -167,8 +186,8 @@ const { lang } = Astro.props;
     <div class="text-center">
       <p class="mb-2 text-xs font-semibold uppercase tracking-widest text-gray-400">{t(lang, 'home.todoTitle')}</p>
       <ul class="list-none text-sm text-gray-400 opacity-70">
-        <li class="mb-1"><i class="far fa-square mr-1"></i> {t(lang, 'home.todo1')}</li>
-        <li><i class="far fa-square mr-1"></i> {t(lang, 'home.todo2')}</li>
+        <li class="mb-1"><Icon name="lucide:square" class="w-3 h-3 inline mr-1" /> {t(lang, 'home.todo1')}</li>
+        <li><Icon name="lucide:square" class="w-3 h-3 inline mr-1" /> {t(lang, 'home.todo2')}</li>
       </ul>
     </div>
   </Section>

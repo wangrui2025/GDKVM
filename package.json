@@ -2,19 +2,27 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
+    "build": "astro check && astro build && node scripts/inline-critical-css.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check"
   },
   "dependencies": {
+    "@astrojs/compiler-rs": "^0.1.6",
+    "@fontsource/noto-sans": "^5.2.8",
+    "@iconify-json/academicons": "^1.2.4",
+    "@iconify-json/lucide": "^1.2.102",
+    "@iconify-json/simple-icons": "^1.2.77",
     "@tailwindcss/vite": "^4.2.2",
     "astro": "^6.1.6",
-    "tailwindcss": "^4.2.2"
+    "astro-icon": "^1.1.5",
+    "tailwindcss": "^4.2.2",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
     "@astrojs/sitemap": "^3.7.2",
+    "@playwright/test": "^1.59.1",
     "playwright": "^1.59.1",
     "typescript": "^5.9.3"
   }

@@ -8,13 +8,17 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description?: string;
+  image?: string;
   showFooter?: boolean;
+  structuredData?: object;
 }
 
 const {
   title,
   description = 'GDKVM: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule',
+  image = `${Astro.site}${import.meta.env.BASE_URL}/paper/fig/Met/gdkvm.png`,
   showFooter = true,
+  structuredData,
 } = Astro.props;
 
 const lang = Astro.currentLocale ?? 'en';
@@ -24,19 +28,35 @@ const lang = Astro.currentLocale ?? 'en';
 <html lang={lang}>
   <head>
     <meta charset="utf-8">
-    <!-- FOUC prevention -->
     <style is:inline>
-      html { opacity: 0; transition: opacity 0.1s ease-out; }
-      html.loaded { opacity: 1; }
+      :root {
+        --bg-color: #ffffff;
+        --text-color: #374151;
+      }
+      html.dark {
+        --bg-color: #111827;
+        --text-color: #e5e7eb;
+      }
+      html {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+      }
     </style>
     <script is:inline>
-      (function () {
-        function show() { document.documentElement.classList.add('loaded'); }
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', show);
-        } else {
-          show();
+      (function() {
+        function applyTheme() {
+          const theme = localStorage.getItem('theme')
+            || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          document.documentElement.classList.toggle('dark', theme === 'dark');
+          const meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', theme === 'dark' ? '#111827' : '#ffffff');
         }
+        applyTheme();
+        document.addEventListener('astro:after-swap', applyTheme);
       })();
     </script>
     <meta name="description" content={description}>
@@ -44,37 +64,32 @@ const lang = Astro.currentLocale ?? 'en';
     <title>{title}</title>
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
     <meta property="og:url" content={`${Astro.site}${Astro.url.pathname}`} />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
     <link rel="canonical" href={`${Astro.site}${Astro.url.pathname}`} />
     <link rel="icon" type="image/x-icon" href={`${import.meta.env.BASE_URL}/favicon.ico`} />
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#111827" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#ffffff" />
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
     <link rel="preconnect" href="https://raw.githubusercontent.com" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
-    <ClientRouter />
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans" rel="stylesheet">
+    <ClientRouter fallback="none" />
+    {structuredData && (
+      <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
+    )}
     <script is:inline>
       (function () {
-        function applyTheme() {
-          const theme = localStorage.getItem('theme');
-          if (theme === 'dark') {
-            document.documentElement.classList.add('dark');
-          } else if (theme === 'light') {
-            document.documentElement.classList.remove('dark');
-          }
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register(`${import.meta.env.BASE_URL}/sw.js`).catch(() => {});
         }
-        applyTheme();
-        document.addEventListener('astro:after-swap', applyTheme);
       })();
     </script>
   </head>
@@ -87,5 +102,64 @@ const lang = Astro.currentLocale ?? 'en';
       <slot />
     </main>
     {showFooter && <Footer />}
+    <script>
+      // Theme toggle delegation
+      document.addEventListener('click', (e) => {
+        const btn = (e.target as HTMLElement).closest('#theme-toggle');
+        if (!btn) return;
+        const html = document.documentElement;
+        const isDark = html.classList.toggle('dark');
+        try {
+          localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        } catch {}
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', isDark ? '#111827' : '#ffffff');
+      });
+
+      // Copy button delegation
+      document.addEventListener('click', (e) => {
+        const btn = (e.target as HTMLElement).closest('button[data-copy-target]');
+        if (!btn) return;
+
+        const targetId = btn.getAttribute('data-copy-target');
+        const label = btn.getAttribute('data-copy-label') || 'Copy';
+        const successLabel = btn.getAttribute('data-copy-success') || 'Copied!';
+        const el = document.getElementById(targetId || '');
+        if (!el) return;
+        const text = el.innerText;
+
+        const showSuccess = () => {
+          const icon = btn.querySelector('.copy-icon');
+          const textSpan = btn.querySelector('span');
+          if (icon) icon.setAttribute('name', 'lucide:check');
+          if (textSpan) textSpan.textContent = successLabel;
+          setTimeout(() => {
+            if (icon) icon.setAttribute('name', 'lucide:copy');
+            if (textSpan) textSpan.textContent = label;
+          }, 2000);
+        };
+
+        const fallbackCopy = (value: string) => {
+          const textarea = document.createElement('textarea');
+          textarea.value = value;
+          textarea.style.position = 'fixed';
+          textarea.style.left = '-9999px';
+          textarea.style.top = '0';
+          document.body.appendChild(textarea);
+          textarea.focus();
+          textarea.select();
+          try {
+            if (document.execCommand('copy')) showSuccess();
+          } catch {}
+          document.body.removeChild(textarea);
+        };
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(showSuccess).catch(() => fallbackCopy(text));
+        } else {
+          fallbackCopy(text);
+        }
+      });
+    </script>
   </body>
 </html>

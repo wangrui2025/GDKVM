@@ -1,0 +1,17 @@
+{
+  "title": "可预测扩展",
+  "tab1": "Scaling Law",
+  "tab2": "损失热力图",
+  "modelSize": "N(模型参数量)",
+  "trainingTokens": "D(训练Token量)",
+  "calculate": "计算",
+  "results": "计算结果",
+  "optimalBs": "最优Token级BatchSize: -",
+  "lr": "学习率: -",
+  "modelType": "模型类型",
+  "moe": "MoE",
+  "dense": "Dense",
+  "na": "Na(激活参数量)",
+  "show": "展示",
+  "placeholder": "请选择参数并点击\"展示\""
+}

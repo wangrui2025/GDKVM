@@ -152,7 +152,7 @@ button:hover {
 .selector-group.has-na {
     grid-template-columns: repeat(4, minmax(200px, 1fr));
   }
-  
+
   /* 响应式调整 */
   @media (max-width: 1200px) {
     .selector-group {
@@ -162,7 +162,7 @@ button:hover {
       grid-template-columns: repeat(3, minmax(180px, 1fr));
     }
   }
-  
+
   @media (max-width: 768px) {
     .selector-group {
       grid-template-columns: 1fr;
@@ -339,7 +339,7 @@ input::placeholder {
     gap: 1rem;
     color: #6e7fcd;
   }
-  
+
   .loading-spinner {
     width: 40px;
     height: 40px;
@@ -348,11 +348,11 @@ input::placeholder {
     border-radius: 50%;
     animation: spin 1s linear infinite;
   }
-  
+
   @keyframes spin {
     to { transform: rotate(360deg); }
   }
-  
+
   /* 错误提示 */
   .image-error {
     position: absolute;
@@ -364,24 +364,24 @@ input::placeholder {
     border: 1px solid #ffcccc;
     max-width: 80%;
   }
-  
+
   .error-message {
     display: flex;
     align-items: center;
     gap: 0.75rem;
   }
-  
+
   .error-message p {
     margin: 0;
     color: #dc3545;
     font-weight: 500;
   }
-  
+
   .error-message small {
     color: #666;
     font-size: 0.875em;
   }
-  
+
   /* 图片容器 */
   .generated-image-container {
     position: relative;
@@ -391,7 +391,7 @@ input::placeholder {
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     transition: opacity 0.3s ease;
   }
-  
+
   .generated-image {
     transition: opacity 0.3s ease;
   }

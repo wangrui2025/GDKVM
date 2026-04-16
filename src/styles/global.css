@@ -1,9 +1,11 @@
 @import "tailwindcss";
+@import "@fontsource/noto-sans/400.css";
+@import "@fontsource/noto-sans/700.css";
 
 @theme {
   --color-primary: #3273dc;
   --color-primary-dark: #1a237e;
-  --font-sans: 'Noto Sans', sans-serif;
+  --font-sans: 'Noto Sans', system-ui, sans-serif;
   --font-display: 'Google Sans', sans-serif;
 }
 
@@ -260,4 +262,11 @@ pre {
 .link-subtle:hover {
   color: var(--color-primary);
   border-bottom-color: var(--color-primary);
+}
+
+/* View transitions — instant page switch */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }

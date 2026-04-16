@@ -5,7 +5,7 @@ export function getStaticPaths() {
   return [{ params: { lang: 'en' } }, { params: { lang: 'zh' } }];
 }
 
-const { lang } = Astro.params;
+const lang = Astro.params.lang as 'en' | 'zh';
 ---
 
 <HomePage lang={lang} />

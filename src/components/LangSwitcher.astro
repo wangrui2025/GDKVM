@@ -1,9 +1,10 @@
 ---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
 const currentLocale = Astro.currentLocale ?? 'en';
 const targetLocale = currentLocale === 'en' ? 'zh' : 'en';
-const currentPath = Astro.url.pathname.replace(/^\/GDKVM(\/(en|zh))?/, '').replace(/\/$/, '') || '/';
-const targetPrefix = targetLocale === 'en' ? '' : `/${targetLocale}`;
-const targetUrl = `${import.meta.env.BASE_URL}${targetPrefix}${currentPath === '/' ? '/' : currentPath}`;
+const currentPath = Astro.url.pathname.replace(/^\/(en|zh)/, '').replace(/\/$/, '') || '/';
+const targetUrl = getRelativeLocaleUrl(targetLocale, currentPath);
 ---
 
 <a

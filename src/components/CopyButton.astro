@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'astro-icon/components';
+
 export interface Props {
   targetId: string;
   label?: string;
@@ -15,61 +17,6 @@ const { targetId, label = 'Copy', successLabel = 'Copied!' } = Astro.props;
   data-copy-success={successLabel}
   class="copy-btn absolute top-2 right-2 z-10 bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs flex items-center gap-1"
 >
-  <i class="fas fa-copy"></i>
+  <Icon name="lucide:copy" class="w-3 h-3 copy-icon" />
   <span>{label}</span>
 </button>
-
-<script is:inline>
-  (function () {
-    function initCopyButtons() {
-      document.querySelectorAll('button[data-copy-target]').forEach((btn) => {
-        if ((btn).__copyBound) return;
-        (btn).__copyBound = true;
-
-        btn.addEventListener('click', () => {
-          const targetId = btn.getAttribute('data-copy-target');
-          const label = btn.getAttribute('data-copy-label') || 'Copy';
-          const successLabel = btn.getAttribute('data-copy-success') || 'Copied!';
-          const el = document.getElementById(targetId);
-          if (!el) return;
-          const text = el.innerText;
-
-          const showSuccess = () => {
-            const icon = btn.querySelector('i');
-            const textSpan = btn.querySelector('span');
-            if (icon) icon.className = 'fas fa-check';
-            if (textSpan) textSpan.innerText = successLabel;
-            setTimeout(() => {
-              if (icon) icon.className = 'fas fa-copy';
-              if (textSpan) textSpan.innerText = label;
-            }, 2000);
-          };
-
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(text).then(showSuccess).catch(() => fallbackCopy(text));
-          } else {
-            fallbackCopy(text);
-          }
-
-          function fallbackCopy(text) {
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            textarea.style.position = 'fixed';
-            textarea.style.left = '-9999px';
-            textarea.style.top = '0';
-            document.body.appendChild(textarea);
-            textarea.focus();
-            textarea.select();
-            try {
-              if (document.execCommand('copy')) showSuccess();
-            } catch (err) {}
-            document.body.removeChild(textarea);
-          }
-        });
-      });
-    }
-
-    document.addEventListener('astro:page-load', initCopyButtons);
-    if (document.readyState !== 'loading') initCopyButtons();
-  })();
-</script>
