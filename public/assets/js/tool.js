@@ -80,14 +80,15 @@ function initTabs() {
       nValue.dispatchEvent(new Event('change'));
     }
   
-    // 增强选项更新逻辑
     function updateNaOptions() {
       const type = modelType.value;
       const nVal = nValue.value;
+      const naItem = document.getElementById('naItem');
       naValue.innerHTML = '';
-  
+
       if (type === 'Moe') {
-        document.getElementById('naItem').style.display = 'block';
+        naItem.classList.remove('hidden');
+        selectorGroup.classList.add('has-na');
         const naOptions = Object.keys(dependencies.Moe.N[nVal].Na);
         naOptions.forEach(val => {
           const option = document.createElement('option');
@@ -95,27 +96,27 @@ function initTabs() {
           option.textContent = val;
           naValue.appendChild(option);
         });
-        // 设置默认选中项
         naValue.value = naOptions[0] || '';
         naValue.dispatchEvent(new Event('change'));
       } else {
-        document.getElementById('naItem').style.display = 'none';
-        // 清除残留值
+        naItem.classList.add('hidden');
+        selectorGroup.classList.remove('has-na');
         naValue.value = '';
       }
     }
-  
+
     function updateDOptions() {
       const type = modelType.value;
       dValue.innerHTML = '';
-    
+
       let options = [];
       if (type === 'Dense') {
-        options = dependencies.Dense.N[nValue.value];
+        options = dependencies.Dense.N[nValue.value] || [];
       } else {
-        options = dependencies.Moe.N[nValue.value].Na[naValue.value];
+        const moeNode = dependencies.Moe.N[nValue.value];
+        options = moeNode && moeNode.Na ? moeNode.Na[naValue.value] || [] : [];
       }
-    
+
       options.forEach(val => {
         const option = document.createElement('option');
         option.value = val;
@@ -123,40 +124,15 @@ function initTabs() {
         dValue.appendChild(option);
       });
     }
-  
-    function updateVisibility() {
-        const isMoe = modelType.value === 'Moe';
-        const naItem = document.getElementById('naItem');
-      
-        // 使用classList代替直接操作style
-        naItem.classList.toggle('hidden', !isMoe);
-      
-        // 同步网格布局
-        selectorGroup.classList.toggle('has-na', isMoe);
-      
-        // 添加强制布局更新逻辑
-        void selectorGroup.offsetHeight; // 触发回流确保布局更新
-    }
-  
+
     modelType.addEventListener('change', () => {
-        updateNOptions();
-        updateVisibility();
-        // 确保D选项在类型切换时重置
-        dValue.innerHTML = '';
-        // 强制布局更新
-        setTimeout(() => {
-            if (modelType.value === 'Moe') {
-                updateNaOptions();
-            } else {
-                updateDOptions();
-            }
-        }, 10); // 微延迟确保DOM更新完成
+      updateNOptions();
     });
     nValue.addEventListener('change', () => {
       modelType.value === 'Moe' ? updateNaOptions() : updateDOptions();
     });
     naValue.addEventListener('change', updateDOptions);
-  
+
     updateNOptions();
   }
   
@@ -268,9 +244,6 @@ function initVisualization() {
     // 默认显示第一个选项卡（确保只有一个active）
     document.querySelector('.tab-button').classList.add('active');
     document.querySelector('.tab-pane').classList.add('active');
-    // const modelSize = parseInt(document.getElementById('modelSize').value);
-    // const trainingTokens = parseInt(document.getElementById('trainingTokens').value);
-    
       // 获取原始输入值
       const modelSizeInput = document.getElementById('modelSize').value;
       const trainingTokensInput = document.getElementById('trainingTokens').value;

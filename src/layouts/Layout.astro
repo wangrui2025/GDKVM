@@ -23,6 +23,7 @@ const lang = Astro.currentLocale ?? 'en';
 <!DOCTYPE html>
 <html lang={lang}>
   <head>
+    <meta charset="utf-8">
     <!-- FOUC prevention -->
     <style is:inline>
       html { opacity: 0; transition: opacity 0.1s ease-out; }
@@ -38,7 +39,6 @@ const lang = Astro.currentLocale ?? 'en';
         }
       })();
     </script>
-    <meta charset="utf-8">
     <meta name="description" content={description}>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{title}</title>
@@ -53,11 +53,6 @@ const lang = Astro.currentLocale ?? 'en';
     <link rel="icon" type="image/x-icon" href={`${import.meta.env.BASE_URL}/favicon.ico`} />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#111827" media="(prefers-color-scheme: dark)" />
-    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
-    <link rel="dns-prefetch" href="https://raw.githubusercontent.com" />
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
