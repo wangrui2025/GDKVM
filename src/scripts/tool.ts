@@ -51,6 +51,90 @@ const dependencies: Record<string, unknown> = {
   }
 };
 
+function updateNOptions(
+  modelType: HTMLSelectElement,
+  nValue: HTMLSelectElement,
+  naValue: HTMLSelectElement,
+  dValue: HTMLSelectElement
+) {
+  const type = modelType.value;
+  nValue.innerHTML = '';
+
+  // 重置相关选项
+  naValue.innerHTML = '';
+  dValue.innerHTML = '';
+
+  const deps = type === 'Dense' ? dependencies.Dense : dependencies.Moe;
+  const options = Object.keys((deps as Record<string, unknown>).N as Record<string, unknown>);
+
+  options.forEach((val) => {
+    const option = document.createElement('option');
+    option.value = val;
+    option.textContent = val;
+    nValue.appendChild(option);
+  });
+
+  // 设置默认值并触发更新
+  nValue.value = options[0] || '';
+  nValue.dispatchEvent(new Event('change'));
+}
+
+function updateNaOptions(
+  modelType: HTMLSelectElement,
+  nValue: HTMLSelectElement,
+  naValue: HTMLSelectElement,
+  selectorGroup: HTMLElement
+) {
+  const type = modelType.value;
+  const nVal = nValue.value;
+  const naItem = document.getElementById('naItem');
+  naValue.innerHTML = '';
+
+  if (type === 'Moe') {
+    naItem?.classList.remove('hidden');
+    selectorGroup.classList.add('has-na');
+    const moeNode = ((dependencies.Moe as Record<string, unknown>).N as Record<string, unknown>)[nVal] as Record<string, unknown> | undefined;
+    const naOptions = moeNode ? Object.keys((moeNode.Na as Record<string, unknown>) || {}) : [];
+    naOptions.forEach((val) => {
+      const option = document.createElement('option');
+      option.value = val;
+      option.textContent = val;
+      naValue.appendChild(option);
+    });
+    naValue.value = naOptions[0] || '';
+    naValue.dispatchEvent(new Event('change'));
+  } else {
+    naItem?.classList.add('hidden');
+    selectorGroup.classList.remove('has-na');
+    naValue.value = '';
+  }
+}
+
+function updateDOptions(
+  modelType: HTMLSelectElement,
+  nValue: HTMLSelectElement,
+  naValue: HTMLSelectElement,
+  dValue: HTMLSelectElement
+) {
+  const type = modelType.value;
+  dValue.innerHTML = '';
+
+  let options: string[] = [];
+  if (type === 'Dense') {
+    options = ((dependencies.Dense as Record<string, unknown>).N as Record<string, string[]>)[nValue.value] || [];
+  } else {
+    const moeNode = ((dependencies.Moe as Record<string, unknown>).N as Record<string, unknown>)[nValue.value] as Record<string, unknown> | undefined;
+    options = moeNode && moeNode.Na ? ((moeNode.Na as Record<string, string[]>)[naValue.value] || []) : [];
+  }
+
+  options.forEach((val) => {
+    const option = document.createElement('option');
+    option.value = val;
+    option.textContent = val;
+    dValue.appendChild(option);
+  });
+}
+
 // 新增级联选择逻辑
 function initDependentSelects() {
   const modelType = document.getElementById('modelType') as HTMLSelectElement | null;
@@ -61,84 +145,19 @@ function initDependentSelects() {
 
   if (!modelType || !nValue || !naValue || !dValue || !selectorGroup) return;
 
-  function updateNOptions() {
-    const type = modelType!.value;
-    nValue!.innerHTML = '';
-
-    // 重置相关选项
-    naValue!.innerHTML = '';
-    dValue!.innerHTML = '';
-
-    const deps = type === 'Dense' ? dependencies.Dense : dependencies.Moe;
-    const options = Object.keys((deps as Record<string, unknown>).N as Record<string, unknown>);
-
-    options.forEach((val) => {
-      const option = document.createElement('option');
-      option.value = val;
-      option.textContent = val;
-      nValue!.appendChild(option);
-    });
-
-    // 设置默认值并触发更新
-    nValue!.value = options[0] || '';
-    nValue!.dispatchEvent(new Event('change'));
-  }
-
-  function updateNaOptions() {
-    const type = modelType!.value;
-    const nVal = nValue!.value;
-    const naItem = document.getElementById('naItem');
-    naValue!.innerHTML = '';
-
-    if (type === 'Moe') {
-      naItem?.classList.remove('hidden');
-      selectorGroup!.classList.add('has-na');
-      const moeNode = ((dependencies.Moe as Record<string, unknown>).N as Record<string, unknown>)[nVal] as Record<string, unknown> | undefined;
-      const naOptions = moeNode ? Object.keys((moeNode.Na as Record<string, unknown>) || {}) : [];
-      naOptions.forEach((val) => {
-        const option = document.createElement('option');
-        option.value = val;
-        option.textContent = val;
-        naValue!.appendChild(option);
-      });
-      naValue!.value = naOptions[0] || '';
-      naValue!.dispatchEvent(new Event('change'));
-    } else {
-      naItem?.classList.add('hidden');
-      selectorGroup!.classList.remove('has-na');
-      naValue!.value = '';
-    }
-  }
-
-  function updateDOptions() {
-    const type = modelType!.value;
-    dValue!.innerHTML = '';
-
-    let options: string[] = [];
-    if (type === 'Dense') {
-      options = ((dependencies.Dense as Record<string, unknown>).N as Record<string, string[]>)[nValue!.value] || [];
-    } else {
-      const moeNode = ((dependencies.Moe as Record<string, unknown>).N as Record<string, unknown>)[nValue!.value] as Record<string, unknown> | undefined;
-      options = moeNode && moeNode.Na ? ((moeNode.Na as Record<string, string[]>)[naValue!.value] || []) : [];
-    }
-
-    options.forEach((val) => {
-      const option = document.createElement('option');
-      option.value = val;
-      option.textContent = val;
-      dValue!.appendChild(option);
-    });
-  }
-
   modelType.addEventListener('change', () => {
-    updateNOptions();
+    updateNOptions(modelType, nValue, naValue, dValue);
   });
   nValue.addEventListener('change', () => {
-    modelType.value === 'Moe' ? updateNaOptions() : updateDOptions();
+    modelType.value === 'Moe'
+      ? updateNaOptions(modelType, nValue, naValue, selectorGroup)
+      : updateDOptions(modelType, nValue, naValue, dValue);
   });
-  naValue.addEventListener('change', updateDOptions);
+  naValue.addEventListener('change', () => {
+    updateDOptions(modelType, nValue, naValue, dValue);
+  });
 
-  updateNOptions();
+  updateNOptions(modelType, nValue, naValue, dValue);
 }
 
 // 初始化可视化功能（修改后png）

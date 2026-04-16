@@ -103,63 +103,50 @@ const lang = Astro.currentLocale ?? 'en';
     </main>
     {showFooter && <Footer />}
     <script>
-      // Theme toggle delegation
-      document.addEventListener('click', (e) => {
-        const btn = (e.target as HTMLElement).closest('#theme-toggle');
-        if (!btn) return;
-        const html = document.documentElement;
-        const isDark = html.classList.toggle('dark');
-        try {
-          localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        } catch {}
-        const meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute('content', isDark ? '#111827' : '#ffffff');
-      });
+      if (!(document as any).__gdkvmDelegated) {
+        (document as any).__gdkvmDelegated = true;
 
-      // Copy button delegation
-      document.addEventListener('click', (e) => {
-        const btn = (e.target as HTMLElement).closest('button[data-copy-target]');
-        if (!btn) return;
-
-        const targetId = btn.getAttribute('data-copy-target');
-        const label = btn.getAttribute('data-copy-label') || 'Copy';
-        const successLabel = btn.getAttribute('data-copy-success') || 'Copied!';
-        const el = document.getElementById(targetId || '');
-        if (!el) return;
-        const text = el.innerText;
-
-        const showSuccess = () => {
-          const icon = btn.querySelector('.copy-icon');
-          const textSpan = btn.querySelector('span');
-          if (icon) icon.setAttribute('name', 'lucide:check');
-          if (textSpan) textSpan.textContent = successLabel;
-          setTimeout(() => {
-            if (icon) icon.setAttribute('name', 'lucide:copy');
-            if (textSpan) textSpan.textContent = label;
-          }, 2000);
-        };
-
-        const fallbackCopy = (value: string) => {
-          const textarea = document.createElement('textarea');
-          textarea.value = value;
-          textarea.style.position = 'fixed';
-          textarea.style.left = '-9999px';
-          textarea.style.top = '0';
-          document.body.appendChild(textarea);
-          textarea.focus();
-          textarea.select();
+        // Theme toggle delegation
+        document.addEventListener('click', (e) => {
+          const btn = (e.target as HTMLElement).closest('#theme-toggle');
+          if (!btn) return;
+          const html = document.documentElement;
+          const isDark = html.classList.toggle('dark');
           try {
-            if (document.execCommand('copy')) showSuccess();
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
           } catch {}
-          document.body.removeChild(textarea);
-        };
+          const meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', isDark ? '#111827' : '#ffffff');
+        });
 
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).then(showSuccess).catch(() => fallbackCopy(text));
-        } else {
-          fallbackCopy(text);
-        }
-      });
+        // Copy button delegation
+        document.addEventListener('click', (e) => {
+          const btn = (e.target as HTMLElement).closest('button[data-copy-target]');
+          if (!btn) return;
+
+          const targetId = btn.getAttribute('data-copy-target');
+          const label = btn.getAttribute('data-copy-label') || 'Copy';
+          const successLabel = btn.getAttribute('data-copy-success') || 'Copied!';
+          const el = document.getElementById(targetId || '');
+          if (!el) return;
+          const text = el.innerText;
+
+          const showSuccess = () => {
+            const icon = btn.querySelector('.copy-icon');
+            const textSpan = btn.querySelector('span');
+            if (icon) icon.setAttribute('name', 'lucide:check');
+            if (textSpan) textSpan.textContent = successLabel;
+            setTimeout(() => {
+              if (icon) icon.setAttribute('name', 'lucide:copy');
+              if (textSpan) textSpan.textContent = label;
+            }, 2000);
+          };
+
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(showSuccess).catch(() => {});
+          }
+        });
+      }
     </script>
   </body>
 </html>

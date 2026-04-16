@@ -12,7 +12,7 @@ export function getStaticPaths() {
 const lang = Astro.params.lang as 'en' | 'zh';
 ---
 
-<Layout title={t(lang, 'tool.title')} showFooter={false}>
+<Layout title={t(lang, 'tool.title')} showFooter={false} image={`${Astro.site}${import.meta.env.BASE_URL}/paper/fig/Met/gdkvm.png`}>
   <Section>
     <div class="tab-container">
     <nav class="tab-nav">
@@ -74,5 +74,5 @@ const lang = Astro.params.lang as 'en' | 'zh';
   </div>
   </Section>
 
-  <script src={toolScriptUrl} type="module"></script>
+  <script src={toolScriptUrl} type="module" is:inline></script>
 </Layout>

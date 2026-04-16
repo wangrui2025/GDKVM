@@ -3,7 +3,10 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 
 const currentLocale = Astro.currentLocale ?? 'en';
 const targetLocale = currentLocale === 'en' ? 'zh' : 'en';
-const currentPath = Astro.url.pathname.replace(/^\/(en|zh)/, '').replace(/\/$/, '') || '/';
+const currentPath = Astro.url.pathname
+  .replace(import.meta.env.BASE_URL, '')
+  .replace(/^\/(en|zh)/, '')
+  .replace(/\/$/, '') || '/';
 const targetUrl = getRelativeLocaleUrl(targetLocale, currentPath);
 ---
 

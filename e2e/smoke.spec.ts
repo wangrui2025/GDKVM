@@ -31,4 +31,19 @@ test.describe('GDKVM smoke tests', () => {
     await expect(page).toHaveTitle(/GDKVM/i);
     await expect(page.locator('text=Reproduction').first()).toBeVisible();
   });
+
+  test('client-router navigation via language switcher', async ({ page }) => {
+    await page.goto('en/');
+
+    const zhLink = page.locator('a[href="/GDKVM/zh/"]').first();
+    await zhLink.click();
+
+    // Wait for View Transition navigation
+    await expect(page).toHaveURL(/\/zh\/$/);
+
+    // Verify astro-route-announcer is present and has appropriate role
+    const announcer = page.locator('.astro-route-announcer');
+    await expect(announcer).toHaveAttribute('aria-live', 'assertive');
+    await expect(announcer).toHaveAttribute('aria-atomic', 'true');
+  });
 });
