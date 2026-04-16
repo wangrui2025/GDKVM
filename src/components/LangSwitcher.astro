@@ -1,8 +1,9 @@
 ---
 const currentLocale = Astro.currentLocale ?? 'en';
 const targetLocale = currentLocale === 'en' ? 'zh' : 'en';
-const currentPath = Astro.url.pathname.replace(/^\/GDKVM\/(en|zh)/, '').replace(/\/$/, '') || '/';
-const targetUrl = `${import.meta.env.BASE_URL}/${targetLocale}${currentPath === '/' ? '/' : currentPath}`;
+const currentPath = Astro.url.pathname.replace(/^\/GDKVM(\/(en|zh))?/, '').replace(/\/$/, '') || '/';
+const targetPrefix = targetLocale === 'en' ? '' : `/${targetLocale}`;
+const targetUrl = `${import.meta.env.BASE_URL}${targetPrefix}${currentPath === '/' ? '/' : currentPath}`;
 ---
 
 <a

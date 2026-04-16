@@ -9,7 +9,13 @@ export function getStaticPaths() {
   return [{ params: { lang: 'en' } }, { params: { lang: 'zh' } }];
 }
 
-const { lang } = Astro.params;
+interface Props {
+  lang?: string;
+}
+
+const { lang: propLang } = Astro.props;
+const paramLang = Astro.params.lang;
+const lang = propLang ?? paramLang ?? 'en';
 ---
 
 <Layout title={t(lang, 'home.title')} description={t(lang, 'home.description')}>
@@ -51,7 +57,7 @@ const { lang } = Astro.params;
           <ActionButton href="https://github.com/wangrui2025/GDKVM" icon="fab fa-github" target="_blank">
             {t(lang, 'home.code')}
           </ActionButton>
-          <ActionButton href={`${import.meta.env.BASE_URL}/${lang}/reprod/`} icon="fas fa-cogs">
+          <ActionButton href={`${import.meta.env.BASE_URL}${lang === 'en' ? '' : `/${lang}`}/reprod/`} icon="fas fa-cogs">
             {t(lang, 'home.reproduction')}
           </ActionButton>
         </div>

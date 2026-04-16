@@ -1,5 +1,5 @@
 ---
-export const prerender = true;
-
-return Astro.redirect(import.meta.env.BASE_URL + '/en/', 302);
+import Home from './[lang]/index.astro';
 ---
+
+<Home lang="en" />
