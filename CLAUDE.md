@@ -3,6 +3,10 @@
 > 技术栈：Astro v6.1.6 + Tailwind v4 + TypeScript
 > 部署目标：GitHub Pages (`https://wangrui2025.github.io/GDKVM/`)
 
+## 请参考
+
+请先阅读 `~/.claude/CLAUDE.md` 获得通用知识。
+
 ---
 
 ## 快速验证（任何修改后必须执行）
