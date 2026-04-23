@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 import astroIcon from 'astro-icon';
+import expressiveCode from 'astro-expressive-code';
 
 export default defineConfig({
   site: 'https://wangrui2025.github.io',
@@ -16,7 +17,16 @@ export default defineConfig({
       redirectToDefaultLocale: true,
     },
   },
-  integrations: [sitemap(), astroIcon()],
+  integrations: [
+    sitemap(),
+    astroIcon(),
+    expressiveCode({
+      themes: ['github-dark', 'github-light'],
+      styleOverrides: {
+        borderRadius: '0.5rem',
+      },
+    }),
+  ],
   experimental: {
     rustCompiler: true,
   },
