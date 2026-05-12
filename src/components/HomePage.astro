@@ -68,7 +68,7 @@ const schema = getScholarlyArticleSchema({
           <ActionButton href="https://github.com/wangrui2025/GDKVM" icon="fab fa-github" target="_blank">
             {t(lang, 'home.code')}
           </ActionButton>
-          <ActionButton href={`${import.meta.env.BASE_URL}${lang === 'en' ? '' : `/${lang}`}/reprod/`} icon="fas fa-cogs">
+          <ActionButton href={`${import.meta.env.BASE_URL}/${lang}/reprod/`} icon="fas fa-cogs">
             {t(lang, 'home.reproduction')}
           </ActionButton>
         </div>
