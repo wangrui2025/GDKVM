@@ -1,0 +1,40 @@
+{
+  "name": "GDKVM",
+  "short_name": "GDKVM",
+  "description": "Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule",
+  "start_url": "https://wangrui2025.github.io/GDKVM/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3273dc",
+  "icons": [
+    {
+      "src": "https://wangrui2025.github.io/GDKVM/paper/fig/Met/gdkvm.png",
+      "sizes": "any",
+      "type": "image/png"
+    }
+  ],
+  "keywords": [
+    "echocardiography",
+    "video segmentation",
+    "deep learning",
+    "computer vision",
+    "ICCV",
+    "GDKVM"
+  ],
+  "authors": [
+    {
+      "name": "Rui Wang",
+      "email": "2400101058@mails.szu.edu.cn"
+    },
+    {
+      "name": "Huisi Wu",
+      "email": "hswu@szu.edu.cn"
+    }
+  ],
+  "citation": {
+    "title": "GDKVM: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule",
+    "booktitle": "Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)",
+    "year": 2025,
+    "pages": "12191-12200"
+  }
+}
