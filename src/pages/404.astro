@@ -2,7 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import Section from '../components/Section.astro';
 
-const lang = Astro.currentLocale ?? 'en';
+const pathLang = Astro.url.pathname.split('/')[1];
+const lang = pathLang === 'zh' ? 'zh' : 'en';
 const isZh = lang === 'zh';
 
 const title = isZh ? '页面未找到' : 'Page Not Found';
