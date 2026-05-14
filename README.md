@@ -1,43 +1,84 @@
-# GDKVM project 开发
+# GDKVM
 
-2025 1210
+[![Astro](https://img.shields.io/badge/Astro-6.x-BC52EE?logo=astro)](https://astro.build)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.x-06B6D4?logo=tailwindcss)](https://tailwindcss.com)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript)](https://www.typescriptlang.org)
+[![Playwright](https://img.shields.io/badge/Playwright-E2E-2EAD33?logo=playwright)](https://playwright.dev)
 
-## 制作流程
-1. 把下面的 html 放入 Canvas 里
-2. 把原文件再直接粘贴进去。不然 Gemini Canvas 总是擅自改图片 url。
+> Project page for **GDKVM: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule** (ICCV 2025).
 
-End. 请别人帮忙审阅观感是否没有困难，愉悦。
+Live site: [https://wangrui2025.github.io/GDKVM/](https://wangrui2025.github.io/GDKVM/)
 
-# 特别的
+## Overview
 
-## 内容组
-1. 简洁、学术。
-2. 页面默认英文，可以选择中文。
+GDKVM is a project page built with Astro 6.x, Tailwind CSS v4, and TypeScript. It presents research on echocardiography video segmentation using a novel spatiotemporal key-value memory architecture with gated delta rule.
 
-## 工程组
-1. 前端的一些知识。
-2. 按钮的 `<a>` 标签添加了 target="_blank" 属性，这样点击时就会在新标签页中打开，而不会覆盖当前页面。
-3. 本来是依照 overleaf section。但是中英文切换功能不好实现，现在统一到一个 html。
+## Tech Stack
 
-## 美工组
+- **Framework**: [Astro](https://astro.build) v6.1.8
+- **Styling**: [Tailwind CSS](https://tailwindcss.com) v4.2.2
+- **Language**: TypeScript 5.9
+- **Testing**: Playwright (E2E)
+- **Deployment**: GitHub Pages
 
-1. 优化了移动端的显示。标题换行。部分图表添加横向滚动容器。
-3. 使用了 Apple 翻译图标。[sf-symbols](https://developer.apple.com/sf-symbols/)
+## Project Structure
 
-## 开发组
-为保持 ICCV 顶会论文仓库整洁，建议将代码与网页分离。
+```
+GDKVM/
+├── src/
+│   ├── pages/[lang]/         # i18n routes (en, zh)
+│   ├── components/           # Reusable Astro components
+│   ├── layouts/              # Page layouts
+│   ├── content/              # JSON translation files
+│   ├── styles/               # Page-specific CSS
+│   └── scripts/              # Client-side scripts
+├── e2e/                      # Playwright E2E tests
+├── public/                   # Static assets
+├── .astro/                   # Astro generated types
+└── dist/                     # Build output
+```
 
-**方案一（强烈推荐）：孤立分支**
-`main` 分支仅存放实验代码，`gh-pages` 分支仅存放网页。
-- 设置：GitHub Pages Source 选择 `gh-pages` 分支。
+## Development
 
-**方案二：/docs 文件夹**
-将网页文件放入 `main` 分支的 `docs` 文件夹。
-- 设置：GitHub Pages Folder 选择 `/docs`。
+### Prerequisites
 
-## todo
-1. 方法流程示意图。
+- Node.js 20+
+- npm
 
-## 不再实现
-1. 多语言的网页设计逻辑，也许应该是再开一个 zh html 文件。
-2. 主题默认自动跟随系统，可以切换light mode、dark mode。精力不够，以后会有更好的模板、更强的 Agent 支持。
+### Install Dependencies
+
+```bash
+npm install
+npx playwright install
+```
+
+### Local Development
+
+```bash
+npm run dev
+```
+
+### Build
+
+```bash
+npm run build
+```
+
+### Run Tests
+
+```bash
+npx playwright test
+```
+
+## i18n
+
+The site supports English (`en`) and Chinese (`zh`) with Astro's built-in i18n routing:
+
+- `prefixDefaultLocale: true` — all URLs include locale prefix
+- `redirectToDefaultLocale: true` — root `/` redirects to `/en/`
+
+Content translations are stored in `src/content/` as JSON files.
+
+## License
+
+This project page is released under the MIT License.
