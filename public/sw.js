@@ -1,7 +1,13 @@
 const CACHE_NAME = 'gdkvm-shell-v1';
 const STATIC_ASSETS = [
   '/GDKVM/',
-  '/GDKVM/favicon.ico'
+  '/GDKVM/favicon.png',
+  '/GDKVM/en/',
+  '/GDKVM/zh/',
+  '/GDKVM/en/tool/',
+  '/GDKVM/zh/tool/',
+  '/GDKVM/en/reprod/',
+  '/GDKVM/zh/reprod/'
 ];
 
 self.addEventListener('install', (event) => {
