@@ -1,0 +1,16 @@
+{
+  "name": "GDKVM - Geometric Deep Kernelized Vector Machine",
+  "short_name": "GDKVM",
+  "description": "GDKVM project page for echocardiography video segmentation",
+  "start_url": "/GDKVM/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "/GDKVM/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
