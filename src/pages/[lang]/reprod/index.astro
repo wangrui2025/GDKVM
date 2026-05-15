@@ -11,7 +11,7 @@ export function getStaticPaths() {
 }
 
 const { lang } = Astro.params;
-const homeUrl = lang === 'en' ? `${import.meta.env.BASE_URL}/` : `${import.meta.env.BASE_URL}/${lang}/`;
+const homeUrl = { en: `${import.meta.env.BASE_URL}/`, zh: `${import.meta.env.BASE_URL}/${lang}/` }[lang] ?? `${import.meta.env.BASE_URL}/`;
 ---
 
 <Layout title={t(lang, 'reprod.title')} showFooter={false}>
@@ -100,10 +100,10 @@ const homeUrl = lang === 'en' ? `${import.meta.env.BASE_URL}/` : `${import.meta.
       <p class="mb-2">{t(lang, 'reprod.getCodeStructure')}</p>
       <div class="relative mb-6">
         <pre class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-bash">.
-├── .python-version    # {lang === 'zh' ? '指定项目使用的 Python 版本' : 'Specifies the Python version'}
-├── pyproject.toml     # {lang === 'zh' ? '项目的主配置文件' : 'Main project configuration file'}
-├── uv.lock            # {lang === 'zh' ? '锁定文件 (确保环境一致性)' : 'Lock file (Ensures consistency)'}
-└── ...                # {lang === 'zh' ? '其他项目源代码文件' : 'Other source code files'}</code></pre>
+├── .python-version    # {t(lang, 'reprod.fileStruct.pythonVersion')}
+├── pyproject.toml     # {t(lang, 'reprod.fileStruct.projectConfig')}
+├── uv.lock            # {t(lang, 'reprod.fileStruct.lockFile')}
+└── ...                # {t(lang, 'reprod.fileStruct.otherFiles')}</code></pre>
       </div>
 
       <h3 class="text-xl font-semibold mt-8 mb-4 text-gray-700 dark:text-gray-300">
@@ -124,17 +124,17 @@ const homeUrl = lang === 'en' ? `${import.meta.env.BASE_URL}/` : `${import.meta.
           {t(lang, 'reprod.troubleshootingTitle')}
         </div>
         <p class="mb-4 text-sm">
-          <strong>{lang === 'zh' ? '场景：' : 'Scenario:'}</strong> {lang === 'zh' ? '若执行 uv sync 时报错（如 SSL 错误、连接超时），通常系网络策略限制导致 uv 无法自动下载 Python 解释器。' : 'If uv sync fails (e.g., SSL errors, timeouts), it is usually due to network policies preventing uv from automatically downloading the Python interpreter.'}
+          <strong>{t(lang, 'reprod.troubleshooting.scenario')}</strong> {t(lang, 'reprod.troubleshooting.scenarioUvSync')}
         </p>
         <p class="mb-4 text-sm">
-          <strong>{lang === 'zh' ? '解决方案：' : 'Solution:'}</strong> {lang === 'zh' ? '通过镜像源手动安装 Python。' : 'Manually install Python via a mirror source.'}
+          <strong>{t(lang, 'reprod.troubleshooting.solution')}</strong> {t(lang, 'reprod.troubleshooting.solutionMirror')}
         </p>
-        <p class="mb-2 text-sm">{lang === 'zh' ? '查看可用版本：' : 'Check available versions:'}</p>
+        <p class="mb-2 text-sm">{t(lang, 'reprod.troubleshooting.checkVersions')}</p>
         <div class="relative mb-4">
         <CopyButton targetId="code-09" />
         <pre id="code-09" class="bg-white/50 dark:bg-gray-800/50 rounded p-3 text-sm"><code class="language-bash">uv python list</code></pre>
         </div>
-        <p class="mb-2 text-sm">{lang === 'zh' ? '通过镜像源安装（以 3.12.12 为例）：' : 'Install via mirror (e.g., 3.12.12):'}</p>
+        <p class="mb-2 text-sm">{t(lang, 'reprod.troubleshooting.installMirror')}</p>
         <div class="relative mb-4">
         <CopyButton targetId="code-10" />
         <pre id="code-10" class="bg-white/50 dark:bg-gray-800/50 rounded p-3 text-sm"><code class="language-bash">uv python install 3.12.12 --mirror https://github-proxy.lixxing.top/https://github.com/astral-sh/python-build-standalone/releases/download</code></pre>
@@ -151,38 +151,38 @@ const homeUrl = lang === 'en' ? `${import.meta.env.BASE_URL}/` : `${import.meta.
         <div class="compatibility-content">
           <ol class="list-decimal pl-5 space-y-4 text-sm">
             <li>
-              <strong>Pydantic {lang === 'zh' ? '版本冲突' : 'Version Conflict'} &lt;2.12</strong>
+              <strong>Pydantic {t(lang, 'reprod.versionConstraints.pydanticConflict')} &lt;2.12</strong>
               <div class="mt-1 pl-1 text-xs">
-                <p class="mb-1"><strong><Icon name="lucide:bug" class="text-red-500 w-4" /> {lang === 'zh' ? '现象：' : 'Issue:'}</strong> {lang === 'zh' ? 'Pydantic 2.12+ (2025-10) 的严格 Schema 校验与 wandb 字段声明冲突，多进程下可能导致崩溃。' : 'Pydantic 2.12+ (2025-10) strict Schema validation conflicts with wandb field declarations, potentially causing crashes in multi-process modes.'}</p>
-                <p><strong><Icon name="lucide:circle-check" class="text-green-500 w-4" /> {lang === 'zh' ? '解决：' : 'Solution:'}</strong> {lang === 'zh' ? '配置文件已强制锁定 pydantic&lt;2.12。' : 'The configuration file forcefully locks pydantic&lt;2.12.'}</p>
+                <p class="mb-1"><strong><Icon name="lucide:bug" class="text-red-500 w-4" /> {t(lang, 'reprod.versionConstraints.pydanticIssue')}</strong> {t(lang, 'reprod.versionConstraints.pydanticIssueDesc')}</p>
+                <p><strong><Icon name="lucide:circle-check" class="text-green-500 w-4" /> {t(lang, 'reprod.versionConstraints.pydanticFix')}</strong> {t(lang, 'reprod.versionConstraints.pydanticFixDesc')}</p>
               </div>
             </li>
             <li>
-              <strong>Wandb {lang === 'zh' ? '系统兼容性 (glibc)' : 'System Compatibility (glibc)'}</strong>
+              <strong>Wandb {t(lang, 'reprod.versionConstraints.wandbCompat')}</strong>
               <div class="mt-1 pl-1 text-xs">
-                <p class="mb-1"><strong><Icon name="lucide:bug" class="text-red-500 w-4" /> {lang === 'zh' ? '现象：' : 'Issue:'}</strong> {lang === 'zh' ? 'wandb>=0.22.2 停止提供针对 Ubuntu 18.04 (glibc 2.27) 的预编译包，导致安装失败。' : 'wandb>=0.22.2 stopped providing pre-built packages for Ubuntu 18.04 (glibc 2.27), causing installation failures.'}</p>
-                <p><strong><Icon name="lucide:circle-check" class="text-green-500 w-4" /> {lang === 'zh' ? '解决：' : 'Solution:'}</strong> {lang === 'zh' ? '需确保系统安装了 Go 编译器以支持源码编译，或升级操作系统。' : 'Ensure a Go compiler is installed for source compilation, or upgrade the OS.'}</p>
+                <p class="mb-1"><strong><Icon name="lucide:bug" class="text-red-500 w-4" /> {t(lang, 'reprod.versionConstraints.wandbIssue')}</strong> {t(lang, 'reprod.versionConstraints.wandbIssueDesc')}</p>
+                <p><strong><Icon name="lucide:circle-check" class="text-green-500 w-4" /> {t(lang, 'reprod.versionConstraints.wandbFix')}</strong> {t(lang, 'reprod.versionConstraints.wandbFixDesc')}</p>
               </div>
             </li>
             <li>
-              <strong>SSL/TLS {lang === 'zh' ? '证书错误 (内网/代理环境)' : 'Certificate Errors'}</strong>
+              <strong>SSL/TLS {t(lang, 'reprod.versionConstraints.sslCert')}</strong>
               <div class="mt-1 pl-1 text-xs">
-                <p class="mb-1"><strong><Icon name="lucide:bug" class="text-red-500 w-4" /> {lang === 'zh' ? '现象：' : 'Issue:'}</strong> {lang === 'zh' ? '运行 uv add/sync 时报错（Certificate Expired），因内网防火墙/代理的自签名证书不被 uv 默认的 Rust TLS 信任。' : 'uv add/sync fails (Certificate Expired) because self-signed certificates in intranet/proxy environments are not trusted by uv\'s default Rust TLS.'}</p>
-                <p class="mb-2"><strong><Icon name="lucide:circle-check" class="text-green-500 w-4" /> {lang === 'zh' ? '解决方案：' : 'Solution:'}</strong> {lang === 'zh' ? '切换为系统原生 TLS 验证。' : 'Switch to system-native TLS validation.'}</p>
+                <p class="mb-1"><strong><Icon name="lucide:bug" class="text-red-500 w-4" /> {t(lang, 'reprod.versionConstraints.sslIssue')}</strong> {t(lang, 'reprod.versionConstraints.sslIssueDesc')}</p>
+                <p class="mb-2"><strong><Icon name="lucide:circle-check" class="text-green-500 w-4" /> {t(lang, 'reprod.versionConstraints.sslFix')}</strong> {t(lang, 'reprod.versionConstraints.sslFixDesc')}</p>
                 <div class="mb-2">
-                  <span class="inline-block bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs px-2 py-0.5 rounded mb-1">{lang === 'zh' ? '方案 A (临时单次)' : 'Option A (Temporary)'}</span>
+                  <span class="inline-block bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs px-2 py-0.5 rounded mb-1">{t(lang, 'reprod.versionConstraints.sslOptA')}</span>
                   <div class="relative">
         <CopyButton targetId="code-11" />
         <pre id="code-11" class="bg-white/50 dark:bg-gray-800/50 rounded p-2 text-sm"><code class="language-bash">uv add wandb --native-tls</code></pre>
                   </div>
                 </div>
                 <div>
-                  <span class="inline-block bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs px-2 py-0.5 rounded mb-1">{lang === 'zh' ? '方案 B (永久推荐)' : 'Option B (Recommended)'}</span>
+                  <span class="inline-block bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs px-2 py-0.5 rounded mb-1">{t(lang, 'reprod.versionConstraints.sslOptB')}</span>
                   <div class="relative">
         <CopyButton targetId="code-12" />
         <pre id="code-12" class="bg-white/50 dark:bg-gray-800/50 rounded p-2 text-sm"><code class="language-bash">export UV_NATIVE_TLS=1</code></pre>
                   </div>
-                  <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">* {lang === 'zh' ? '建议将此命令添加到 ~/.bashrc 或 ~/.zshrc' : 'Recommended to add this to ~/.bashrc or ~/.zshrc'}</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">* {t(lang, 'reprod.versionConstraints.sslOptBDesc')}</p>
                 </div>
               </div>
             </li>
@@ -220,8 +220,8 @@ const homeUrl = lang === 'en' ? `${import.meta.env.BASE_URL}/` : `${import.meta.
         </div>
         <div class="pt-3 border-t border-dashed border-gray-200 dark:border-gray-600 text-xs text-gray-500 flex flex-wrap items-center gap-x-4 gap-y-2">
           <span class="font-bold"><Icon name="lucide:archive" class="mr-1" /> {t(lang, 'reprod.rawData')}:</span>
-          <span class="whitespace-nowrap"><strong>CAMUS</strong> <a href="https://www.creatis.insa-lyon.fr/Challenge/camus/" target="_blank" class="link-subtle">{lang === 'zh' ? '官方网站' : 'Official'}</a> <a href="https://huggingface.co/datasets/miyuki17/CAMUS_public" target="_blank" class="link-subtle">HuggingFace {lang === 'zh' ? '镜像' : 'Mirror'}</a></span>
-          <span class="whitespace-nowrap"><strong>EchoNet-Dynamic</strong> <a href="https://echonet.github.io/dynamic/" target="_blank" class="link-subtle">{lang === 'zh' ? '官方网站' : 'Official'}</a> <a href="https://huggingface.co/datasets/miyuki17/EchoNet-Dynamic-zip" target="_blank" class="link-subtle">{lang === 'zh' ? '镜像' : 'Mirror'}</a></span>
+          <span class="whitespace-nowrap"><strong>CAMUS</strong> <a href="https://www.creatis.insa-lyon.fr/Challenge/camus/" target="_blank" class="link-subtle">{t(lang, 'reprod.dataset.official')}</a> <a href="https://huggingface.co/datasets/miyuki17/CAMUS_public" target="_blank" class="link-subtle">HuggingFace {t(lang, 'reprod.dataset.mirror')}</a></span>
+          <span class="whitespace-nowrap"><strong>EchoNet-Dynamic</strong> <a href="https://echonet.github.io/dynamic/" target="_blank" class="link-subtle">{t(lang, 'reprod.dataset.official')}</a> <a href="https://huggingface.co/datasets/miyuki17/EchoNet-Dynamic-zip" target="_blank" class="link-subtle">{t(lang, 'reprod.dataset.mirror')}</a></span>
         </div>
       </div>
 
@@ -236,21 +236,21 @@ const homeUrl = lang === 'en' ? `${import.meta.env.BASE_URL}/` : `${import.meta.
       <p class="mb-4">{t(lang, 'reprod.trainingConfigDesc')}</p>
       <div class="relative mb-6">
         <CopyButton targetId="code-15" />
-        <pre id="code-15" class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-bash">CUDA_VISIBLE_DEVICES: 0,1 # {lang === 'zh' ? '指定使用的 GPU 设备编号' : 'Specify GPU device IDs'}
-MASTER_PORT: 29500        # {lang === 'zh' ? '分布式训练的主端口号，避免冲突' : 'Port for distributed training'}</code></pre>
+        <pre id="code-15" class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-bash">CUDA_VISIBLE_DEVICES: 0,1 # {t(lang, 'reprod.training.gpuDevice')}
+MASTER_PORT: 29500        # {t(lang, 'reprod.training.masterPort')}</code></pre>
       </div>
 
       <p class="mb-2 font-semibold">{t(lang, 'reprod.trainingHyper')}</p>
       <p class="mb-4">{t(lang, 'reprod.trainingHyperDesc')}</p>
       <div class="relative mb-6">
         <CopyButton targetId="code-16" />
-        <pre id="code-16" class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-yaml">data_path: /data/Anon/dataset/camus_png256x256_10f_20250709/   # {lang === 'zh' ? '数据集的实际存放路径' : 'Dataset path'}
-batch_size: 8                                                  # {lang === 'zh' ? '单次训练的样本数量' : 'Batch size'}
-learning_rate: 1.0e-4                                          # {lang === 'zh' ? '学习率' : 'Learning rate'}
-num_iterations: 3000                                           # {lang === 'zh' ? '总迭代次数' : 'Total iterations'}
+        <pre id="code-16" class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-yaml">data_path: /data/Anon/dataset/camus_png256x256_10f_20250709/   # {t(lang, 'reprod.training.datasetPath')}
+batch_size: 8                                                  # {t(lang, 'reprod.training.batchSize')}
+learning_rate: 1.0e-4                                          # {t(lang, 'reprod.training.learningRate')}
+num_iterations: 3000                                           # {t(lang, 'reprod.training.totalIter')}
 eval_stage:
-  num_vis: 0                                                   # {lang === 'zh' ? '可视化图片的数量' : 'Visualization count'}
-  wandb_mode: "offline"                                        # {lang === 'zh' ? '设置为 "offline"' : 'Set to "offline"'}</code></pre>
+  num_vis: 0                                                   # {t(lang, 'reprod.training.visCount')}
+  wandb_mode: "offline"                                        # {t(lang, 'reprod.training.wandbMode')}</code></pre>
       </div>
 
       <p class="mb-2 font-semibold">{t(lang, 'reprod.trainingExec')}</p>
@@ -273,7 +273,7 @@ eval_stage:
       <p class="mb-4">{t(lang, 'reprod.wandbDesc')}</p>
       <ul class="list-disc pl-5 mb-4 space-y-1">
         <li><strong>{t(lang, 'reprod.wandbLogPath')}</strong> <code>gdkvm_20251215/wandb</code></li>
-        <li><strong>{t(lang, 'reprod.wandbRunDir')}</strong> {lang === 'zh' ? '包含时间戳与哈希值的子文件夹（例如：offline-run-20251215_123456-abcdef1gh）。' : 'Subfolders with timestamps and hashes (e.g., offline-run-20251215_123456-abcdef1gh).'}</li>
+        <li><strong>{t(lang, 'reprod.wandbRunDir')}</strong> {t(lang, 'reprod.wandb.runDirDesc')}</li>
       </ul>
       <p class="mb-2 font-semibold">{t(lang, 'reprod.wandbUpload')}</p>
       <p class="mb-4">{t(lang, 'reprod.wandbUploadDesc')}</p>

@@ -52,5 +52,56 @@
   "wandbRunDir": "Run Directory:",
   "wandbUpload": "Upload Offline Logs",
   "wandbUploadDesc": "After training, sync offline data to WandB cloud:",
-  "footerNote": "All references to \"today\" or \"now\" in this guide refer to December 15, 2025."
+  "footerNote": "All references to \"today\" or \"now\" in this guide refer to December 15, 2025.",
+  "fileStruct": {
+    "pythonVersion": "Specifies the Python version",
+    "projectConfig": "Main project configuration file",
+    "lockFile": "Lock file (Ensures consistency)",
+    "otherFiles": "Other source code files"
+  },
+  "troubleshooting": {
+    "scenario": "Scenario:",
+    "scenarioUvSync": "If uv sync fails (e.g., SSL errors, timeouts), it is usually due to network policies preventing uv from automatically downloading the Python interpreter.",
+    "solution": "Solution:",
+    "solutionMirror": "Manually install Python via a mirror source.",
+    "checkVersions": "Check available versions:",
+    "installMirror": "Install via mirror (e.g., 3.12.12):"
+  },
+  "versionConstraints": {
+    "pydanticConflict": "Version Conflict <2.12",
+    "pydanticIssue": "Issue:",
+    "pydanticIssueDesc": "Pydantic 2.12+ (2025-10) strict Schema validation conflicts with wandb field declarations, potentially causing crashes in multi-process modes.",
+    "pydanticFix": "Solution:",
+    "pydanticFixDesc": "The configuration file forcefully locks pydantic<2.12.",
+    "wandbCompat": "System Compatibility (glibc)",
+    "wandbIssue": "Issue:",
+    "wandbIssueDesc": "wandb>=0.22.2 stopped providing pre-built packages for Ubuntu 18.04 (glibc 2.27), causing installation failures.",
+    "wandbFix": "Solution:",
+    "wandbFixDesc": "Ensure a Go compiler is installed for source compilation, or upgrade the OS.",
+    "sslCert": "Certificate Errors",
+    "sslIssue": "Issue:",
+    "sslIssueDesc": "uv add/sync fails (Certificate Expired) because self-signed certificates in intranet/proxy environments are not trusted by uv's default Rust TLS.",
+    "sslFix": "Solution:",
+    "sslFixDesc": "Switch to system-native TLS validation.",
+    "sslOptA": "Option A (Temporary)",
+    "sslOptB": "Option B (Recommended)",
+    "sslOptBDesc": "Recommended to add this to ~/.bashrc or ~/.zshrc"
+  },
+  "dataset": {
+    "official": "Official",
+    "mirror": "Mirror"
+  },
+  "training": {
+    "gpuDevice": "Specify GPU device IDs",
+    "masterPort": "Port for distributed training",
+    "datasetPath": "Dataset path",
+    "batchSize": "Batch size",
+    "learningRate": "Learning rate",
+    "totalIter": "Total iterations",
+    "visCount": "Visualization count",
+    "wandbMode": "Set to \"offline\""
+  },
+  "wandb": {
+    "runDirDesc": "Subfolders with timestamps and hashes (e.g., offline-run-20251215_123456-abcdef1gh)."
+  }
 }

@@ -52,5 +52,56 @@
   "wandbRunDir": "具体运行目录:",
   "wandbUpload": "上传离线日志",
   "wandbUploadDesc": "训练结束后，可以使用以下命令将离线数据同步到 WandB 云端：",
-  "footerNote": "本说明的所有\"今天\"\"现在\"指的是 2025 年 12 月 15 日。"
+  "footerNote": "本说明的所有\"今天\"\"现在\"指的是 2025 年 12 月 15 日。",
+  "fileStruct": {
+    "pythonVersion": "指定项目使用的 Python 版本",
+    "projectConfig": "项目的主配置文件",
+    "lockFile": "锁定文件 (确保环境一致性)",
+    "otherFiles": "其他项目源代码文件"
+  },
+  "troubleshooting": {
+    "scenario": "场景：",
+    "scenarioUvSync": "若执行 uv sync 时报错（如 SSL 错误、连接超时），通常系网络策略限制导致 uv 无法自动下载 Python 解释器。",
+    "solution": "解决方案：",
+    "solutionMirror": "通过镜像源手动安装 Python。",
+    "checkVersions": "查看可用版本：",
+    "installMirror": "通过镜像源安装（以 3.12.12 为例）："
+  },
+  "versionConstraints": {
+    "pydanticConflict": "版本冲突 <2.12",
+    "pydanticIssue": "现象：",
+    "pydanticIssueDesc": "Pydantic 2.12+ (2025-10) 的严格 Schema 校验与 wandb 字段声明冲突，多进程下可能导致崩溃。",
+    "pydanticFix": "解决：",
+    "pydanticFixDesc": "配置文件已强制锁定 pydantic<2.12。",
+    "wandbCompat": "系统兼容性 (glibc)",
+    "wandbIssue": "现象：",
+    "wandbIssueDesc": "wandb>=0.22.2 停止提供针对 Ubuntu 18.04 (glibc 2.27) 的预编译包，导致安装失败。",
+    "wandbFix": "解决：",
+    "wandbFixDesc": "需确保系统安装了 Go 编译器以支持源码编译，或升级操作系统。",
+    "sslCert": "证书错误 (内网/代理环境)",
+    "sslIssue": "现象：",
+    "sslIssueDesc": "运行 uv add/sync 时报错（Certificate Expired），因内网防火墙/代理的自签名证书不被 uv 默认的 Rust TLS 信任。",
+    "sslFix": "解决方案：",
+    "sslFixDesc": "切换为系统原生 TLS 验证。",
+    "sslOptA": "方案 A (临时单次)",
+    "sslOptB": "方案 B (永久推荐)",
+    "sslOptBDesc": "建议将此命令添加到 ~/.bashrc 或 ~/.zshrc"
+  },
+  "dataset": {
+    "official": "官方网站",
+    "mirror": "镜像"
+  },
+  "training": {
+    "gpuDevice": "指定使用的 GPU 设备编号",
+    "masterPort": "分布式训练的主端口号，避免冲突",
+    "datasetPath": "数据集的实际存放路径",
+    "batchSize": "单次训练的样本数量",
+    "learningRate": "学习率",
+    "totalIter": "总迭代次数",
+    "visCount": "可视化图片的数量",
+    "wandbMode": "设置为 \"offline\""
+  },
+  "wandb": {
+    "runDirDesc": "包含时间戳与哈希值的子文件夹（例如：offline-run-20251215_123456-abcdef1gh）。"
+  }
 }
