@@ -13,7 +13,7 @@
     "@iconify-json/academicons": "^1.2.4",
     "@iconify-json/lucide": "^1.2.102",
     "@iconify-json/simple-icons": "^1.2.77",
-    "@tailwindcss/vite": "^4.2.2",
+    "@tailwindcss/postcss": "^4.3.0",
     "astro": "^6.1.8",
     "astro-expressive-code": "^0.41.7",
     "astro-icon": "^1.1.5",

@@ -1,5 +1,37 @@
 export {};
 
+// i18n helper
+const i18n: Record<string, Record<string, string>> = {
+  en: {
+    formatError: 'Format error, Supporting examples: 1e8, 250000, 3.5×10^6',
+    positiveNumberError: 'Please Input Positive Numbers',
+    optimalBs: 'Optimal Token Wise BatchSize: ',
+    learningRate: 'Learning Rate: ',
+    results: 'Results',
+    bsDefault: 'BS: -',
+    lrDefault: 'LR: -',
+    failed: 'Failed',
+    checkParams: 'Please check the parameters：',
+    loading: 'Loading...',
+  },
+  zh: {
+    formatError: '格式错误，支持示例：1e8, 250000, 3.5×10^6',
+    positiveNumberError: '请输入正数',
+    optimalBs: '最优Token级BatchSize: ',
+    learningRate: '学习率: ',
+    results: '计算结果',
+    bsDefault: '批量大小: -',
+    lrDefault: '学习率: -',
+    failed: '加载失败',
+    checkParams: '请检查参数：',
+    loading: '加载中...',
+  },
+};
+function t(key: string): string {
+  const lang = document.documentElement.lang || 'en';
+  return (i18n[lang] || i18n.en)[key] || key;
+}
+
 // 选项卡切换功能
 function initTabs() {
   document.querySelectorAll('.tab-button').forEach((button) => {
@@ -217,8 +249,8 @@ function initVisualization() {
       <div class="error-message">
         <span class="icon">⚠️</span>
         <div>
-          <p>Failed</p>
-          <small>Please check the parameters：${fileName}</small>
+          <p>${t('failed')}</p>
+          <small>${t('checkParams')}${fileName}</small>
         </div>
       </div>
     `;
@@ -228,7 +260,7 @@ function initVisualization() {
     loading.className = 'image-loading';
     loading.innerHTML = `
       <div class="loading-spinner"></div>
-      <p>Loading...</p>
+      <p>${t('loading')}</p>
     `;
 
     // 容器布局
@@ -294,9 +326,9 @@ function showError(message: string) {
   if (!resultDiv) return;
   resultDiv.innerHTML = `<div class="error">⚠️ ${message}</div>`;
   setTimeout(() => {
-    resultDiv.innerHTML = `<h3>Results</h3>
-      <p id="bsValue">BS: -</p>
-      <p id="lrValue">LR: -</p>`;
+    resultDiv.innerHTML = `<h3>${t('results')}</h3>
+      <p id="bsValue">${t('bsDefault')}</p>
+      <p id="lrValue">${t('lrDefault')}</p>`;
   }, 2000);
 }
 
@@ -346,7 +378,7 @@ document.addEventListener('astro:page-load', () => {
 
       // 输入验证
       if (!isValidFormat(modelSizeInput) || !isValidFormat(trainingTokensInput)) {
-        showError("Format error, Supporting examples: 1e8, 250000, 3.5×10^6");
+        showError(t('formatError'));
         return;
       }
 
@@ -354,7 +386,7 @@ document.addEventListener('astro:page-load', () => {
       const trainingTokens = parseNumber(trainingTokensInput);
 
       if (isNaN(modelSize) || isNaN(trainingTokens) || modelSize <= 0 || trainingTokens <= 0) {
-        showError("Please Input Positive Numbers");
+        showError(t('positiveNumberError'));
         return;
       }
 
@@ -364,8 +396,8 @@ document.addEventListener('astro:page-load', () => {
       // 显示结果
       const bsValue = document.getElementById('bsValue');
       const lrValue = document.getElementById('lrValue');
-      if (bsValue) bsValue.textContent = `Optimal Token Wise BatchSize: ${formatLargeNumber(batchSize)}`;
-      if (lrValue) lrValue.textContent = `Learning Rate: ${formatSmallNumber(learningRate)}`;
+      if (bsValue) bsValue.textContent = `${t('optimalBs')}${formatLargeNumber(batchSize)}`;
+      if (lrValue) lrValue.textContent = `${t('learningRate')}${formatSmallNumber(learningRate)}`;
     });
   }
 });

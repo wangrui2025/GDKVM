@@ -3,6 +3,7 @@
   "compilerOptions": {
     "strict": true,
     "noImplicitAny": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "verbatimModuleSyntax": true
   }
 }
