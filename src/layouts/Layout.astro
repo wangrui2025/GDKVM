@@ -75,6 +75,12 @@ const lang = Astro.currentLocale ?? 'en';
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={image} />
     <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site).href} />
+
+    <!-- Language alternates for SEO -->
+    <link rel="alternate" hreflang="en" href={new URL('/GDKVM/en/', Astro.site).href} />
+    <link rel="alternate" hreflang="zh" href={new URL('/GDKVM/zh/', Astro.site).href} />
+    <link rel="alternate" hreflang="x-default" href={new URL('/GDKVM/en/', Astro.site).href} />
+
     <link rel="icon" type="image/png" href={`${import.meta.env.BASE_URL}/favicon.png`} />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#111827" media="(prefers-color-scheme: dark)" />
