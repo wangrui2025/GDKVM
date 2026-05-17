@@ -2,16 +2,14 @@
 import Layout from '../layouts/Layout.astro';
 import Section from '../components/Section.astro';
 import { getRelativeLocaleUrl } from 'astro:i18n';
+import { t } from '../i18n';
 
 const pathLang = Astro.url.pathname.split('/')[1];
 const lang = pathLang === 'zh' ? 'zh' : 'en';
-const isZh = lang === 'zh';
 
-const title = isZh ? '页面未找到' : 'Page Not Found';
-const message = isZh
-  ? '抱歉，您访问的页面不存在。'
-  : "Sorry, the page you're looking for doesn't exist.";
-const homeLabel = isZh ? '返回首页' : 'Back to Home';
+const title = t(lang, '404.title');
+const message = t(lang, '404.message');
+const homeLabel = t(lang, '404.homeLabel');
 ---
 
 <Layout title={title}>
