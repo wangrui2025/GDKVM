@@ -86,6 +86,8 @@ const schema = getScholarlyArticleSchema({
         width={1200}
         height={600}
         class="w-full rounded"
+        fetchpriority="high"
+        loading="eager"
       />
     </div>
     <figcaption class="text-sm text-gray-600 dark:text-gray-400 text-justify mt-4 leading-relaxed">
@@ -193,8 +195,6 @@ const schema = getScholarlyArticleSchema({
     </div>
   </Section>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js" is:inline></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js" is:inline></script>
   <script is:inline>
     document.addEventListener('astro:page-load', function () {
       if (typeof renderMathInElement !== 'undefined') {
