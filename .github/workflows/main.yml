@@ -1,0 +1,43 @@
+name: Sync Academic Submodule
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Fetch latest academic
+        run: |
+          git remote add upstream https://github.com/mykcs/academic.git
+          git fetch upstream main --depth 1
+
+      - name: Update submodule
+        id: update
+        run: |
+          UPSTREAM_SHA=$(git rev-parse upstream/main)
+          CURRENT_SHA=$(git ls-tree HEAD vendor/academic 2>/dev/null | awk '{print $3}')
+          if [ "$CURRENT_SHA" = "$UPSTREAM_SHA" ]; then
+            echo "updated=false" >> $GITHUB_OUTPUT
+            echo "Already up to date"
+          else
+            echo "updated=true" >> $GITHUB_OUTPUT
+            git submodule update --init --recursive
+            cd vendor/academic && git checkout upstream/main
+            cd ..
+            git add vendor/academic
+            git config --local user.name "academic-sync"
+            git config --local user.email "bot@wangrui2025.github.io"
+            git commit -m "chore: sync academic to $(echo $UPSTREAM_SHA | cut -c1-8)"
+          fi
+
+      - name: Push if updated
+        if: steps.update.outputs.updated == 'true'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GH_PAT }}
