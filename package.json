@@ -10,6 +10,7 @@
   "dependencies": {
     "@astrojs/compiler-rs": "^0.1.7",
     "@fontsource/noto-sans": "^5.2.8",
+    "@fontsource/noto-serif-sc": "^5.2.9",
     "@iconify-json/academicons": "^1.2.4",
     "@iconify-json/lucide": "^1.2.102",
     "@iconify-json/simple-icons": "^1.2.77",
