@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #3273dc;
-  --color-primary-dark: #1a237e;
+  --color-primary: oklch(55% 0.2 265);
+  --color-primary-dark: oklch(25% 0.2 275);
   --font-sans: 'Noto Sans', system-ui, sans-serif;
   --font-display: 'Google Sans', sans-serif;
 }
@@ -29,11 +29,11 @@ a:hover {
 }
 
 .dark a {
-  color: #58a6ff;
+  color: oklch(70% 0.17 250);
 }
 
 .dark a:hover {
-  color: #79b8ff;
+  color: oklch(75% 0.17 250);
 }
 
 /* Animations ---------------------------------------------------------------- */
@@ -50,7 +50,7 @@ a:hover {
 
 /* Utilities ----------------------------------------------------------------- */
 .highlight-title {
-  background: linear-gradient(45deg, #ff3b30, #af52de, #007aff, #af52de, #ff3b30);
+  background: linear-gradient(45deg, oklch(55% 0.25 25), oklch(55% 0.25 320), oklch(55% 0.2 265), oklch(55% 0.25 320), oklch(55% 0.25 25));
   background-size: 300% 300%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -78,29 +78,29 @@ a:hover {
 
 /* Abstract box -------------------------------------------------------------- */
 .abstract-box {
-  background-color: #f5f5f5;
+  background-color: oklch(96% 0 0);
   border-radius: 1rem;
   padding: 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 20px oklch(0% 0 0 / 0.05);
   margin-bottom: 1.5rem;
 }
 
 .dark .abstract-box {
-  background-color: #1f2937;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  background-color: oklch(22% 0.02 260);
+  box-shadow: 0 4px 20px oklch(0% 0 0 / 0.3);
 }
 
 /* Challenge card ------------------------------------------------------------ */
 .challenge-card {
   border-radius: 8px;
   overflow: hidden;
-  border: 1px solid #eee;
-  background: white;
+  border: 1px solid oklch(93% 0 0);
+  background: oklch(100% 0 0);
 }
 
 .dark .challenge-card {
-  border-color: #374151;
-  background: #111827;
+  border-color: oklch(27% 0.02 260);
+  background: oklch(13% 0.02 260);
 }
 
 .challenge-card img {
@@ -111,49 +111,49 @@ a:hover {
 .challenge-caption {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #666;
+  color: oklch(45% 0 0);
   padding: 5px 0;
-  background: #fafafa;
+  background: oklch(98% 0 0);
 }
 
 .dark .challenge-caption {
-  color: #9ca3af;
-  background: #1f2937;
+  color: oklch(70% 0 0);
+  background: oklch(22% 0.02 260);
 }
 
 /* Code blocks --------------------------------------------------------------- */
 pre {
-  background-color: #f5f5f5;
+  background-color: oklch(96% 0 0);
   padding: 1rem;
   border-radius: 4px;
   overflow-x: auto;
 }
 
 .dark pre {
-  background-color: #1f2937;
+  background-color: oklch(22% 0.02 260);
 }
 
 :not(pre) > code {
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-  background-color: #f3f6fc;
+  background-color: oklch(96% 0.02 265);
   padding: 0.15rem 0.35rem;
   border-radius: 4px;
-  color: #0969da;
+  color: oklch(50% 0.2 265);
   font-size: 0.9em;
-  border: 1px solid rgba(175, 184, 193, 0.2);
+  border: 1px solid oklch(75% 0.02 260 / 0.2);
 }
 
 .dark :not(pre) > code {
-  background-color: #1f2937;
-  color: #58a6ff;
-  border-color: #374151;
+  background-color: oklch(22% 0.02 260);
+  color: oklch(70% 0.17 250);
+  border-color: oklch(27% 0.02 260);
 }
 
 /* Copy button --------------------------------------------------------------- */
 .copy-btn {
   opacity: 0.7;
   transition: opacity 0.2s;
-  border: 1px solid #dbdbdb;
+  border: 1px solid oklch(85% 0 0);
   cursor: pointer;
 }
 
@@ -163,47 +163,47 @@ pre {
 
 /* Advanced / compatibility boxes -------------------------------------------- */
 .advanced-box {
-  background-color: #fffbeb;
-  border-left: 4px solid #ffdd57;
+  background-color: oklch(97% 0.03 90);
+  border-left: 4px solid oklch(85% 0.2 90);
   border-radius: 4px;
   padding: 1.2rem;
   margin: 1.5rem 0;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 5px oklch(0% 0 0 / 0.05);
 }
 
 .dark .advanced-box {
-  background-color: #451a03;
-  border-left-color: #fbbf24;
+  background-color: oklch(25% 0.05 50);
+  border-left-color: oklch(80% 0.2 85);
 }
 
 .compatibility-box {
-  background-color: #fffdf5;
-  border-left: 4px solid #ffdd57;
+  background-color: oklch(97% 0.02 90);
+  border-left: 4px solid oklch(85% 0.2 90);
   border-radius: 4px;
   margin: 1.5rem 0;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 5px oklch(0% 0 0 / 0.05);
   overflow: hidden;
 }
 
 .dark .compatibility-box {
-  background-color: #451a03;
+  background-color: oklch(25% 0.05 50);
 }
 
 .compatibility-header {
   padding: 1rem 1.2rem;
   font-weight: bold;
-  color: #856404;
+  color: oklch(45% 0.15 75);
   cursor: pointer;
   list-style: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
   outline: none;
-  background-color: rgba(255, 221, 87, 0.15);
+  background-color: oklch(85% 0.2 90 / 0.15);
 }
 
 .compatibility-header:hover {
-  background-color: rgba(255, 221, 87, 0.25);
+  background-color: oklch(85% 0.2 90 / 0.25);
 }
 
 .compatibility-header::-webkit-details-marker {
@@ -212,27 +212,27 @@ pre {
 
 .compatibility-content {
   padding: 1.2rem;
-  border-top: 1px solid rgba(255, 221, 87, 0.3);
+  border-top: 1px solid oklch(85% 0.2 90 / 0.3);
 }
 
 /* Data cards ---------------------------------------------------------------- */
 .compact-card {
-  background: #fff;
-  border: 1px solid #ededed;
+  background: oklch(100% 0 0);
+  border: 1px solid oklch(90% 0 0);
   border-radius: 6px;
   padding: 1rem 1.2rem;
   margin-bottom: 1.2rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 1px 3px oklch(0% 0 0 / 0.03);
   font-size: 0.95rem;
 }
 
 .dark .compact-card {
-  background: #1f2937;
-  border-color: #374151;
+  background: oklch(22% 0.02 260);
+  border-color: oklch(27% 0.02 260);
 }
 
 .link-tag {
-  background-color: #f5f5f5;
+  background-color: oklch(96% 0 0);
   padding: 0.1rem 0.5rem;
   border-radius: 3px;
   font-size: 0.85rem;
@@ -244,17 +244,17 @@ pre {
 }
 
 .link-tag:hover {
-  background-color: #e8f0fe;
-  border-color: #b5d0ff;
+  background-color: oklch(95% 0.03 265);
+  border-color: oklch(80% 0.1 265);
   text-decoration: none;
 }
 
 .link-subtle {
-  color: #999;
+  color: oklch(60% 0 0);
   text-decoration: none;
   margin-left: 0.4rem;
   transition: color 0.2s;
-  border-bottom: 1px dotted #ccc;
+  border-bottom: 1px dotted oklch(75% 0 0);
 }
 
 .link-subtle:hover {

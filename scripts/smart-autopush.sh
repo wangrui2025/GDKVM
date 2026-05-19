@@ -1,0 +1,1 @@
+/Users/myk/.claude/scripts/smart-autopush.sh
