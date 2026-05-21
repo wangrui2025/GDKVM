@@ -10,7 +10,6 @@
   "dependencies": {
     "@astrojs/compiler-rs": "^0.1.7",
     "@fontsource/noto-sans": "^5.2.8",
-    "@fontsource/noto-serif-sc": "^5.2.9",
     "@iconify-json/academicons": "^1.2.4",
     "@iconify-json/lucide": "^1.2.108",
     "@iconify-json/simple-icons": "^1.2.83",
@@ -19,8 +18,7 @@
     "astro-expressive-code": "^0.42.0",
     "astro-icon": "^1.1.5",
     "katex": "^0.16.47",
-    "tailwindcss": "^4.3.0",
-    "zod": "^4.3.6"
+    "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
