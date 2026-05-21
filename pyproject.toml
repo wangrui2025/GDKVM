@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gdkvm"
+version = "0.1.0"
+description = "Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Rui Wang", email = "wangrui@example.com"}
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.9"
+
+[project.urls]
+Homepage = "https://wangrui2025.github.io/GDKVM/"
+Repository = "https://github.com/wangrui2025/GDKVM"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["gdkvm*"]

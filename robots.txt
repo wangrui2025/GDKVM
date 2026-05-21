@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://wangrui2025.github.io/GDKVM/sitemap-index.xml

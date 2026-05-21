@@ -4,6 +4,21 @@ node_modules/
 # Astro
 .astro/
 dist/
+website/dist/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+*.egg-info/
+dist/
+build/
 
 # Logs
 npm-debug.log*
@@ -13,5 +28,7 @@ yarn-error.log*
 # OS
 .DS_Store
 Thumbs.db
+
+# Project
 .omc/
-website/
+test-results/

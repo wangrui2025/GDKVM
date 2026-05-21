@@ -1,9 +1,0 @@
-{
-  "extends": "astro/tsconfigs/strict",
-  "compilerOptions": {
-    "strict": true,
-    "noImplicitAny": true,
-    "skipLibCheck": true,
-    "verbatimModuleSyntax": true
-  }
-}

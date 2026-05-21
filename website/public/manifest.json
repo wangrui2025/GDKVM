@@ -1,0 +1,23 @@
+{
+  "name": "GDKVM | ICCV 2025",
+  "short_name": "GDKVM",
+  "description": "GDKVM: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule",
+  "start_url": "/GDKVM/en/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3273dc",
+  "icons": [
+    {
+      "src": "/GDKVM/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/GDKVM/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

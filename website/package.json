@@ -1,0 +1,30 @@
+{
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/compiler-rs": "^0.1.7",
+    "@fontsource/noto-sans": "^5.2.8",
+    "@iconify-json/academicons": "^1.2.4",
+    "@iconify-json/lucide": "^1.2.108",
+    "@iconify-json/simple-icons": "^1.2.83",
+    "@tailwindcss/vite": "^4.3.0",
+    "astro": "^6.3.6",
+    "astro-expressive-code": "^0.42.0",
+    "astro-icon": "^1.1.5",
+    "katex": "^0.16.47",
+    "tailwindcss": "^4.3.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.8",
+    "@astrojs/sitemap": "^3.7.2",
+    "@playwright/test": "^1.59.1",
+    "playwright": "^1.59.1",
+    "typescript": "^5.9.3"
+  }
+}

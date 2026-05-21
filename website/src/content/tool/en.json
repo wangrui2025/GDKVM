@@ -1,0 +1,17 @@
+{
+  "title": "Predictable Scale",
+  "tab1": "Step Law",
+  "tab2": "Loss Heatmap",
+  "modelSize": "N(Model Size)",
+  "trainingTokens": "D(Training Token Size)",
+  "calculate": "Calculate",
+  "results": "Results",
+  "optimalBs": "Optimal Token Wise BatchSize: -",
+  "lr": "Learning Rate: -",
+  "modelType": "Model Type",
+  "moe": "Moe",
+  "dense": "Dense",
+  "na": "Na(Activate Parameters)",
+  "show": "Show",
+  "placeholder": "Please select parameters and click \"Show\""
+}

@@ -1,0 +1,156 @@
+---
+import '@fontsource/noto-sans/400.css';
+import '@fontsource/noto-sans/700.css';
+import 'katex/dist/katex.min.css';
+import { ClientRouter } from 'astro:transitions';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import LangSwitcher from '../components/LangSwitcher.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  showFooter?: boolean;
+  structuredData?: object;
+}
+
+const {
+  title,
+  description = 'GDKVM: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule',
+  image = new URL(`${import.meta.env.BASE_URL}/paper/fig/Met/gdkvm.png`, Astro.site).href,
+  showFooter = true,
+  structuredData,
+} = Astro.props;
+
+const lang = Astro.currentLocale ?? 'en';
+---
+
+<!DOCTYPE html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8">
+    <style is:inline>
+      :root {
+        --bg-color: #ffffff;
+        --text-color: #374151;
+      }
+      html.dark {
+        --bg-color: #111827;
+        --text-color: #e5e7eb;
+      }
+      html {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+      }
+    </style>
+    <script is:inline>
+      (function() {
+        function applyTheme() {
+          const theme = localStorage.getItem('theme')
+            || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          document.documentElement.classList.toggle('dark', theme === 'dark');
+          const meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', theme === 'dark' ? '#111827' : '#ffffff');
+        }
+        applyTheme();
+        document.addEventListener('astro:after-swap', applyTheme);
+      })();
+    </script>
+    <meta name="description" content={description}>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title}</title>
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site).href} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site).href} />
+
+    <!-- Language alternates for SEO -->
+    <link rel="alternate" hreflang="en" href={new URL('/GDKVM/en/', Astro.site).href} />
+    <link rel="alternate" hreflang="zh" href={new URL('/GDKVM/zh/', Astro.site).href} />
+    <link rel="alternate" hreflang="x-default" href={new URL('/GDKVM/en/', Astro.site).href} />
+
+    <link rel="icon" type="image/png" href={`${import.meta.env.BASE_URL}/favicon.png`} />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#111827" media="(prefers-color-scheme: dark)" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self';" />
+    <ClientRouter fallback="none" />
+    {structuredData && (
+      <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
+    )}
+    <script is:inline>
+      (function () {
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/GDKVM/sw.js').catch(() => {});
+        }
+      })();
+    </script>
+  </head>
+  <body class="bg-white text-gray-700 dark:bg-gray-900 dark:text-gray-200 transition-colors min-h-screen flex flex-col">
+    <div class="fixed top-4 right-4 z-50 flex items-center gap-2">
+      <ThemeToggle />
+      <LangSwitcher />
+    </div>
+    <main class="flex-1">
+      <slot />
+    </main>
+    {showFooter && <Footer />}
+    <script>
+      if (!(document as any).__gdkvmDelegated) {
+        (document as any).__gdkvmDelegated = true;
+
+        // Theme toggle delegation
+        document.addEventListener('click', (e) => {
+          const btn = (e.target as HTMLElement).closest('#theme-toggle');
+          if (!btn) return;
+          const html = document.documentElement;
+          const isDark = html.classList.toggle('dark');
+          try {
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+          } catch {}
+          const meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', isDark ? '#111827' : '#ffffff');
+        });
+
+        // Copy button delegation
+        document.addEventListener('click', (e) => {
+          const btn = (e.target as HTMLElement).closest('button[data-copy-target]');
+          if (!btn) return;
+
+          const targetId = btn.getAttribute('data-copy-target');
+          const label = btn.getAttribute('data-copy-label') || 'Copy';
+          const successLabel = btn.getAttribute('data-copy-success') || 'Copied!';
+          const el = document.getElementById(targetId || '');
+          if (!el) return;
+          const text = el.innerText;
+
+          const showSuccess = () => {
+            const icon = btn.querySelector('.copy-icon');
+            const textSpan = btn.querySelector('span');
+            if (icon) icon.setAttribute('name', 'lucide:check');
+            if (textSpan) textSpan.textContent = successLabel;
+            setTimeout(() => {
+              if (icon) icon.setAttribute('name', 'lucide:copy');
+              if (textSpan) textSpan.textContent = label;
+            }, 2000);
+          };
+
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(showSuccess).catch(() => {});
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

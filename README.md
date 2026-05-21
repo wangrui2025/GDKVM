@@ -1,84 +1,54 @@
-# GDKVM
+# GDKVM: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule
 
-[![Astro](https://img.shields.io/badge/Astro-6.x-BC52EE?logo=astro)](https://astro.build)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.x-06B6D4?logo=tailwindcss)](https://tailwindcss.com)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript)](https://www.typescriptlang.org)
-[![Playwright](https://img.shields.io/badge/Playwright-E2E-2EAD33?logo=playwright)](https://playwright.dev)
+[![Project Page](https://img.shields.io/badge/Project-Page-BC52EE?logo=githubpages)](https://wangrui2025.github.io/GDKVM/)
+[![ICCV 2025](https://img.shields.io/badge/ICCV-2025-blue)](https://iccv2025.thecvf.com/)
+[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
-> Project page for **GDKVM: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule** (ICCV 2025).
+> **Rui Wang, Yimu Sun, Jingxing Guo, Huisi Wu, Jing Qin**
+>
+> College of Computer Science and Software Engineering, Shenzhen University
+>
+> Centre for Smart Health, School of Nursing, The Hong Kong Polytechnic University
 
-Live site: [https://wangrui2025.github.io/GDKVM/](https://wangrui2025.github.io/GDKVM/)
+## Abstract
 
-## Overview
+Accurate segmentation of cardiac chambers in echocardiography sequences is crucial for the quantitative analysis of cardiac function, aiding in clinical diagnosis and treatment. The imaging noise, artifacts, and the deformation and motion of the heart pose challenges to segmentation algorithms.
 
-GDKVM is a project page built with Astro 6.x, Tailwind CSS v4, and TypeScript. It presents research on echocardiography video segmentation using a novel spatiotemporal key-value memory architecture with gated delta rule.
+While existing methods based on convolutional neural networks, Transformers and space-time memory networks, have improved segmentation accuracy, they often struggle with the trade-off between capturing long-range spatiotemporal dependencies and maintaining computational efficiency with fine-grained feature representation.
 
-## Tech Stack
+In this paper, we introduce **GDKVM**, a novel architecture for echocardiography video segmentation. The model employs **Linear Key-Value Association (LKVA)** to effectively model inter-frame correlations, and introduces **Gated Delta Rule (GDR)** to efficiently store intermediate memory states. **Key-Pixel Feature Fusion (KPFF)** module is designed to integrate local and global features at multiple scales, enhancing robustness against boundary blurring and noise interference.
 
-- **Framework**: [Astro](https://astro.build) v6.1.8
-- **Styling**: [Tailwind CSS](https://tailwindcss.com) v4.2.2
-- **Language**: TypeScript 5.9
-- **Testing**: Playwright (E2E)
-- **Deployment**: GitHub Pages
+We validated GDKVM on two mainstream echocardiography video datasets (**CAMUS** and **EchoNet-Dynamic**) and compared it with various state-of-the-art methods. Experimental results show that GDKVM outperforms existing approaches in terms of segmentation accuracy and robustness, while ensuring real-time performance.
 
-## Project Structure
+## Project Page
 
-```
-GDKVM/
-├── src/
-│   ├── pages/[lang]/         # i18n routes (en, zh)
-│   ├── components/           # Reusable Astro components
-│   ├── layouts/              # Page layouts
-│   ├── content/              # JSON translation files
-│   ├── styles/               # Page-specific CSS
-│   └── scripts/              # Client-side scripts
-├── e2e/                      # Playwright E2E tests
-├── public/                   # Static assets
-├── .astro/                   # Astro generated types
-└── dist/                     # Build output
-```
+[https://wangrui2025.github.io/GDKVM/](https://wangrui2025.github.io/GDKVM/)
 
-## Development
-
-### Prerequisites
-
-- Node.js 20+
-- npm
-
-### Install Dependencies
+## Installation
 
 ```bash
-npm install
-npx playwright install
+git clone https://github.com/wangrui2025/GDKVM.git
+cd GDKVM
+pip install -e .
 ```
 
-### Local Development
+## Quick Start
 
-```bash
-npm run dev
+TBD — code is being organized for release.
+
+## Citation
+
+If you find this work useful in your research, please cite:
+
+```bibtex
+@inproceedings{wang2025gdkvm,
+  title={GDKVM: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule},
+  author={Wang, Rui and Sun, Yimu and Guo, Jingxing and Wu, Huisi and Qin, Jing},
+  booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+  year={2025}
+}
 ```
-
-### Build
-
-```bash
-npm run build
-```
-
-### Run Tests
-
-```bash
-npx playwright test
-```
-
-## i18n
-
-The site supports English (`en`) and Chinese (`zh`) with Astro's built-in i18n routing:
-
-- `prefixDefaultLocale: true` — all URLs include locale prefix
-- `redirectToDefaultLocale: true` — root `/` redirects to `/en/`
-
-Content translations are stored in `src/content/` as JSON files.
 
 ## License
 
-This project page is released under the MIT License.
+This project is released under the MIT License.

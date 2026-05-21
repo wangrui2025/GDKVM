@@ -1,0 +1,36 @@
+import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
+import astroIcon from 'astro-icon';
+import tailwindcss from '@tailwindcss/vite';
+import expressiveCode from 'astro-expressive-code';
+import inlineCriticalCss from './src/integrations/inline-critical-css.mjs';
+
+export default defineConfig({
+  site: 'https://wangrui2025.github.io',
+  base: '/GDKVM',
+  outDir: 'dist',
+  prefetch: { prefetchAll: true },
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'zh'],
+    routing: {
+      prefixDefaultLocale: true,
+      redirectToDefaultLocale: true,
+    },
+  },
+  integrations: [
+    sitemap(),
+    astroIcon(),
+    tailwindcss(),
+    expressiveCode({
+      themes: ['github-dark', 'github-light'],
+      styleOverrides: {
+        borderRadius: '0.5rem',
+      },
+    }),
+    inlineCriticalCss(),
+  ],
+  experimental: {
+    rustCompiler: true,
+  },
+});
