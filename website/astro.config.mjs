@@ -1,7 +1,6 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import astroIcon from 'astro-icon';
-import tailwindcss from '@tailwindcss/vite';
 import expressiveCode from 'astro-expressive-code';
 import inlineCriticalCss from './src/integrations/inline-critical-css.mjs';
 
@@ -21,7 +20,6 @@ export default defineConfig({
   integrations: [
     sitemap(),
     astroIcon(),
-    tailwindcss(),
     expressiveCode({
       themes: ['github-dark', 'github-light'],
       styleOverrides: {
