@@ -1,7 +1,6 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import astroIcon from 'astro-icon';
-import expressiveCode from 'astro-expressive-code';
 import inlineCriticalCss from './src/integrations/inline-critical-css.mjs';
 
 export default defineConfig({
@@ -20,12 +19,6 @@ export default defineConfig({
   integrations: [
     sitemap(),
     astroIcon(),
-    expressiveCode({
-      themes: ['github-dark', 'github-light'],
-      styleOverrides: {
-        borderRadius: '0.5rem',
-      },
-    }),
     inlineCriticalCss(),
   ],
   experimental: {

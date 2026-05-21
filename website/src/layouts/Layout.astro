@@ -107,13 +107,11 @@ const lang = Astro.currentLocale ?? 'en';
     </main>
     {showFooter && <Footer />}
     <script>
-      if (!(document as any).__gdkvmDelegated) {
-        (document as any).__gdkvmDelegated = true;
+      document.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
 
-        // Theme toggle delegation
-        document.addEventListener('click', (e) => {
-          const btn = (e.target as HTMLElement).closest('#theme-toggle');
-          if (!btn) return;
+        const themeBtn = target.closest('[data-action="theme-toggle"]');
+        if (themeBtn) {
           const html = document.documentElement;
           const isDark = html.classList.toggle('dark');
           try {
@@ -121,23 +119,21 @@ const lang = Astro.currentLocale ?? 'en';
           } catch {}
           const meta = document.querySelector('meta[name="theme-color"]');
           if (meta) meta.setAttribute('content', isDark ? '#111827' : '#ffffff');
-        });
+          return;
+        }
 
-        // Copy button delegation
-        document.addEventListener('click', (e) => {
-          const btn = (e.target as HTMLElement).closest('button[data-copy-target]');
-          if (!btn) return;
-
-          const targetId = btn.getAttribute('data-copy-target');
-          const label = btn.getAttribute('data-copy-label') || 'Copy';
-          const successLabel = btn.getAttribute('data-copy-success') || 'Copied!';
+        const copyBtn = target.closest('button[data-copy-target]');
+        if (copyBtn) {
+          const targetId = copyBtn.getAttribute('data-copy-target');
+          const label = copyBtn.getAttribute('data-copy-label') || 'Copy';
+          const successLabel = copyBtn.getAttribute('data-copy-success') || 'Copied!';
           const el = document.getElementById(targetId || '');
           if (!el) return;
           const text = el.innerText;
 
           const showSuccess = () => {
-            const icon = btn.querySelector('.copy-icon');
-            const textSpan = btn.querySelector('span');
+            const icon = copyBtn.querySelector('.copy-icon');
+            const textSpan = copyBtn.querySelector('span');
             if (icon) icon.setAttribute('name', 'lucide:check');
             if (textSpan) textSpan.textContent = successLabel;
             setTimeout(() => {
@@ -149,8 +145,8 @@ const lang = Astro.currentLocale ?? 'en';
           if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(text).then(showSuccess).catch(() => {});
           }
-        });
-      }
+        }
+      });
     </script>
   </body>
 </html>

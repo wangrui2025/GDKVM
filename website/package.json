@@ -8,14 +8,13 @@
     "check": "astro check"
   },
   "dependencies": {
-    "@astrojs/compiler-rs": "^0.1.7",
+    "@astrojs/compiler-rs": "^0.2.0",
     "@fontsource/noto-sans": "^5.2.8",
     "@iconify-json/academicons": "^1.2.4",
     "@iconify-json/lucide": "^1.2.108",
     "@iconify-json/simple-icons": "^1.2.83",
     "@tailwindcss/postcss": "^4.3.0",
     "astro": "^6.3.6",
-    "astro-expressive-code": "^0.42.0",
     "astro-icon": "^1.1.5",
     "katex": "^0.16.47",
     "tailwindcss": "^4.3.0"
