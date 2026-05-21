@@ -30,7 +30,7 @@ jobs:
         run: npm ci
 
       - name: Install Playwright browsers
-        run: npx playwright install chromium
+        run: npx playwright install chromium webkit
 
       - name: Build
         run: npm run build
