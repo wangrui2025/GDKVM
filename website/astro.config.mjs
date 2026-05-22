@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import astroIcon from 'astro-icon';
+import tailwindcss from '@tailwindcss/vite';
 import inlineCriticalCss from './src/integrations/inline-critical-css.mjs';
 
 export default defineConfig({
@@ -19,6 +20,7 @@ export default defineConfig({
   integrations: [
     sitemap(),
     astroIcon(),
+    tailwindcss(),
     inlineCriticalCss(),
   ],
   experimental: {

@@ -7,7 +7,6 @@ import CopyButton from './CopyButton.astro';
 import { Icon } from 'astro-icon/components';
 import { getScholarlyArticleSchema } from '../utils/structuredData';
 import { t } from '../i18n';
-import 'katex/dist/katex.min.css';
 
 interface Props {
   lang: 'en' | 'zh';
@@ -197,7 +196,7 @@ const schema = getScholarlyArticleSchema({
     </div>
   </Section>
 
-  <script is:inline src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <script is:inline src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js"></script>
   <script is:inline>
     document.addEventListener('astro:page-load', function () {
       if (typeof renderMathInElement !== 'undefined') {
