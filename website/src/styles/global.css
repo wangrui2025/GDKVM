@@ -281,3 +281,64 @@ pre {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Print styles --------------------------------------------------------------- */
+@page {
+  size: A4;
+  margin: 15mm 20mm;
+}
+
+@media print {
+  html, body {
+    overflow: visible !important;
+    background: white !important;
+    color: black !important;
+    font-size: 11pt !important;
+  }
+
+  /* Hide interactive elements */
+  .fixed,
+  [data-action="theme-toggle"],
+  .copy-btn,
+  button,
+  .action-btn,
+  script {
+    display: none !important;
+  }
+
+  /* Show all images */
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+
+  /* Prevent page breaks in sections */
+  section, .challenge-card {
+    page-break-inside: avoid;
+  }
+
+  /* Ensure text is readable */
+  a {
+    color: black !important;
+    text-decoration: underline;
+  }
+
+  /* Adjust headings for print */
+  h1, h2, h3 {
+    page-break-after: avoid;
+  }
+
+  .highlight-title {
+    background: none !important;
+    color: black !important;
+  }
+
+  .abstract-box {
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+  }
+
+  .publication-title {
+    font-size: 18pt !important;
+  }
+}

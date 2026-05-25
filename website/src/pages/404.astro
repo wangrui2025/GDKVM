@@ -24,3 +24,10 @@ const homeLabel = t(lang, '404.homeLabel');
     </a>
   </Section>
 </Layout>
+
+<script is:inline>
+  const p = window.location.pathname;
+  if (p.startsWith('/gdkvm/')) {
+    window.location.replace('/GDKVM' + p.slice(6));
+  }
+</script>
