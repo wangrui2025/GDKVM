@@ -38,19 +38,28 @@
 
 ## 学术资产库化状态
 
-**状态**: 未迁移（本地托管）
-**位置**: `public/paper/fig/`（约 23MB，43 个文件）
+**状态**: ✅ 已迁移（2026-05-25）
+**CDN**: `https://cdn.jsdelivr.net/gh/mykcs/academic@84e996d/images/...`
 
-### 未迁移原因
-- 图片为论文专属图表（GDKVM 架构图、实验结果图、热图等），通用性低。
-- `mykcs/academic` 仓库目前主要托管头像、学校/会议 logo 等通用学术资产。
-- 迁移需将 23MB 图片推送到 academic 仓库并生成版本化 CDN URL，工作量与收益比不高。
+### 迁移详情
+- **删除**: `website/public/paper/fig/`（约 23MB，43 个文件）
+- **删除**: `website/public/assets/images/iccv2_logo/`（ICCV Logo，与 academic 重复）
+- **配置**: `astro.config.mjs` 添加 `image.remotePatterns: [{ protocol: 'https', hostname: 'cdn.jsdelivr.net' }]`
+- **引用更新**:
+  - `HomePage.astro`: `gdkvm.png` + 6 张 challenge 图 → jsDelivr URL
+  - `HomePage.astro`: ICCV Logo → `.../images/logos/iccv.png`
+  - `Layout.astro`: OG image → jsDelivr URL
+  - `tool.astro`: OG image → jsDelivr URL
 
-### 如果未来迁移
-1. 在 `mykcs/academic/images/publications/gdkvm/` 下建立目录结构
-2. 更新 `HomePage.astro` 中所有 `${import.meta.env.BASE_URL}/paper/fig/...` 引用为 jsDelivr CDN URL
-3. 删除 `public/paper/fig/` 目录
-4. 注意：`<Image>` 组件引用远程图片时，需在 `astro.config.mjs` 中声明 `image.remotePatterns`
+### 验证记录
+- `npm run build`: 通过，8 images optimized（Astro 成功下载并优化远程图片）
+- `npx astro check`: 0 errors / 0 warnings / 0 hints
+
+### 如果未来需要新增论文图片
+1. 将图片放入 `mykcs/academic/images/publications/iccv2025-gdkvm/`
+2. 提交并推送 academic 仓库，获取新 commit hash
+3. 更新 GDKVM 代码中 CDN URL 的 commit hash 部分
+4. 注意：jsDelivr 新 commit 可能有同步延迟，如 build 失败可重试或改用旧 commit hash
 
 ---
 
