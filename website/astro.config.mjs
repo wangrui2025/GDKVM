@@ -9,6 +9,11 @@ export default defineConfig({
   base: '/GDKVM',
   outDir: 'dist',
   prefetch: { prefetchAll: true },
+  image: {
+    remotePatterns: [
+      { protocol: 'https', hostname: 'cdn.jsdelivr.net' },
+    ],
+  },
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'zh'],
