@@ -65,9 +65,14 @@ const lang = Astro.currentLocale ?? 'en';
     <meta name="description" content={description}>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{title}</title>
+    <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : 'en_US'} />
+    <meta property="og:site_name" content="GDKVM — ICCV 2025" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image} />
+    <meta property="og:image:alt" content="GDKVM architecture diagram for echocardiography video segmentation" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site).href} />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
