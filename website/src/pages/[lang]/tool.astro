@@ -338,7 +338,7 @@ const lang = Astro.params.lang as 'en' | 'zh';
       }, 2000);
     }
 
-    document.addEventListener('astro:page-load', () => {
+    function initToolPage() {
       initTabs();
       initDependentSelects();
       initVisualization();
@@ -384,6 +384,12 @@ const lang = Astro.params.lang as 'en' | 'zh';
           if (lrValue) lrValue.textContent = `${t('learningRate')}${formatSmallNumber(learningRate)}`;
         });
       }
-    });
+    }
+    document.addEventListener('astro:page-load', initToolPage);
+    if (document.readyState !== 'loading') {
+      initToolPage();
+    } else {
+      document.addEventListener('DOMContentLoaded', initToolPage);
+    }
   </script>
 </Layout>

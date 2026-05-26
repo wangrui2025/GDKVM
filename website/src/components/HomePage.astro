@@ -198,7 +198,7 @@ const schema = getScholarlyArticleSchema({
 
   <script is:inline src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js"></script>
   <script is:inline>
-    document.addEventListener('astro:page-load', function () {
+    function initKatex() {
       if (typeof renderMathInElement !== 'undefined') {
         renderMathInElement(document.body, {
           delimiters: [
@@ -208,6 +208,12 @@ const schema = getScholarlyArticleSchema({
           throwOnError: false,
         });
       }
-    });
+    }
+    document.addEventListener('astro:page-load', initKatex);
+    if (document.readyState !== 'loading') {
+      initKatex();
+    } else {
+      document.addEventListener('DOMContentLoaded', initKatex);
+    }
   </script>
 </Layout>
