@@ -16,7 +16,7 @@
     "@tailwindcss/vite": "^4.3.0",
     "astro": "^6.3.6",
     "astro-icon": "^1.1.5",
-    "katex": "^0.16.47",
+    "katex": "^0.17.0",
     "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
@@ -24,6 +24,6 @@
     "@astrojs/sitemap": "^3.7.2",
     "@playwright/test": "^1.59.1",
     "playwright": "^1.59.1",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   }
 }
