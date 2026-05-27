@@ -25,7 +25,7 @@ const homeLabel = t(lang, '404.homeLabel');
   </Section>
 </Layout>
 
-<script is:inline>
+<script>
   const p = window.location.pathname;
   if (p.startsWith('/gdkvm/')) {
     window.location.replace('/GDKVM' + p.slice(6));
