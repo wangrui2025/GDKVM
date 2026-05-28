@@ -29,7 +29,5 @@ export default defineConfig({
     tailwindcss(),
     inlineCriticalCss(),
   ],
-  experimental: {
-    rustCompiler: true,
-  },
+  compiler: "rs",
 });

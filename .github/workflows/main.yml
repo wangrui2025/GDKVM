@@ -38,6 +38,6 @@ jobs:
 
       - name: Push if updated
         if: steps.update.outputs.updated == 'true'
-        uses: ad-m/github-push-action@v0.8.0
+        uses: ad-m/github-push-action@v0.8.8
         with:
           github_token: ${{ secrets.GH_PAT }}
