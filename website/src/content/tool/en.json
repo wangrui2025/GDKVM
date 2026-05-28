@@ -5,5 +5,6 @@
   "calculate": "Calculate",
   "results": "Results",
   "optimalBs": "Optimal Token Wise BatchSize: -",
-  "lr": "Learning Rate: -"
+  "lr": "Learning Rate: -",
+  "description": "GDKVM Predictable Scale Calculator: predicts optimal token-level batch size and learning rate from model parameters and training tokens."
 }

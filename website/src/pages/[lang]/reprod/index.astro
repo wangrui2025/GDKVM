@@ -14,7 +14,7 @@ const { lang } = Astro.params;
 const homeUrl = { en: `${import.meta.env.BASE_URL}/`, zh: `${import.meta.env.BASE_URL}/${lang}/` }[lang] ?? `${import.meta.env.BASE_URL}/`;
 ---
 
-<Layout title={t(lang, 'reprod.title')} showFooter={false}>
+<Layout title={t(lang, 'reprod.title')} description={t(lang, 'reprod.description')} showFooter={false}>
   <!-- Hero -->
   <section class="bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 mb-8">
     <div class="max-w-5xl mx-auto px-4 py-12 text-center">

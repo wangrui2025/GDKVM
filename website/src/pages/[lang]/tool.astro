@@ -11,7 +11,7 @@ export function getStaticPaths() {
 const lang = Astro.params.lang as 'en' | 'zh';
 ---
 
-<Layout title={t(lang, 'tool.title')} showFooter={false} image={'https://cdn.jsdelivr.net/gh/mykcs/academic@v1.1.0/images/publications/iccv2025-gdkvm/gdkvm.png'}>
+<Layout title={t(lang, 'tool.title')} description={t(lang, 'tool.description')} showFooter={false} image={'https://cdn.jsdelivr.net/gh/mykcs/academic@v1.1.0/images/publications/iccv2025-gdkvm/gdkvm.png'}>
   <Section>
     <form id="modelForm">
       <div class="select-item">

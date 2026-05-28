@@ -5,5 +5,6 @@
   "calculate": "计算",
   "results": "计算结果",
   "optimalBs": "最优Token级BatchSize: -",
-  "lr": "学习率: -"
+  "lr": "学习率: -",
+  "description": "GDKVM 可预测扩展计算器：根据模型参数量和训练 Token 量，预测最优 Token 级 Batch Size 和学习率。"
 }

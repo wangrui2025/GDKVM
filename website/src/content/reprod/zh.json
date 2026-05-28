@@ -25,7 +25,26 @@
   "initDesc": "uv 将读取配置文件，创建虚拟环境，安装所有依赖。",
   "initNote": "对于更新的环境，可以使用 env_02 环境配置，具体代码参考 env/env_02/pyproject.toml",
   "envSelfCheck": "环境自检",
-  "versionConstraints": "版本约束与兼容性说明",
+  "versionConstraints": {
+    "pydanticConflict": "版本冲突 <2.12",
+    "pydanticIssue": "现象：",
+    "pydanticIssueDesc": "Pydantic 2.12+ (2025-10) 的严格 Schema 校验与 wandb 字段声明冲突，多进程下可能导致崩溃。",
+    "pydanticFix": "解决：",
+    "pydanticFixDesc": "配置文件已强制锁定 pydantic<2.12。",
+    "wandbCompat": "系统兼容性 (glibc)",
+    "wandbIssue": "现象：",
+    "wandbIssueDesc": "wandb>=0.22.2 停止提供针对 Ubuntu 18.04 (glibc 2.27) 的预编译包，导致安装失败。",
+    "wandbFix": "解决：",
+    "wandbFixDesc": "需确保系统安装了 Go 编译器以支持源码编译，或升级操作系统。",
+    "sslCert": "证书错误 (内网/代理环境)",
+    "sslIssue": "现象：",
+    "sslIssueDesc": "运行 uv add/sync 时报错（Certificate Expired），因内网防火墙/代理的自签名证书不被 uv 默认的 Rust TLS 信任。",
+    "sslFix": "解决方案：",
+    "sslFixDesc": "切换为系统原生 TLS 验证。",
+    "sslOptA": "方案 A (临时单次)",
+    "sslOptB": "方案 B (永久推荐)",
+    "sslOptBDesc": "建议将此命令添加到 ~/.bashrc 或 ~/.zshrc"
+  },
   "activateTitle": "4. 激活环境",
   "activateNote": "注：推荐显式激活环境，以便进入交互式调试（如 Python REPL）及使用 pip 检查包状态。",
   "activateVerify": "验证环境（应输出项目 .venv 目录下的路径）：",
@@ -67,26 +86,6 @@
     "checkVersions": "查看可用版本：",
     "installMirror": "通过镜像源安装（以 3.12.12 为例）："
   },
-  "versionConstraints": {
-    "pydanticConflict": "版本冲突 <2.12",
-    "pydanticIssue": "现象：",
-    "pydanticIssueDesc": "Pydantic 2.12+ (2025-10) 的严格 Schema 校验与 wandb 字段声明冲突，多进程下可能导致崩溃。",
-    "pydanticFix": "解决：",
-    "pydanticFixDesc": "配置文件已强制锁定 pydantic<2.12。",
-    "wandbCompat": "系统兼容性 (glibc)",
-    "wandbIssue": "现象：",
-    "wandbIssueDesc": "wandb>=0.22.2 停止提供针对 Ubuntu 18.04 (glibc 2.27) 的预编译包，导致安装失败。",
-    "wandbFix": "解决：",
-    "wandbFixDesc": "需确保系统安装了 Go 编译器以支持源码编译，或升级操作系统。",
-    "sslCert": "证书错误 (内网/代理环境)",
-    "sslIssue": "现象：",
-    "sslIssueDesc": "运行 uv add/sync 时报错（Certificate Expired），因内网防火墙/代理的自签名证书不被 uv 默认的 Rust TLS 信任。",
-    "sslFix": "解决方案：",
-    "sslFixDesc": "切换为系统原生 TLS 验证。",
-    "sslOptA": "方案 A (临时单次)",
-    "sslOptB": "方案 B (永久推荐)",
-    "sslOptBDesc": "建议将此命令添加到 ~/.bashrc 或 ~/.zshrc"
-  },
   "dataset": {
     "official": "官方网站",
     "mirror": "镜像"
@@ -103,5 +102,6 @@
   },
   "wandb": {
     "runDirDesc": "包含时间戳与哈希值的子文件夹（例如：offline-run-20251215_123456-abcdef1gh）。"
-  }
+  },
+  "description": "GDKVM 复现指南：详细的分步环境构建、数据准备、模型训练与评估流程，支持 CAMUS 和 EchoNet-Dynamic 数据集。"
 }
