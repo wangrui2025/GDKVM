@@ -268,8 +268,46 @@ diff <(node -e "console.log(Object.keys(require('./src/content/homepage/en.json'
 
 ---
 
+## 14. 学术图片 CDN 策略
+
+### 14.1 背景
+
+学术图片（论文图表、logo、海报）统一托管在 `mykcs/academic` 仓库，通过 jsDelivr CDN 分发。项目页面通过语义化版本标签（`@v1.1.0`）引用。
+
+### 14.2 OSA 模式（当前采用）
+
+| 维度 | 实现 |
+|------|------|
+| 图片组件 | `<img>`（原生 HTML） |
+| CDN | `cdn.jsdelivr.net/gh/mykcs/academic@v1.1.0/...` |
+| `remotePatterns` | 仅 `mykcs.github.io` + `raw.githubusercontent.com`（**不含** `cdn.jsdelivr.net`） |
+| 构建时验证 | 不触发 — `<img>` 不走 Astro 图片管线 |
+| 版本管理 | 语义化 tag，可读可预期 |
+
+**为什么更优：**
+- jsDelivr 全球边缘节点，延迟低；raw.githubusercontent.com 直连 GitHub 源站，无 CDN 层
+- 语义化版本（`@v1.1.0`）优于 commit SHA（`84e996d...`）
+- 架构上规避了 jsDelivr 301 重定向与 Astro 构建时验证的冲突
+
+### 14.3 错误模式（已废弃）
+
+| 维度 | 实现 |
+|------|------|
+| 图片组件 | `<Image>` from `astro:assets` |
+| CDN | jsDelivr URL |
+| `remotePatterns` | 包含 `cdn.jsdelivr.net` |
+
+`<Image>` 组件在构建时会请求远程 URL 验证，jsDelivr 的 301 重定向可能导致构建警告或失败。
+
+### 14.4 变更记录
+
+- **2026-05-28**：从错误模式迁移至 OSA 模式，`HomePage.astro` 全部 `<Image>` 替换为 `<img>`，`astro.config.mjs` 的 `remotePatterns` 移除 `cdn.jsdelivr.net`
+
+---
+
 ## 13. 变更历史
 
 | 日期 | 变更 |
 |------|------|
+| 2026-05-28 | 新增 §14 学术图片 CDN 策略（OSA 模式：`<img>` + jsDelivr 语义化版本，优于 `<Image>` + raw.githubusercontent） |
 | 2026-05-27 | 新增 §3 字体规范（含 CSS 实现）、§4.2 暗色模式实现、§5 a11y 规范、§7 组件事件处理（data-action 模式）、§8 @media print 规范、§10 i18n 对等验证命令、§11 checklist 新增 a11y 验证、§13 变更历史 |

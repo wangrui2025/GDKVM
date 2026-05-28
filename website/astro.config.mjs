@@ -11,7 +11,7 @@ export default defineConfig({
   prefetch: { prefetchAll: true },
   image: {
     remotePatterns: [
-      { protocol: 'https', hostname: 'cdn.jsdelivr.net' },
+      { protocol: 'https', hostname: 'mykcs.github.io' },
       { protocol: 'https', hostname: 'raw.githubusercontent.com' },
     ],
   },

@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import Section from './Section.astro';
 import ActionButton from './ActionButton.astro';
@@ -34,11 +33,9 @@ const schema = getScholarlyArticleSchema({
       <div class="text-center">
         <!-- ICCV Logo -->
         <div class="mb-6">
-          <Image
+          <img
             src="https://cdn.jsdelivr.net/gh/mykcs/academic@v1.1.0/images/logos/iccv.png"
             alt="ICCV Logo"
-            width={200}
-            height={56}
             class="h-14 w-auto mx-auto lg:absolute lg:top-8 lg:left-8 lg:mx-0"
             loading="eager"
           />
@@ -80,13 +77,10 @@ const schema = getScholarlyArticleSchema({
   <!-- Architecture Figure -->
   <Section>
     <div class="p-2">
-      <Image
+      <img
         src="https://cdn.jsdelivr.net/gh/mykcs/academic@v1.1.0/images/publications/iccv2025-gdkvm/gdkvm.png"
         alt="GDKVM Architecture"
-        width={1200}
-        height={600}
         class="w-full rounded"
-        fetchpriority="high"
         loading="eager"
         decoding="async"
       />
@@ -128,7 +122,7 @@ const schema = getScholarlyArticleSchema({
         ].map(({ src, alt, cap }) => (
           <div class="w-1/2 md:w-1/4 lg:w-1/6 p-2">
             <div class="challenge-card">
-              <Image src={src} alt={alt} width={370} height={370} loading="lazy" />
+              <img src={src} alt={alt} loading="lazy" />
               <div class="challenge-caption text-center">{cap}</div>
             </div>
           </div>
