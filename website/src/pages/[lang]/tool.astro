@@ -3,7 +3,6 @@ import Layout from '../../layouts/Layout.astro';
 import Section from '../../components/Section.astro';
 import { t } from '../../i18n';
 import '../../styles/toolstyle.css';
-import { initToolPage } from '../../scripts/tool';
 
 export function getStaticPaths() {
   return [{ params: { lang: 'en' } }, { params: { lang: 'zh' } }];
@@ -12,7 +11,7 @@ export function getStaticPaths() {
 const lang = Astro.params.lang as 'en' | 'zh';
 ---
 
-<Layout title={t(lang, 'tool.title')} showFooter={false} image={'https://cdn.jsdelivr.net/gh/mykcs/academic@84e996d/images/publications/iccv2025-gdkvm/gdkvm.png'}>
+<Layout title={t(lang, 'tool.title')} showFooter={false} image={'https://cdn.jsdelivr.net/gh/mykcs/academic@v1.1.0/images/publications/iccv2025-gdkvm/gdkvm.png'}>
   <Section>
     <div class="tab-container">
     <nav class="tab-nav">
