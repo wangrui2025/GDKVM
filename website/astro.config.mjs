@@ -26,8 +26,13 @@ export default defineConfig({
   integrations: [
     sitemap(),
     astroIcon(),
-    tailwindcss(),
     inlineCriticalCss(),
   ],
+  vite: {
+    plugins: [tailwindcss()],
+    resolve: {
+      preserveSymlinks: true,
+    },
+  },
   compiler: "rs",
 });
