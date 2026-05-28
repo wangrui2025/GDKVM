@@ -25,6 +25,7 @@ const {
 } = Astro.props;
 
 const lang = Astro.currentLocale ?? 'en';
+const structuredDataJson = structuredData ? JSON.stringify(structuredData) : null;
 ---
 
 <!DOCTYPE html>
@@ -93,7 +94,9 @@ const lang = Astro.currentLocale ?? 'en';
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://cdn.jsdelivr.net; font-src 'self' data:; connect-src 'self';" />
     <ClientRouter fallback="none" />
     {structuredData && (
-      <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
+      <script type="application/ld+json" is:inline define:vars={{ structuredDataJson }}>
+        {JSON.parse(structuredDataJson)}
+      </script>
     )}
     <script is:inline>
       (function () {
