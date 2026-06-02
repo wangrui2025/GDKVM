@@ -7,6 +7,10 @@ import { fileURLToPath } from 'node:url';
  * Astro Integration: inline-critical-css
  * Inlines all <link rel="stylesheet"> CSS from _astro/ into each HTML file's <head>.
  * This eliminates render-blocking CSS requests and improves LCP.
+ *
+ * Also post-processes dist/sitemap-0.xml to remove legacy redirect stubs
+ * (/reprod/, /) that @astrojs/sitemap can't filter out via its `filter`
+ * option (3.7.x zod validation rejects both arrow and function forms).
  */
 function inlineCriticalCss() {
   return {
@@ -89,6 +93,39 @@ function inlineCriticalCss() {
               0
             )}KB CSS into ${path.relative(distDir, htmlPath)}`
           );
+        }
+
+        // ======== Sitemap post-process: remove legacy redirect stubs ========
+        // @astrojs/sitemap 3.7.x validates its `filter` option via zod and
+        // rejects every form we've tried. As a post-process workaround,
+        // re-write the generated dist/sitemap-0.xml to drop the entries
+        // that are meta-refresh stubs (the root /, /reprod/, plus the
+        // per-locale variants /en/reprod/ and /zh/reprod/).
+        const sitemapFiles = ['sitemap-0.xml', 'sitemap-index.xml']
+          .map(f => path.join(distDir, f))
+          .filter(p => fs.existsSync(p));
+        for (const sf of sitemapFiles) {
+          let xml = fs.readFileSync(sf, 'utf-8');
+          const before = (xml.match(/<loc>/g) || []).length;
+          // Drop <url>...</url> blocks whose <loc> ends with /reprod/ or
+          // is the bare /GDKVM/ root (both are meta-refresh stubs).
+          xml = xml.replace(
+            /<url>\s*<loc>https:\/\/wangrui2025\.github\.io\/GDKVM\/(?:(?:en|zh)\/)?reprod\/<\/loc>\s*<\/url>/g,
+            ''
+          );
+          xml = xml.replace(
+            /<url>\s*<loc>https:\/\/wangrui2025\.github\.io\/GDKVM\/<\/loc>\s*<\/url>/g,
+            ''
+          );
+          // Tidy stray blank lines left after removals
+          xml = xml.replace(/^\s*\n/gm, '\n');
+          const after = (xml.match(/<loc>/g) || []).length;
+          fs.writeFileSync(sf, xml, 'utf-8');
+          if (before !== after) {
+            console.log(
+              `[sitemap-filter] ${path.basename(sf)}: ${before} → ${after} URLs (removed ${before - after} stubs)`
+            );
+          }
         }
 
         console.log('[inline-critical-css] Done');
