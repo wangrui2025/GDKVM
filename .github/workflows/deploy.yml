@@ -35,16 +35,47 @@ jobs:
         working-directory: website
 
       - name: Install Playwright browsers
-        run: npx playwright install chromium webkit
+        run: npx playwright install chromium
         working-directory: website
 
       - name: Install Playwright system deps
-        run: npx playwright install-deps chromium webkit
+        run: npx playwright install-deps chromium
         working-directory: website
 
       - name: Build
         run: npm run build
         working-directory: website
+
+      - name: Verify hreflang base dedupe (§2.7)
+        run: |
+          node -e "
+          const fs = require('fs');
+          const path = require('path');
+          const BASE = 'GDKVM';
+          function walk(dir) {
+            const out = [];
+            for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+              const p = path.join(dir, e.name);
+              if (e.isDirectory()) out.push(...walk(p));
+              else if (e.isFile() && e.name.endsWith('.html')) out.push(p);
+            }
+            return out;
+          }
+          const files = walk('website/dist');
+          const broken = [];
+          files.forEach(f => {
+            const c = fs.readFileSync(f, 'utf-8');
+            const re = /<link rel=\"alternate\" hreflang=\"[^\"]*\" href=\"([^\"]+)\"/g;
+            let m;
+            while ((m = re.exec(c)) !== null) {
+              const url = m[1];
+              const hits = (url.match(new RegExp(BASE, 'g')) || []).length;
+              if (hits > 1) broken.push(\`\${f}: \${url} has \${BASE} \${hits} times\`);
+            }
+          });
+          if (broken.length) { console.log(broken.join('\n')); process.exit(1); }
+          console.log('OK: no hreflang base duplication');
+          "
 
       - name: Run E2E tests
         run: npx playwright test
@@ -87,6 +118,37 @@ jobs:
       - name: Build
         run: npm run build
         working-directory: website
+
+      - name: Verify hreflang base dedupe (§2.7)
+        run: |
+          node -e "
+          const fs = require('fs');
+          const path = require('path');
+          const BASE = 'GDKVM';
+          function walk(dir) {
+            const out = [];
+            for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+              const p = path.join(dir, e.name);
+              if (e.isDirectory()) out.push(...walk(p));
+              else if (e.isFile() && e.name.endsWith('.html')) out.push(p);
+            }
+            return out;
+          }
+          const files = walk('website/dist');
+          const broken = [];
+          files.forEach(f => {
+            const c = fs.readFileSync(f, 'utf-8');
+            const re = /<link rel=\"alternate\" hreflang=\"[^\"]*\" href=\"([^\"]+)\"/g;
+            let m;
+            while ((m = re.exec(c)) !== null) {
+              const url = m[1];
+              const hits = (url.match(new RegExp(BASE, 'g')) || []).length;
+              if (hits > 1) broken.push(\`\${f}: \${url} has \${BASE} \${hits} times\`);
+            }
+          });
+          if (broken.length) { console.log(broken.join('\n')); process.exit(1); }
+          console.log('OK: no hreflang base duplication');
+          "
 
       - name: Setup Pages
         uses: actions/configure-pages@v6
