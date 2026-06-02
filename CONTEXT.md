@@ -39,12 +39,12 @@
 ## 学术资产库化状态
 
 **状态**: ✅ 已迁移（2026-05-25）
-**CDN**: `https://cdn.jsdelivr.net/gh/mykcs/academic@84e996d/images/...`
+**CDN**: `https://cdn.jsdelivr.net/gh/mykcs/academic@v1.1.0/images/...`
 
 ### 迁移详情
 - **删除**: `website/public/paper/fig/`（约 23MB，43 个文件）
 - **删除**: `website/public/assets/images/iccv2_logo/`（ICCV Logo，与 academic 重复）
-- **配置**: `astro.config.mjs` 添加 `image.remotePatterns: [{ protocol: 'https', hostname: 'cdn.jsdelivr.net' }]`
+- **CDN 模式**: 全部走 `<img>` 直链 jsDelivr（**不**走 Astro `<Image>`，故 `astro.config.mjs` 的 `image.remotePatterns` 仍指向 `mykcs.github.io` + `raw.githubusercontent.com`，**不需要** cdn.jsdelivr.net 条目）
 - **引用更新**:
   - `HomePage.astro`: `gdkvm.png` + 6 张 challenge 图 → jsDelivr URL
   - `HomePage.astro`: ICCV Logo → `.../images/logos/iccv.png`
@@ -52,14 +52,15 @@
   - `tool.astro`: OG image → jsDelivr URL
 
 ### 验证记录
-- `npm run build`: 通过，8 images optimized（Astro 成功下载并优化远程图片）
+- `npm run build`: 通过
 - `npx astro check`: 0 errors / 0 warnings / 0 hints
 
 ### 如果未来需要新增论文图片
 1. 将图片放入 `mykcs/academic/images/publications/iccv2025-gdkvm/`
-2. 提交并推送 academic 仓库，获取新 commit hash
-3. 更新 GDKVM 代码中 CDN URL 的 commit hash 部分
-4. 注意：jsDelivr 新 commit 可能有同步延迟，如 build 失败可重试或改用旧 commit hash
+2. 提交并推送 academic 仓库
+3. **首选：bump 一个新的 semver tag**（如 `v1.2.0`），让 CDN 引用从 `@v1.1.0` 升到 `@v1.2.0`
+4. 紧急修复：可临时使用 commit SHA（`@<sha>`），但下次 bump 时必须切回 semver tag
+5. 注意：jsDelivr 新 commit 可能有同步延迟（通常 < 5 分钟）；新 tag 可即时生效
 
 ---
 
