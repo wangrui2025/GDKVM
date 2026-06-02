@@ -87,9 +87,9 @@
 
 | 组件 | 版本 | 备注 |
 |------|------|------|
-| Astro | ^6.3.6 | `experimental.rustCompiler: true` |
-| Tailwind CSS | ^4.3.0 | `@tailwindcss/vite` 集成 |
-| TypeScript | ^5.9.3 | |
+| Astro | ^6.4.2 | `experimental.rustCompiler: true` |
+| Tailwind CSS | ^4.1.18 | `@tailwindcss/vite` 集成；v4.3.0 仍存在 tsconfigPaths bug（已锁 4.1.x） |
+| TypeScript | ^6.0.3 | |
 | KaTeX | ^0.16.47 | CDN auto-render 用于公式渲染 |
 | astro-icon | ^1.1.5 | Iconify 图标集 |
 
