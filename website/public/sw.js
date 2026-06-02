@@ -7,7 +7,13 @@ const STATIC_ASSETS = [
   '/GDKVM/en/tool/',
   '/GDKVM/zh/tool/',
   '/GDKVM/en/reprod/',
-  '/GDKVM/zh/reprod/'
+  '/GDKVM/zh/reprod/',
+  // Per-locale 404 pages (created in [lang]/404.astro). Without these,
+  // users hitting a stale URL while offline see the browser default
+  // 404 page instead of the themed one.
+  '/GDKVM/en/404/',
+  '/GDKVM/zh/404/',
+  '/GDKVM/manifest.json'
 ];
 
 self.addEventListener('install', (event) => {
