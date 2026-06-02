@@ -82,26 +82,34 @@ const structuredDataJson = structuredData ? JSON.stringify(structuredData) : nul
     <meta name="twitter:image" content={image} />
     <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site).href} />
 
-    <!-- Language alternates for SEO -->
-    <link rel="alternate" hreflang="en" href={new URL('/GDKVM/en/', Astro.site).href} />
-    <link rel="alternate" hreflang="zh" href={new URL('/GDKVM/zh/', Astro.site).href} />
-    <link rel="alternate" hreflang="x-default" href={new URL('/GDKVM/en/', Astro.site).href} />
+    <!-- Language alternates for SEO. With `prefixDefaultLocale: true` + [lang]/,
+         build hreflang per current page so /en/reprod/ pairs with /zh/reprod/. -->
+    {(() => {
+      const altPath = Astro.url.pathname.replace(/^\/(en|zh)/, '') || '/';
+      return (
+        <>
+          <link rel="alternate" hreflang="en" href={new URL(`/GDKVM/en${altPath === '/' ? '/' : altPath}`, Astro.site).href} />
+          <link rel="alternate" hreflang="zh" href={new URL(`/GDKVM/zh${altPath === '/' ? '/' : altPath}`, Astro.site).href} />
+          <link rel="alternate" hreflang="x-default" href={new URL(`/GDKVM/en${altPath === '/' ? '/' : altPath}`, Astro.site).href} />
+        </>
+      );
+    })()}
 
     <link rel="icon" type="image/png" href={`${import.meta.env.BASE_URL}/favicon.png`} />
-    <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}/favicon-512.png`} />
+    <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}/favicon.png`} />
+    <link rel="manifest" href={`${import.meta.env.BASE_URL}/manifest.json`} />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#111827" media="(prefers-color-scheme: dark)" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://cdn.jsdelivr.net; font-src 'self' data:; connect-src 'self';" />
     <ClientRouter fallback="none" />
     {structuredData && (
-      <script type="application/ld+json" is:inline define:vars={{ structuredDataJson }}>
-        {JSON.parse(structuredDataJson)}
-      </script>
+      /* TRUSTED: static JSON.stringify of academic data, served as application/ld+json. */
+      <script type="application/ld+json" set:html={structuredDataJson} />
     )}
     <script is:inline>
       (function () {
         if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/GDKVM/sw.js').catch(() => {});
+          navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => {});
         }
       })();
     </script>
