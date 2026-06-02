@@ -4,7 +4,12 @@
   --color-primary: oklch(55% 0.2 265);
   --color-primary-dark: oklch(25% 0.2 275);
   --font-sans: 'Noto Sans', system-ui, sans-serif;
-  --font-display: 'Google Sans', sans-serif;
+  /* Display font: was 'Google Sans' (proprietary, not loaded) which caused
+     silent fallback to system font. Use a geometric-sans system stack
+     that approximates the look — matches what high-star Astro templates
+     (AstroPaper, Astro Micro) use. Add @fontsource-variable/inter if
+     a custom font is desired. */
+  --font-display: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
