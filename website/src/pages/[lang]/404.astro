@@ -1,11 +1,20 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Section from '../components/Section.astro';
+import Layout from '../../layouts/Layout.astro';
+import Section from '../../components/Section.astro';
 import { getRelativeLocaleUrl } from 'astro:i18n';
-import { t } from '../i18n';
+import { t } from '../../i18n';
 
-const pathLang = Astro.url.pathname.split('/')[1];
-const lang = pathLang === 'zh' ? 'zh' : 'en';
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'zh' } },
+  ];
+}
+
+// Lang param comes from the dynamic [lang] route — guarantees each
+// locale has its own 404 page (no more broken lang switch from
+// /404 → /zh/404/ which doesn't exist).
+const { lang } = Astro.params as { lang: 'en' | 'zh' };
 
 const title = t(lang, '404.title');
 const message = t(lang, '404.message');
@@ -24,10 +33,3 @@ const homeLabel = t(lang, '404.homeLabel');
     </a>
   </Section>
 </Layout>
-
-<script>
-  const p = window.location.pathname;
-  if (p.startsWith('/gdkvm/')) {
-    window.location.replace('/GDKVM' + p.slice(6));
-  }
-</script>
