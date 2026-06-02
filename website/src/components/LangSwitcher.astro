@@ -3,11 +3,16 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 
 const currentLocale = Astro.currentLocale ?? 'en';
 const targetLocale = currentLocale === 'en' ? 'zh' : 'en';
-const currentPath = Astro.url.pathname
+// Strip BASE_URL + leading /(en|zh) + trailing slash, default to '/'
+const stripped = Astro.url.pathname
   .replace(import.meta.env.BASE_URL, '')
   .replace(/^\/(en|zh)/, '')
   .replace(/\/$/, '') || '/';
-const targetUrl = getRelativeLocaleUrl(targetLocale, currentPath);
+// On 404 pages (e.g. /404, /zh/404) there is no per-locale equivalent
+// in dist/, so fall back to the locale root. This avoids the lang
+// switch pointing at another 404.
+const targetPath = /^\/?404\/?$/.test(stripped) ? '/' : stripped;
+const targetUrl = getRelativeLocaleUrl(targetLocale, targetPath);
 ---
 
 <a
