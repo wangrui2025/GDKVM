@@ -105,3 +105,20 @@ jobs:
           fi
           echo "✓ §14.4 pass: code and docs CDN refs are consistent"
           echo "::endgroup::"
+
+      - name: §14.7 Cross-repo owner double-verify
+        run: |
+          set -euo pipefail
+          echo "::group::§14.7 Cross-repo owner double-verify"
+          failed=0
+          for repo in mykcs/mykcs.github.io wangrui2025/GDKVM wangrui2025/osa mykcs/OSA; do
+            status=$(gh api "repos/$repo" -q '.full_name' 2>/dev/null || echo "")
+            if [ -z "$status" ]; then
+              echo "::error::MISSING: $repo (gh api 404 — stale remote or wrong owner)"
+              failed=1
+            else
+              echo "✓ OK: $status"
+            fi
+          done
+          echo "::endgroup::"
+          exit $failed
