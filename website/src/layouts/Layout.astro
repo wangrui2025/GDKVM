@@ -88,7 +88,6 @@ const structuredDataJson = structuredData ? JSON.stringify(structuredData) : nul
     {(() => {
       const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
       const altPath = Astro.url.pathname.replace(new RegExp(`^${baseUrl}/(en|zh)`), '') || '/';
-      const sep = altPath === '/' ? '' : '';
       return (
         <>
           <link rel="alternate" hreflang="en" href={new URL(`${baseUrl}/en${altPath}`, Astro.site).href} />
@@ -107,7 +106,7 @@ const structuredDataJson = structuredData ? JSON.stringify(structuredData) : nul
     <ClientRouter fallback="none" />
     {structuredData && (
       /* TRUSTED: static JSON.stringify of academic data, served as application/ld+json. */
-      <script type="application/ld+json" set:html={structuredDataJson} />
+      <script is:inline type="application/ld+json" set:html={structuredDataJson} />
     )}
     <script is:inline>
       (function () {
