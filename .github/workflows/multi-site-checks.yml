@@ -1,0 +1,104 @@
+name: Multi-Site Consistency Checks
+
+# Per ~/.agents/skills/website-improve/SKILL.md §16 (强制 CI 集成 §14 检测脚本)
+# Refs: ~/.agents/skills/website-improve/references/scan-checklist.md §14
+# 来源: 2026-06-02 multi-site audit (5 sites)
+# Checks: §14.1 dead workflow, §14.2 CDN ref mutable, §14.4 CDN ref consistency
+#
+# v2: portable find-based path discovery (works for astro/src, src, website/src)
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**/dist/**'
+      - '**/.astro/**'
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  multi-site-checks:
+    name: Multi-Site Consistency
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: §14.1 Dead workflow lint
+        run: |
+          set -euo pipefail
+          echo "::group::§14.1 Dead workflow lint"
+          failed=0
+          for yml in .github/workflows/*.yml; do
+            [ -f "$yml" ] || continue
+            # Skip self to avoid matching its own detection pattern
+            [ "$(basename "$yml")" = "multi-site-checks.yml" ] && continue
+            if grep -q "submodules: recursive" "$yml" 2>/dev/null; then
+              if [ ! -f .gitmodules ]; then
+                echo "::error file=$yml::DEAD WORKFLOW: $yml references 'submodules: recursive' but no .gitmodules exists"
+                echo "::error::See ~/.agents/skills/website-improve/references/scan-checklist.md §14.1"
+                failed=1
+              fi
+            fi
+          done
+          if [ "$failed" -eq 0 ]; then
+            echo "✓ §14.1 pass: no dead submodules: recursive workflows"
+          fi
+          echo "::endgroup::"
+          exit $failed
+
+      - name: §14.2 CDN ref mutable check
+        run: |
+          set -euo pipefail
+          echo "::group::§14.2 CDN ref mutable check"
+          matches=$(find . \
+            \( -path ./node_modules -o -path ./.git -o -path "./.github" -o -path "./**/dist" -o -path "./**/.astro" \) -prune -o \
+            -type f \( -name "*.astro" -o -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.mjs" -o -name "*.json" -o -name "*.md" -o -name "*.mdx" \) -print 2>/dev/null \
+            | xargs grep -EHn "cdn\.jsdelivr\.net/gh/[^@/]+/[^@/]+@(main|master|HEAD|latest)\b" 2>/dev/null || true)
+          if [ -n "$matches" ]; then
+            echo "::error::Mutable CDN refs found (must be semver tag or commit SHA):"
+            echo "$matches" | head -10
+            echo "::error::See ~/.agents/skills/website-improve/references/scan-checklist.md §14.2"
+            echo "::endgroup::"
+            exit 1
+          fi
+          echo "✓ §14.2 pass: no mutable CDN refs (@main/@master/@HEAD/@latest)"
+          echo "::endgroup::"
+
+      - name: §14.4 CDN ref consistency (code vs docs)
+        run: |
+          set -euo pipefail
+          echo "::group::§14.4 CDN ref consistency (code vs docs)"
+          # Code: any .astro/.ts/.mjs excluding .github (workflows), node_modules, dist, .astro
+          src_refs=$(find . \
+            \( -path ./node_modules -o -path ./.git -o -path "./.github" -o -path "./**/dist" -o -path "./**/.astro" \) -prune -o \
+            -type f \( -name "*.astro" -o -name "*.ts" -o -name "*.mjs" \) -print 2>/dev/null \
+            | xargs grep -hEo "cdn\.jsdelivr\.net/gh/[^/]+/[^/@]+@[^/\")]+" 2>/dev/null \
+            | sed 's/.*@//' | sort -u || true)
+          # Docs: .md/.mdx excluding .github
+          doc_refs=$(find . \
+            \( -path ./node_modules -o -path ./.git -o -path "./.github" -o -path "./**/dist" -o -path "./**/.astro" \) -prune -o \
+            -type f \( -name "*.md" -o -name "*.mdx" \) -print 2>/dev/null \
+            | xargs grep -hEo "cdn\.jsdelivr\.net/gh/[^/]+/[^/@]+@[^/\) ]+" 2>/dev/null \
+            | sed 's/.*@//' | sort -u || true)
+          if [ -n "$src_refs" ] && [ -n "$doc_refs" ]; then
+            if ! diff -q <(echo "$src_refs") <(echo "$doc_refs") > /dev/null; then
+              echo "::error::CDN ref drift between code and docs:"
+              diff <(echo "$src_refs") <(echo "$doc_refs") | head -20
+              echo "::error::See ~/.agents/skills/website-improve/references/scan-checklist.md §14.4"
+              echo "::endgroup::"
+              exit 1
+            fi
+          fi
+          echo "✓ §14.4 pass: code and docs CDN refs are consistent"
+          echo "::endgroup::"
