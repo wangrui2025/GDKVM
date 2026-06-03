@@ -43,9 +43,11 @@ jobs:
             [ -f "$yml" ] || continue
             # Skip self to avoid matching its own detection pattern
             [ "$(basename "$yml")" = "multi-site-checks.yml" ] && continue
-            if grep -q "submodules: recursive" "$yml" 2>/dev/null; then
-              if [ ! -f .gitmodules ]; then
-                echo "::error file=$yml::DEAD WORKFLOW: $yml references 'submodules: recursive' but no .gitmodules exists"
+            # Match 'submodules: recursive' as a YAML scalar (anchored, requires colon + recursive + EOL)
+            if grep -qE '^[[:space:]]+submodules:[[:space:]]+recursive[[:space:]]*$' "$yml" 2>/dev/null; then
+              # .gitmodules must exist AND contain at least one [submodule "..."] section
+              if [ ! -f .gitmodules ] || ! grep -q '^\[submodule' .gitmodules 2>/dev/null; then
+                echo "::error file=$yml::DEAD WORKFLOW: $yml references 'submodules: recursive' but no valid .gitmodules (missing or has no [submodule] sections)"
                 echo "::error::See ~/.agents/skills/website-improve/references/scan-checklist.md §14.1"
                 failed=1
               fi
@@ -56,6 +58,7 @@ jobs:
           fi
           echo "::endgroup::"
           exit $failed
+
 
       - name: §14.2 CDN ref mutable check
         run: |
