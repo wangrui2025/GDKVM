@@ -44,7 +44,7 @@ body, h1, h2, h3, h4, h5, h6 {
 |------|--------|
 | 全局正文/标题 | `Times New Roman`, `Noto Serif SC`, Georgia, serif |
 | BibTeX / 等宽 | `Fira Code`, Consolas, monospace |
-| 公式 | KaTeX (CDN `@0.16.47`) |
+| 公式 | KaTeX (CDN `@0.17.0`) |
 
 ### 3.2 字号规范
 
@@ -227,7 +227,7 @@ GDKVM 不提供本地 poster 渲染和 slides 演示。外部海报 PDF 通过 `
 
 ### 9.3 KaTeX CDN 样式
 
-公式渲染使用 `https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css`，通过 CDN 加载，无需本地安装。
+公式渲染使用 `https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.css`，通过 CDN 加载，无需本地安装。
 
 ### 9.4 工具页独立样式
 
