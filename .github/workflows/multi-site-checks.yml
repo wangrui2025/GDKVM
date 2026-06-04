@@ -106,6 +106,25 @@ jobs:
           echo "✓ §14.4 pass: code and docs CDN refs are consistent"
           echo "::endgroup::"
 
+      - name: §24 JSON-LD define:vars check (must use set:html)
+        run: |
+          set -euo pipefail
+          echo "::group::§24 JSON-LD define:vars check"
+          matches=$(find . \
+            \( -path ./node_modules -o -path ./.git -o -path "./.github" -o -path "./**/dist" -o -path "./**/.astro" \) -prune -o \
+            -type f \( -name "*.astro" -o -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.mjs" \) -print 2>/dev/null \
+            | xargs grep -EHn 'application/ld\+json.*define:vars' 2>/dev/null || true)
+          if [ -n "$matches" ]; then
+            echo "::error::JSON-LD scripts using define:vars pattern (Google sees JS function, not valid JSON-LD):"
+            echo "$matches" | head -10
+            echo "::error::Fix: use set:html={jsonString} instead. See SKILL.md §24 + scan-checklist.md §24"
+            echo "::error::Root cause: CASE-SYNC-ALL-SITES-20260604-RUN2 (mykcs P0 JSON-LD broken)"
+            echo "::endgroup::"
+            exit 1
+          fi
+          echo "✓ §24 pass: all JSON-LD use set:html (not define:vars)"
+          echo "::endgroup::"
+
       - name: §14.7 Cross-repo owner double-verify
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
