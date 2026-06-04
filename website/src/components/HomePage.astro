@@ -46,11 +46,26 @@ const schema = getScholarlyArticleSchema({
         </h1>
 
         <div class="text-lg mt-6">
-          <span class="mx-1">Rui Wang<sup>1</sup>,</span>
-          <span class="mx-1">Yimu Sun<sup>1</sup>,</span>
-          <span class="mx-1">Jingxing Guo<sup>1</sup>,</span>
-          <span class="mx-1">Huisi Wu<sup>1,*</sup>,</span>
-          <span class="mx-1">Jing Qin<sup>2</sup></span>
+          {
+            (lang === 'zh'
+              ? [
+                  { name: '王锐', sup: '1' },
+                  { name: '孙一慕', sup: '1' },
+                  { name: '郭景行', sup: '1' },
+                  { name: '吴惠思', sup: '1,*' },
+                  { name: '秦璟', sup: '2' },
+                ]
+              : [
+                  { name: 'Rui Wang', sup: '1' },
+                  { name: 'Yimu Sun', sup: '1' },
+                  { name: 'Jingxing Guo', sup: '1' },
+                  { name: 'Huisi Wu', sup: '1,*' },
+                  { name: 'Jing Qin', sup: '2' },
+                ]
+            ).map((a, i, arr) => (
+              <span class="mx-1">{a.name}<sup>{a.sup}</sup>{i < arr.length - 1 ? ',' : ''}</span>
+            ))
+          }
         </div>
 
         <div class="text-sm mt-3 text-gray-500 dark:text-gray-400">
