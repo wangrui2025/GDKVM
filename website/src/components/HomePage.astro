@@ -110,7 +110,7 @@ const schema = getScholarlyArticleSchema({
       <p>{t(lang, 'home.challengesDesc')}</p>
     </div>
 
-    <div class="flex flex-wrap justify-center">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 max-w-5xl mx-auto">
       {
         [
           { src: 'https://cdn.jsdelivr.net/gh/mykcs/academic@v1.1.0/images/publications/iccv2025-gdkvm/arXiv-2512.10252v1/fig/challenge/cha_1.jpg', alt: 'Noise', cap: '(a)' },
@@ -120,12 +120,10 @@ const schema = getScholarlyArticleSchema({
           { src: 'https://cdn.jsdelivr.net/gh/mykcs/academic@v1.1.0/images/publications/iccv2025-gdkvm/arXiv-2512.10252v1/fig/challenge/cha_5.jpg', alt: 'Cycle', cap: '(e)' },
           { src: 'https://cdn.jsdelivr.net/gh/mykcs/academic@v1.1.0/images/publications/iccv2025-gdkvm/arXiv-2512.10252v1/fig/challenge/cha_6.jpg', alt: 'Dropout', cap: '(f)' },
         ].map(({ src, alt, cap }) => (
-          <div class="w-1/2 md:w-1/4 lg:w-1/6 p-2">
-            <div class="challenge-card">
-              <img src={src} alt={alt} loading="lazy" />
-              <div class="challenge-caption text-center">{cap}</div>
-            </div>
-          </div>
+          <figure class="rounded-lg overflow-hidden bg-gray-50 dark:bg-gray-800 hover:shadow-md transition-shadow">
+            <img src={src} alt={alt} loading="lazy" class="w-full h-28 object-cover" />
+            <figcaption class="text-center text-xs font-medium py-1.5 text-text-secondary dark:text-text-secondary-dark">{cap} {alt}</figcaption>
+          </figure>
         ))
       }
     </div>
