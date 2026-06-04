@@ -13,6 +13,9 @@ const lang = Astro.params.lang as 'en' | 'zh';
 
 <Layout title={t(lang, 'tool.title')} description={t(lang, 'tool.description')} showFooter={false} image={'https://cdn.jsdelivr.net/gh/mykcs/academic@v1.1.0/images/publications/iccv2025-gdkvm/gdkvm.png'}>
   <Section>
+    <h1 class="text-4xl font-bold font-[Google_Sans] mb-4">
+      {t(lang, 'tool.title')}
+    </h1>
     <form id="modelForm">
       <div class="select-item">
         <label for="modelSize">{t(lang, 'tool.modelSize')}</label>
