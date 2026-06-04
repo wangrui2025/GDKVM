@@ -133,3 +133,31 @@ jobs:
           done
           echo "::endgroup::"
           exit $failed
+      - name: §15.6 i18n config explicit
+        run: |
+          set -euo pipefail
+          echo "::group::§15.6 i18n config explicit (no implicit defaults)"
+          failed=0
+          config=""
+          for c in astro.config.mjs astro/astro.config.mjs website/astro.config.mjs; do
+            [ -f "$c" ] && { config="$c"; break; }
+          done
+          if [ -z "$config" ]; then
+            echo "ℹ no astro config found, skipping i18n check"
+          elif ! grep -qE '^[[:space:]]+i18n:' "$config" 2>/dev/null; then
+            echo "ℹ no i18n block in $config (single-locale site, OK)"
+          else
+            # i18n block exists, check explicit settings
+            if ! grep -qE 'redirectToDefaultLocale' "$config"; then
+              echo "::error::$config: redirectToDefaultLocale not explicit (relies on Astro default — see CASE-MULTI-SITE-AUDIT-EXECUTION-20260602 §15.6)"
+              failed=1
+            fi
+            if ! grep -qE 'prefixDefaultLocale' "$config"; then
+              echo "::warning::$config: prefixDefaultLocale not explicit (warning only)"
+            fi
+          fi
+          if [ "$failed" -eq 0 ]; then
+            echo "✓ §15.6 pass: i18n config explicit"
+          fi
+          echo "::endgroup::"
+          exit $failed
