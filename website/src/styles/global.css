@@ -9,7 +9,7 @@
      that approximates the look — matches what high-star Astro templates
      (AstroPaper, Astro Micro) use. Add @fontsource-variable/inter if
      a custom font is desired. */
-  --font-display: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Times New Roman', 'Noto Serif SC', Times, serif;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
