@@ -18,7 +18,7 @@
   "abstractP4": "We validated GDKVM on two mainstream echocardiography video datasets (CAMUS and EchoNet-Dynamic) and compared it with various state-of-the-art methods. Experimental results show that GDKVM outperforms existing approaches in terms of segmentation accuracy and robustness, while ensuring real-time performance.",
   "challengesTitle": "Challenges in Echocardiography Segmentation",
   "challengesDesc": "Echocardiography segmentation faces several challenges such as low contrast, speckle noise, and signal dropout.",
-  "fig2Caption": "Illustrative challenges for echocardiography video segmentation: (a) speckle noise, (b) indistinct or blurred contours, and (c-f) the substantial changes in the target's shape and scale throughout the cardiac cycle.",
+  "fig2Caption": "Illustrative challenges for echocardiography video segmentation: (a) speckle noise, (b) indistinct or blurred contours, (c) shape variations of the target throughout the cardiac cycle, (d) scale variations, (e) cycle consistency (temporal coherence), and (f) dropout (occlusion or missing frames).",
   "bibtexTitle": "BibTeX",
   "copy": "Copy",
   "copied": "Copied!",
