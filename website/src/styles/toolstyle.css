@@ -1,53 +1,14 @@
-/* Tool page styles — minimal, post-dead-code-prune (2026-06-02)
+/* Tool page styles — minimal, post-dead-code-prune (2026-06-02, + 2026-06-05 Tailwind migration)
  *
  * Audit reference: scan-gdkvm.json 2026-06-02 (dead-code, ~70% dead selectors).
  * tool.astro renders a two-input form. All tab/configurator/visualization
  * styles were removed. Used selectors verified by grep across src/.
+ *
+ * 2026-06-05: Migrated body / form / input / button hardcoded styles to
+ * Tailwind utility classes in tool.astro (sync with GDKVM ActionButton
+ * design language: bg-gray-800 + hover:-translate-y-0.5 + hover:shadow-lg).
+ * Only .select-item card remains (hover effect unique to tool).
  */
-
-body {
-    background-color: #f5f5f5;
-    padding: 2rem;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-input {
-    padding: 0.8rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%;
-}
-
-button {
-    padding: 0.8rem;
-    background-color: #0366d6;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #0350a1;
-}
-
-#result {
-    margin-top: 20px;
-    font-size: 1.1rem;
-}
-
-#result p {
-    margin: 5px 0;
-}
 
 .select-item {
     background: #F7FAFC;
@@ -60,23 +21,6 @@ button:hover {
 .select-item:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(99, 179, 237, 0.1);
-}
-
-input::placeholder {
-    color: #999;
-    font-style: italic;
-    font-size: 0.9em;
-}
-
-/* Dark mode support — only for used elements */
-.dark input {
-    background-color: #111827;
-    color: #e5e7eb;
-    border-color: #4b5563;
-}
-
-.dark input::placeholder {
-    color: #6b7280;
 }
 
 .dark .select-item {

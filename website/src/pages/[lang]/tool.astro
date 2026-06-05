@@ -12,23 +12,40 @@ const lang = Astro.params.lang as 'en' | 'zh';
 ---
 
 <Layout title={t(lang, 'tool.title')} description={t(lang, 'tool.description')} showFooter={false} image={'https://cdn.jsdelivr.net/gh/mykcs/academic@v1.1.0/images/publications/iccv2025-gdkvm/gdkvm.png'}>
-  <Section>
+  <Section class="bg-gray-50 dark:bg-gray-800 rounded-lg">
     <h1 class="text-4xl font-bold font-display mb-4">
       {t(lang, 'tool.title')}
     </h1>
-    <form id="modelForm">
+    <form id="modelForm" class="flex flex-col gap-4 max-w-md mx-auto">
       <div class="select-item">
-        <label for="modelSize">{t(lang, 'tool.modelSize')}</label>
-        <input type="text" id="modelSize" placeholder="e.g.1000000 or 1e6" required>
+        <label for="modelSize" class="block mb-2 font-semibold">{t(lang, 'tool.modelSize')}</label>
+        <input
+          type="text"
+          id="modelSize"
+          placeholder="e.g.1000000 or 1e6"
+          required
+          class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+        >
       </div>
       <div class="select-item">
-        <label for="trainingTokens">{t(lang, 'tool.trainingTokens')}</label>
-        <input type="text" id="trainingTokens" placeholder="e.g.5000000 or 5e6" required>
+        <label for="trainingTokens" class="block mb-2 font-semibold">{t(lang, 'tool.trainingTokens')}</label>
+        <input
+          type="text"
+          id="trainingTokens"
+          placeholder="e.g.5000000 or 5e6"
+          required
+          class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+        >
       </div>
-      <button type="submit">{t(lang, 'tool.calculate')}</button>
+      <button
+        type="submit"
+        class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-gray-800 text-white dark:bg-gray-200 dark:text-gray-900 hover:-translate-y-0.5 hover:shadow-lg transition"
+      >
+        {t(lang, 'tool.calculate')}
+      </button>
     </form>
 
-    <div id="result">
+    <div id="result" class="mt-5 text-lg">
       <h3 class="text-2xl font-semibold font-display mb-4">{t(lang, 'tool.results')}</h3>
       <p id="bsValue">{t(lang, 'tool.optimalBs')}</p>
       <p id="lrValue">{t(lang, 'tool.lr')}</p>
