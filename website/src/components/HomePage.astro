@@ -45,7 +45,11 @@ const schema = getScholarlyArticleSchema({
           <span class="highlight-title">{t(lang, 'home.publicationTitle')}</span>
         </h1>
 
-        <div class="text-lg mt-6">
+        <p class="text-lg mt-4 text-gray-500 dark:text-gray-400">
+          {t(lang, 'home.venueFull')}
+        </p>
+
+        <div class="text-lg mt-6 font-medium">
           {
             (lang === 'zh'
               ? [
