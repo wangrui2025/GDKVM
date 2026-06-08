@@ -3,10 +3,17 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 
 const currentLocale = Astro.currentLocale ?? 'en';
 const targetLocale = currentLocale === 'en' ? 'zh' : 'en';
-const currentPath = Astro.url.pathname
-  .replace(import.meta.env.BASE_URL, '')
-  .replace(/^\/(en|zh)/, '')
-  .replace(/\/$/, '') || '/';
+// Strip BASE_URL + optional locale prefix to get the locale-free path that
+// getRelativeLocaleUrl expects. Uses RegExp (matching Layout.astro:90) so the
+// pattern also works when prefixDefaultLocale routes every page under /en/ or
+// /zh/ — previously a hardcoded /^\/(en|zh)/ would silently fail on root or
+// subpath entries that don't carry a locale segment.
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const currentPath =
+  Astro.url.pathname.replace(
+    new RegExp(`^${baseUrl}/(en|zh)`),
+    ''
+  ).replace(/\/$/, '') || '/';
 const targetUrl = getRelativeLocaleUrl(targetLocale, currentPath);
 ---
 
