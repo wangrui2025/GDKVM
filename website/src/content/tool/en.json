@@ -4,7 +4,11 @@
   "trainingTokens": "D(Training Token Size)",
   "calculate": "Calculate",
   "results": "Results",
-  "optimalBs": "Optimal Token Wise BatchSize: -",
-  "lr": "Learning Rate: -",
+  "bsDefault": "Optimal Token Wise BatchSize: -",
+  "lrDefault": "Learning Rate: -",
+  "bsLabel": "Optimal Token Wise BatchSize: ",
+  "lrLabel": "Learning Rate: ",
+  "formatError": "Format error, Supporting examples: 1e8, 250000, 3.5×10^6",
+  "positiveNumberError": "Please Input Positive Numbers",
   "description": "GDKVM Predictable Scale Calculator: predicts optimal token-level batch size and learning rate from model parameters and training tokens."
 }

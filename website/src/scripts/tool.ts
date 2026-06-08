@@ -1,28 +1,9 @@
-// i18n helper
-const i18n = {
-  en: {
-    formatError: 'Format error, Supporting examples: 1e8, 250000, 3.5×10^6',
-    positiveNumberError: 'Please Input Positive Numbers',
-    optimalBs: 'Optimal Token Wise BatchSize: ',
-    learningRate: 'Learning Rate: ',
-    results: 'Results',
-    bsDefault: 'BS: -',
-    lrDefault: 'LR: -',
-  },
-  zh: {
-    formatError: '格式错误，支持示例：1e8, 250000, 3.5×10^6',
-    positiveNumberError: '请输入正数',
-    optimalBs: '最优Token级BatchSize: ',
-    learningRate: '学习率: ',
-    results: '计算结果',
-    bsDefault: '批量大小: -',
-    lrDefault: '学习率: -',
-  },
-};
+import { t, type Locale } from '../i18n';
 
-export function t(key: string): string {
-  const lang = document.documentElement.lang || 'en';
-  return (i18n[lang as keyof typeof i18n] || i18n.en)[key as keyof typeof i18n.en] || key;
+const SUPPORTED_LOCALES: Locale[] = ['en', 'zh'];
+function getLocale(): Locale {
+  const lang = document.documentElement.lang as Locale;
+  return SUPPORTED_LOCALES.includes(lang) ? lang : 'en';
 }
 
 export function calculateBsLr(modelSize: number, trainingTokens: number) {
@@ -51,15 +32,17 @@ export function formatSmallNumber(num: number) {
 export function showError(message: string) {
   const resultDiv = document.getElementById('result');
   if (!resultDiv) return;
+  const lang = getLocale();
   resultDiv.innerHTML = `<div class="error">⚠️ ${message}</div>`;
   setTimeout(() => {
-    resultDiv.innerHTML = `<h3>${t('results')}</h3>
-      <p id="bsValue">${t('bsDefault')}</p>
-      <p id="lrValue">${t('lrDefault')}</p>`;
+    resultDiv.innerHTML = `<h3>${t(lang, 'tool.results')}</h3>
+      <p id="bsValue">${t(lang, 'tool.bsDefault')}</p>
+      <p id="lrValue">${t(lang, 'tool.lrDefault')}</p>`;
   }, 2000);
 }
 
 export function initToolPage() {
+  const lang = getLocale();
   const modelForm = document.getElementById('modelForm');
   if (!modelForm) return;
   modelForm.addEventListener('submit', function (e) {
@@ -80,19 +63,19 @@ export function initToolPage() {
       return /^[+-]?\d*\.?\d+([eE][+-]?\d+)?$/.test(preprocessInput(str));
     };
     if (!isValidFormat(modelSizeInput) || !isValidFormat(trainingTokensInput)) {
-      showError(t('formatError'));
+      showError(t(lang, 'tool.formatError'));
       return;
     }
     const modelSize = parseNumber(modelSizeInput);
     const trainingTokens = parseNumber(trainingTokensInput);
     if (isNaN(modelSize) || isNaN(trainingTokens) || modelSize <= 0 || trainingTokens <= 0) {
-      showError(t('positiveNumberError'));
+      showError(t(lang, 'tool.positiveNumberError'));
       return;
     }
     const { batchSize, learningRate } = calculateBsLr(modelSize, trainingTokens);
     const bsValue = document.getElementById('bsValue');
     const lrValue = document.getElementById('lrValue');
-    if (bsValue) bsValue.textContent = `${t('optimalBs')}${formatLargeNumber(batchSize)}`;
-    if (lrValue) lrValue.textContent = `${t('learningRate')}${formatSmallNumber(learningRate)}`;
+    if (bsValue) bsValue.textContent = `${t(lang, 'tool.bsLabel')}${formatLargeNumber(batchSize)}`;
+    if (lrValue) lrValue.textContent = `${t(lang, 'tool.lrLabel')}${formatSmallNumber(learningRate)}`;
   });
 }
