@@ -24,7 +24,7 @@
   "initTitle": "3. 环境初始化与同步",
   "initDesc": "uv 将读取配置文件，创建虚拟环境，安装所有依赖。",
   "initNote": "对于更新的环境，可以使用 env_02 环境配置，具体代码参考 env/env_02/pyproject.toml",
-  "envSelfCheck": "环境自检",
+  "versionConstraintsTitle": "版本约束",
   "versionConstraints": {
     "pydanticConflict": "版本冲突 <2.12",
     "pydanticIssue": "现象：",

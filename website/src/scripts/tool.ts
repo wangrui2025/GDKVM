@@ -33,11 +33,27 @@ export function showError(message: string) {
   const resultDiv = document.getElementById('result');
   if (!resultDiv) return;
   const lang = getLocale();
-  resultDiv.innerHTML = `<div class="error">⚠️ ${message}</div>`;
+  // Use DOM API instead of innerHTML to avoid XSS from any future i18n
+  // strings that may contain HTML metacharacters. See audit finding
+  // "src/scripts/tool.ts:38 innerHTML XSS pattern" (low severity).
+  while (resultDiv.firstChild) resultDiv.removeChild(resultDiv.firstChild);
+  const err = document.createElement('div');
+  err.className = 'error';
+  err.textContent = `⚠️ ${message}`;
+  resultDiv.appendChild(err);
   setTimeout(() => {
-    resultDiv.innerHTML = `<h3>${t(lang, 'tool.results')}</h3>
-      <p id="bsValue">${t(lang, 'tool.bsDefault')}</p>
-      <p id="lrValue">${t(lang, 'tool.lrDefault')}</p>`;
+    while (resultDiv.firstChild) resultDiv.removeChild(resultDiv.firstChild);
+    const h3 = document.createElement('h3');
+    h3.textContent = t(lang, 'tool.results');
+    const pBs = document.createElement('p');
+    pBs.id = 'bsValue';
+    pBs.textContent = t(lang, 'tool.bsDefault');
+    const pLr = document.createElement('p');
+    pLr.id = 'lrValue';
+    pLr.textContent = t(lang, 'tool.lrDefault');
+    resultDiv.appendChild(h3);
+    resultDiv.appendChild(pBs);
+    resultDiv.appendChild(pLr);
   }, 2000);
 }
 

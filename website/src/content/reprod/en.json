@@ -24,7 +24,7 @@
   "initTitle": "3. Initialization & Sync",
   "initDesc": "uv will read configuration files, create a virtual environment, and install all dependencies.",
   "initNote": "For a newer environment, you can use the env_02 configuration. Refer to env/env_02/pyproject.toml.",
-  "envSelfCheck": "Environment Self-Check",
+  "versionConstraintsTitle": "Version Constraints",
   "versionConstraints": {
     "pydanticConflict": "Version Conflict <2.12",
     "pydanticIssue": "Issue:",
