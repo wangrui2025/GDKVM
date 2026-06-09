@@ -1,6 +1,4 @@
 ---
-import '@fontsource/noto-sans/400.css';
-import '@fontsource/noto-sans/700.css';
 import 'katex/dist/katex.min.css';
 import { ClientRouter } from 'astro:transitions';
 import ThemeToggle from '../components/ThemeToggle.astro';
@@ -19,7 +17,11 @@ interface Props {
 const {
   title,
   description = 'GDKVM: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule',
-  image = 'https://cdn.jsdelivr.net/gh/mykcs/academic@v1.1.0/images/publications/iccv2025-gdkvm/gdkvm.png',
+  // Use a self-hosted, base-prefixed OG image so social crawlers don't depend
+  // on third-party CDNs (cdn.jsdelivr.net refuses many crawlers due to TLS/CORS).
+  // Width/height are omitted intentionally so crawlers fetch the actual file
+  // rather than trusting a hardcoded 1200x630 that may not match.
+  image = `${import.meta.env.BASE_URL}/gdkvm-og.png`,
   showFooter = true,
   structuredData,
 } = Astro.props;
@@ -72,8 +74,6 @@ const structuredDataJson = structuredData ? JSON.stringify(structuredData) : nul
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image} />
     <meta property="og:image:alt" content="GDKVM architecture diagram for echocardiography video segmentation" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
     <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site).href} />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />

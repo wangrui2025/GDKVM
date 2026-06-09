@@ -29,7 +29,7 @@ export function formatSmallNumber(num: number) {
   return num.toFixed(6).replace(/\.?0+$/, '');
 }
 
-export function showError(message: string) {
+export function showError(message: string, invalidFieldIds: string[] = []) {
   const resultDiv = document.getElementById('result');
   if (!resultDiv) return;
   const lang = getLocale();
@@ -39,8 +39,27 @@ export function showError(message: string) {
   while (resultDiv.firstChild) resultDiv.removeChild(resultDiv.firstChild);
   const err = document.createElement('div');
   err.className = 'error';
+  err.id = 'toolErrorMessage';
+  err.setAttribute('role', 'alert');
   err.textContent = `⚠️ ${message}`;
   resultDiv.appendChild(err);
+  // Mark the offending input(s) as invalid for assistive tech.
+  const modelSizeEl = document.getElementById('modelSize') as HTMLInputElement | null;
+  const trainingTokensEl = document.getElementById('trainingTokens') as HTMLInputElement | null;
+  const fields: Record<string, HTMLInputElement | null> = {
+    modelSize: modelSizeEl,
+    trainingTokens: trainingTokensEl,
+  };
+  for (const [id, el] of Object.entries(fields)) {
+    if (!el) continue;
+    if (invalidFieldIds.includes(id)) {
+      el.setAttribute('aria-invalid', 'true');
+      el.setAttribute('aria-describedby', 'toolErrorMessage');
+    } else {
+      el.removeAttribute('aria-invalid');
+      el.removeAttribute('aria-describedby');
+    }
+  }
   setTimeout(() => {
     while (resultDiv.firstChild) resultDiv.removeChild(resultDiv.firstChild);
     const h3 = document.createElement('h3');
@@ -54,6 +73,13 @@ export function showError(message: string) {
     resultDiv.appendChild(h3);
     resultDiv.appendChild(pBs);
     resultDiv.appendChild(pLr);
+    // Clear aria-invalid after the error message disappears so the form
+    // is in a clean state for the next submission.
+    for (const el of [modelSizeEl, trainingTokensEl]) {
+      if (!el) continue;
+      el.removeAttribute('aria-invalid');
+      el.removeAttribute('aria-describedby');
+    }
   }, 2000);
 }
 
@@ -79,13 +105,19 @@ export function initToolPage() {
       return /^[+-]?\d*\.?\d+([eE][+-]?\d+)?$/.test(preprocessInput(str));
     };
     if (!isValidFormat(modelSizeInput) || !isValidFormat(trainingTokensInput)) {
-      showError(t(lang, 'tool.formatError'));
+      const invalidFields: string[] = [];
+      if (!isValidFormat(modelSizeInput)) invalidFields.push('modelSize');
+      if (!isValidFormat(trainingTokensInput)) invalidFields.push('trainingTokens');
+      showError(t(lang, 'tool.formatError'), invalidFields);
       return;
     }
     const modelSize = parseNumber(modelSizeInput);
     const trainingTokens = parseNumber(trainingTokensInput);
     if (isNaN(modelSize) || isNaN(trainingTokens) || modelSize <= 0 || trainingTokens <= 0) {
-      showError(t(lang, 'tool.positiveNumberError'));
+      const invalidFields: string[] = [];
+      if (isNaN(modelSize) || modelSize <= 0) invalidFields.push('modelSize');
+      if (isNaN(trainingTokens) || trainingTokens <= 0) invalidFields.push('trainingTokens');
+      showError(t(lang, 'tool.positiveNumberError'), invalidFields);
       return;
     }
     const { batchSize, learningRate } = calculateBsLr(modelSize, trainingTokens);
