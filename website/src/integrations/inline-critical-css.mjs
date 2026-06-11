@@ -98,19 +98,22 @@ function inlineCriticalCss() {
         // ======== Sitemap post-process: remove legacy redirect stubs ========
         // @astrojs/sitemap 3.7.x validates its `filter` option via zod and
         // rejects every form we've tried. As a post-process workaround,
-        // re-write the generated dist/sitemap-0.xml to drop the entries
-        // that are meta-refresh stubs (the root /, /reprod/, plus the
-        // per-locale variants /en/reprod/ and /zh/reprod/).
+        // re-write the generated dist/sitemap-0.xml to drop only the bare
+        // meta-refresh stubs (root /GDKVM/ and /GDKVM/reprod/).
+        // NOTE: /GDKVM/en/reprod/ and /GDKVM/zh/reprod/ are REAL pages
+        // (100-line HTML), NOT stubs — they MUST remain in the sitemap.
         const sitemapFiles = ['sitemap-0.xml', 'sitemap-index.xml']
           .map(f => path.join(distDir, f))
           .filter(p => fs.existsSync(p));
         for (const sf of sitemapFiles) {
           let xml = fs.readFileSync(sf, 'utf-8');
           const before = (xml.match(/<loc>/g) || []).length;
-          // Drop <url>...</url> blocks whose <loc> ends with /reprod/ or
-          // is the bare /GDKVM/ root (both are meta-refresh stubs).
+          // Drop <url>...</url> blocks whose <loc> is the bare /GDKVM/reprod/
+          // or /GDKVM/ root (both are single-line meta-refresh stubs).
+          // DO NOT touch locale-prefixed variants /en/reprod/ and /zh/reprod/
+          // — those are real content pages.
           xml = xml.replace(
-            /<url>\s*<loc>https:\/\/wangrui2025\.github\.io\/GDKVM\/(?:(?:en|zh)\/)?reprod\/<\/loc>\s*<\/url>/g,
+            /<url>\s*<loc>https:\/\/wangrui2025\.github\.io\/GDKVM\/reprod\/<\/loc>\s*<\/url>/g,
             ''
           );
           xml = xml.replace(
