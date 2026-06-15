@@ -12,5 +12,7 @@
   "positiveNumberError": "请输入正数",
   "copyCode": "复制代码",
   "langIconAlt": "翻译",
+  "modelSizePlaceholder": "例如 1000000 或 1e6",
+  "trainingTokensPlaceholder": "例如 5000000 或 5e6",
   "description": "GDKVM 可预测扩展计算器：根据模型参数量和训练 Token 量，预测最优 Token 级 Batch Size 和学习率。"
 }

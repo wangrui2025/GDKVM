@@ -12,5 +12,7 @@
   "positiveNumberError": "Please Input Positive Numbers",
   "copyCode": "Copy code",
   "langIconAlt": "Translate",
+  "modelSizePlaceholder": "e.g.1000000 or 1e6",
+  "trainingTokensPlaceholder": "e.g.5000000 or 5e6",
   "description": "GDKVM Predictable Scale Calculator: predicts optimal token-level batch size and learning rate from model parameters and training tokens."
 }
