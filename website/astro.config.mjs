@@ -3,7 +3,6 @@ import sitemap from '@astrojs/sitemap';
 import astroIcon from 'astro-icon';
 import tailwindcss from '@tailwindcss/vite';
 import inlineCriticalCss from './src/integrations/inline-critical-css.mjs';
-import stripWoffFallback from './src/integrations/strip-woff-fallback.mjs';
 
 export default defineConfig({
   site: 'https://wangrui2025.github.io',
@@ -34,10 +33,6 @@ export default defineConfig({
     sitemap(),
     astroIcon(),
     inlineCriticalCss(),
-    // MUST run after inlineCriticalCss (which inlines CSS into HTML) so the
-    // woff src() removals apply to the inlined <style> blocks. Strips
-    // noto-sans-*.woff fallback (woff2 covers >97% of modern browsers).
-    stripWoffFallback(),
   ],
   vite: {
     plugins: [tailwindcss()],
