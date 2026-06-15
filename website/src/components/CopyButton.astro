@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { t } from '../i18n';
 
 export interface Props {
   targetId: string;
@@ -8,6 +9,7 @@ export interface Props {
 }
 
 const { targetId, label = 'Copy', successLabel = 'Copied!' } = Astro.props;
+const lang = Astro.currentLocale ?? 'en';
 ---
 
 <button
@@ -15,6 +17,7 @@ const { targetId, label = 'Copy', successLabel = 'Copied!' } = Astro.props;
   data-copy-target={targetId}
   data-copy-label={label}
   data-copy-success={successLabel}
+  aria-label={t(lang, 'tool.copyCode')}
   class="copy-btn absolute top-2 right-2 z-10 bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs flex items-center gap-1"
 >
   <Icon name="lucide:copy" class="w-3 h-3 copy-icon" />

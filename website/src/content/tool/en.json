@@ -10,5 +10,6 @@
   "lrLabel": "Learning Rate: ",
   "formatError": "Format error, Supporting examples: 1e8, 250000, 3.5×10^6",
   "positiveNumberError": "Please Input Positive Numbers",
+  "copyCode": "Copy code",
   "description": "GDKVM Predictable Scale Calculator: predicts optimal token-level batch size and learning rate from model parameters and training tokens."
 }
