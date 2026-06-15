@@ -108,10 +108,10 @@ const structuredDataJson = structuredData ? JSON.stringify(structuredData) : nul
       /* TRUSTED: static JSON.stringify of academic data, served as application/ld+json. */
       <script is:inline type="application/ld+json" set:html={structuredDataJson} />
     )}
-    <script is:inline>
+    <script>
       (function () {
         if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => {});
+          navigator.serviceWorker.register(`${import.meta.env.BASE_URL}/sw.js`).catch(() => {});
         }
       })();
     </script>
