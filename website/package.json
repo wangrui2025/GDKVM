@@ -2,7 +2,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build",
+    "build": "astro check && astro build && node scripts/strip-woff-fallback.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check"
