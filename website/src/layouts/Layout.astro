@@ -53,12 +53,18 @@ const structuredDataJson = structuredData ? JSON.stringify(structuredData) : nul
         min-height: 100vh;
       }
     </style>
-    <script>
-      // Theme bootstrap: must run before first paint to avoid FOUC.
-      // Astro hoists this module <script> into a pre-paint <script type=module>
-      // in the built HTML, preserving the synchronous execution contract.
-      import { initThemeBootstrap } from '../scripts/theme-init';
-      initThemeBootstrap();
+    <script is:inline>
+      (function() {
+        function applyTheme() {
+          const theme = localStorage.getItem('theme')
+            || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          document.documentElement.classList.toggle('dark', theme === 'dark');
+          const meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', theme === 'dark' ? '#111827' : '#ffffff');
+        }
+        applyTheme();
+        document.addEventListener('astro:after-swap', applyTheme);
+      })();
     </script>
     <meta name="description" content={description}>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -104,9 +110,11 @@ const structuredDataJson = structuredData ? JSON.stringify(structuredData) : nul
       <script is:inline type="application/ld+json" set:html={structuredDataJson} />
     )}
     <script>
-      // Service-worker registration is best-effort; failures are swallowed.
-      import { registerServiceWorker } from '../scripts/sw-register';
-      registerServiceWorker();
+      (function () {
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register(`${import.meta.env.BASE_URL}/sw.js`).catch(() => {});
+        }
+      })();
     </script>
   </head>
   <body class="bg-white text-gray-700 dark:bg-gray-900 dark:text-gray-200 transition-colors min-h-screen flex flex-col">
