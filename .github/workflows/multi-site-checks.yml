@@ -83,16 +83,21 @@ jobs:
           set -euo pipefail
           echo "::group::§14.4 CDN ref consistency (code vs docs)"
           # Code: any .astro/.ts/.mjs excluding .github (workflows), node_modules, dist, .astro
+          # NOTE: exclude set includes ' because JS string literals like
+          #   const FOO = '...@v1.1.0';
+          # would otherwise capture `v1.1.0';` as a "ref" — false-positive drift.
           src_refs=$(find . \
             \( -path ./node_modules -o -path ./.git -o -path "./.github" -o -path "./**/dist" -o -path "./**/.astro" \) -prune -o \
             -type f \( -name "*.astro" -o -name "*.ts" -o -name "*.mjs" \) -print 2>/dev/null \
-            | xargs grep -hEo "cdn\.jsdelivr\.net/gh/[^/]+/[^/@]+@[^/\")]+" 2>/dev/null \
+            | xargs grep -hEo "cdn\.jsdelivr\.net/gh/[^/]+/[^/@]+@[^/\"')]+" 2>/dev/null \
             | sed 's/.*@//' | sort -u || true)
           # Docs: .md/.mdx excluding .github
+          # Same exclude set as code so that prose like "v1.1.0/..." in docs
+          # is parsed identically to "v1.1.0';" in code (neither trailing).
           doc_refs=$(find . \
             \( -path ./node_modules -o -path ./.git -o -path "./.github" -o -path "./**/dist" -o -path "./**/.astro" \) -prune -o \
             -type f \( -name "*.md" -o -name "*.mdx" \) -print 2>/dev/null \
-            | xargs grep -hEo "cdn\.jsdelivr\.net/gh/[^/]+/[^/@]+@[^/\) ]+" 2>/dev/null \
+            | xargs grep -hEo "cdn\.jsdelivr\.net/gh/[^/]+/[^/@]+@[^/\"') ]+" 2>/dev/null \
             | sed 's/.*@//' | sort -u || true)
           if [ -n "$src_refs" ] && [ -n "$doc_refs" ]; then
             if ! diff -q <(echo "$src_refs") <(echo "$doc_refs") > /dev/null; then
