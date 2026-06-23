@@ -6,6 +6,9 @@ node_modules/
 dist/
 website/dist/
 
+# Local-only assets (not deployed, not tracked via jsDelivr)
+website/assets/
+
 # Python
 __pycache__/
 *.py[cod]
