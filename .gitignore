@@ -32,3 +32,6 @@ Thumbs.db
 # Project
 .omc/
 test-results/
+
+# Python source accidentally under public/ (site is Astro-only)
+website/public/model/
