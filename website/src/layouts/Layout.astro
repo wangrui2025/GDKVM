@@ -4,6 +4,7 @@ import { ClientRouter } from 'astro:transitions';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import LangSwitcher from '../components/LangSwitcher.astro';
 import Footer from '../components/Footer.astro';
+import { stripLocaleFromPath } from '../i18n';
 import '../styles/global.css';
 
 interface Props {
@@ -87,7 +88,7 @@ const structuredDataJson = structuredData ? JSON.stringify(structuredData) : nul
          Uses BASE_URL so the same code works for any subpath (avoid duplicate base in alt URLs). -->
     {(() => {
       const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
-      const altPath = Astro.url.pathname.replace(new RegExp(`^${baseUrl}/(en|zh)`), '') || '/';
+      const altPath = stripLocaleFromPath(Astro.url.pathname, baseUrl);
       return (
         <>
           <link rel="alternate" hreflang="en" href={new URL(`${baseUrl}/en${altPath}`, Astro.site).href} />
@@ -126,46 +127,11 @@ const structuredDataJson = structuredData ? JSON.stringify(structuredData) : nul
     </main>
     {showFooter && <Footer />}
     <script>
-      document.addEventListener('click', (e) => {
-        const target = e.target as HTMLElement;
-
-        const themeBtn = target.closest('[data-action="theme-toggle"]');
-        if (themeBtn) {
-          const html = document.documentElement;
-          const isDark = html.classList.toggle('dark');
-          try {
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-          } catch {}
-          const meta = document.querySelector('meta[name="theme-color"]');
-          if (meta) meta.setAttribute('content', isDark ? '#111827' : '#ffffff');
-          return;
-        }
-
-        const copyBtn = target.closest('button[data-copy-target]');
-        if (copyBtn) {
-          const targetId = copyBtn.getAttribute('data-copy-target');
-          const label = copyBtn.getAttribute('data-copy-label') || 'Copy';
-          const successLabel = copyBtn.getAttribute('data-copy-success') || 'Copied!';
-          const el = document.getElementById(targetId || '');
-          if (!el) return;
-          const text = el.innerText;
-
-          const showSuccess = () => {
-            const icon = copyBtn.querySelector('.copy-icon');
-            const textSpan = copyBtn.querySelector('span');
-            if (icon) icon.setAttribute('name', 'lucide:check');
-            if (textSpan) textSpan.textContent = successLabel;
-            setTimeout(() => {
-              if (icon) icon.setAttribute('name', 'lucide:copy');
-              if (textSpan) textSpan.textContent = label;
-            }, 2000);
-          };
-
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(text).then(showSuccess).catch(() => {});
-          }
-        }
-      });
+      import { initDelegatedClickHandlers } from '../scripts/dom-handlers';
+      import { bindPageLifecycle } from '../scripts/page-init';
+      // Re-bind on every page swap (ClientRouter) so the handlers stay
+      // live after Astro's view transitions.
+      bindPageLifecycle(initDelegatedClickHandlers);
     </script>
   </body>
 </html>

@@ -6,6 +6,9 @@ import CopyButton from './CopyButton.astro';
 import { Icon } from 'astro-icon/components';
 import { getScholarlyArticleSchema } from '../utils/structuredData';
 import { t } from '../i18n';
+import { SITE_CONFIG, CDN_BASE } from '../config/site';
+import enHome from '../content/homepage/en.json';
+import zhHome from '../content/homepage/zh.json';
 
 interface Props {
   lang: 'en' | 'zh';
@@ -13,16 +16,22 @@ interface Props {
 
 const { lang } = Astro.props;
 
+// Authors live in i18n content (not in the `t()` lookup because they're
+// structured objects, not plain strings). Both locales must have the
+// same array length and order to render the comma separators correctly.
+const homeContent = (lang === 'zh' ? zhHome : enHome) as { authors: { name: string; sup: string }[] };
+const authors = homeContent.authors;
+
 const schema = getScholarlyArticleSchema({
   title: t(lang, 'home.publicationTitle'),
-  authors: ['Rui Wang', 'Yimu Sun', 'Jingxing Guo', 'Huisi Wu', 'Jing Qin'],
+  authors: authors.map((a) => a.name),
   description: t(lang, 'home.description'),
   url: new URL(Astro.url.pathname, Astro.site).href,
-  image: 'https://cdn.jsdelivr.net/gh/mykcs/academic@v1.1.0/images/publications/iccv2025-gdkvm/gdkvm.png',
-  datePublished: '2025-10-01',
-  venue: 'ICCV 2025',
-  pdfUrl: 'https://openaccess.thecvf.com/content/ICCV2025/html/Wang_GDKVM_Echocardiography_Video_Segmentation_via_Spatiotemporal_Key-Value_Memory_with_Gated_ICCV_2025_paper.html',
-  codeUrl: 'https://github.com/wangrui2025/GDKVM',
+  image: `${CDN_BASE}/images/publications/iccv2025-gdkvm/gdkvm.png`,
+  datePublished: SITE_CONFIG.datePublished,
+  venue: SITE_CONFIG.venue,
+  pdfUrl: SITE_CONFIG.cvfPaperUrl,
+  codeUrl: SITE_CONFIG.codeUrl,
 });
 ---
 
@@ -34,7 +43,7 @@ const schema = getScholarlyArticleSchema({
         <!-- ICCV Logo -->
         <div class="mb-6">
           <img
-            src="https://cdn.jsdelivr.net/gh/mykcs/academic@v1.1.0/images/logos/iccv.png"
+            src={`${CDN_BASE}/images/logos/iccv.png`}
             alt="ICCV Logo"
             class="h-14 w-auto mx-auto lg:absolute lg:top-8 lg:left-8 lg:mx-0"
             loading="eager"
@@ -51,22 +60,7 @@ const schema = getScholarlyArticleSchema({
 
         <div class="text-lg mt-6 font-medium">
           {
-            (lang === 'zh'
-              ? [
-                  { name: '王锐', sup: '1' },
-                  { name: '孙一木', sup: '1' },
-                  { name: '郭警醒', sup: '1' },
-                  { name: '吴惠思', sup: '1,*' },
-                  { name: '秦璟', sup: '2' },
-                ]
-              : [
-                  { name: 'Rui Wang', sup: '1' },
-                  { name: 'Yimu Sun', sup: '1' },
-                  { name: 'Jingxing Guo', sup: '1' },
-                  { name: 'Huisi Wu', sup: '1,*' },
-                  { name: 'Jing Qin', sup: '2' },
-                ]
-            ).map((a, i, arr) => (
+            authors.map((a, i, arr) => (
               <span class="mx-1">{a.name}<sup>{a.sup}</sup>{i < arr.length - 1 ? ',' : ''}</span>
             ))
           }
@@ -82,13 +76,13 @@ const schema = getScholarlyArticleSchema({
         </div>
 
         <div class="flex flex-wrap justify-center gap-3 mt-8">
-          <ActionButton href="https://arxiv.org/abs/2512.10252" icon="ai ai-arxiv" target="_blank">
+          <ActionButton href={SITE_CONFIG.arxivUrl} icon="academicons:arxiv" target="_blank">
             {t(lang, 'home.arxiv')}
           </ActionButton>
-          <ActionButton href="https://github.com/wangrui2025/GDKVM" icon="fab fa-github" target="_blank">
+          <ActionButton href={SITE_CONFIG.codeUrl} icon="simple-icons:github" target="_blank">
             {t(lang, 'home.code')}
           </ActionButton>
-          <ActionButton href={`${import.meta.env.BASE_URL}/${lang}/reprod/`} icon="fas fa-cogs">
+          <ActionButton href={`${import.meta.env.BASE_URL}/${lang}/reprod/`} icon="lucide:settings">
             {t(lang, 'home.reproduction')}
           </ActionButton>
         </div>
@@ -100,7 +94,7 @@ const schema = getScholarlyArticleSchema({
   <Section>
     <div class="p-2">
       <img
-        src="https://cdn.jsdelivr.net/gh/mykcs/academic@v1.1.0/images/publications/iccv2025-gdkvm/gdkvm.png"
+        src={`${CDN_BASE}/images/publications/iccv2025-gdkvm/gdkvm.png`}
         alt="GDKVM Architecture"
         class="w-full rounded"
         loading="eager"
@@ -135,12 +129,12 @@ const schema = getScholarlyArticleSchema({
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 max-w-5xl mx-auto">
       {
         [
-          { src: 'https://cdn.jsdelivr.net/gh/mykcs/academic@v1.1.0/images/publications/iccv2025-gdkvm/arXiv-2512.10252v1/fig/challenge/cha_1.jpg', alt: 'Noise', cap: '(a)' },
-          { src: 'https://cdn.jsdelivr.net/gh/mykcs/academic@v1.1.0/images/publications/iccv2025-gdkvm/arXiv-2512.10252v1/fig/challenge/cha_2.jpg', alt: 'Blur', cap: '(b)' },
-          { src: 'https://cdn.jsdelivr.net/gh/mykcs/academic@v1.1.0/images/publications/iccv2025-gdkvm/arXiv-2512.10252v1/fig/challenge/cha_3.jpg', alt: 'Shape', cap: '(c)' },
-          { src: 'https://cdn.jsdelivr.net/gh/mykcs/academic@v1.1.0/images/publications/iccv2025-gdkvm/arXiv-2512.10252v1/fig/challenge/cha_4.jpg', alt: 'Scale', cap: '(d)' },
-          { src: 'https://cdn.jsdelivr.net/gh/mykcs/academic@v1.1.0/images/publications/iccv2025-gdkvm/arXiv-2512.10252v1/fig/challenge/cha_5.jpg', alt: 'Cycle', cap: '(e)' },
-          { src: 'https://cdn.jsdelivr.net/gh/mykcs/academic@v1.1.0/images/publications/iccv2025-gdkvm/arXiv-2512.10252v1/fig/challenge/cha_6.jpg', alt: 'Dropout', cap: '(f)' },
+          { src: `${CDN_BASE}/images/publications/iccv2025-gdkvm/arXiv-2512.10252v1/fig/challenge/cha_1.jpg`, alt: 'Noise', cap: '(a)' },
+          { src: `${CDN_BASE}/images/publications/iccv2025-gdkvm/arXiv-2512.10252v1/fig/challenge/cha_2.jpg`, alt: 'Blur', cap: '(b)' },
+          { src: `${CDN_BASE}/images/publications/iccv2025-gdkvm/arXiv-2512.10252v1/fig/challenge/cha_3.jpg`, alt: 'Shape', cap: '(c)' },
+          { src: `${CDN_BASE}/images/publications/iccv2025-gdkvm/arXiv-2512.10252v1/fig/challenge/cha_4.jpg`, alt: 'Scale', cap: '(d)' },
+          { src: `${CDN_BASE}/images/publications/iccv2025-gdkvm/arXiv-2512.10252v1/fig/challenge/cha_5.jpg`, alt: 'Cycle', cap: '(e)' },
+          { src: `${CDN_BASE}/images/publications/iccv2025-gdkvm/arXiv-2512.10252v1/fig/challenge/cha_6.jpg`, alt: 'Dropout', cap: '(f)' },
         ].map(({ src, alt, cap }) => (
           <figure class="rounded-lg overflow-hidden bg-gray-50 dark:bg-gray-800 hover:shadow-md transition-shadow">
             <img src={src} alt={alt} loading="lazy" class="w-full h-28 object-cover" />
@@ -182,15 +176,15 @@ const schema = getScholarlyArticleSchema({
       <h2 class="text-3xl font-semibold text-center mb-6 font-display">{t(lang, 'home.resourcesTitle')}</h2>
       <div class="flex flex-wrap justify-center gap-3">
         <ActionButton
-          href="https://openaccess.thecvf.com/content/ICCV2025/html/Wang_GDKVM_Echocardiography_Video_Segmentation_via_Spatiotemporal_Key-Value_Memory_with_Gated_ICCV_2025_paper.html"
-          icon="fas fa-file-pdf"
+          href={SITE_CONFIG.cvfPaperUrl}
+          icon="lucide:file-text"
           target="_blank"
         >
           {t(lang, 'home.cvfPaper')}
         </ActionButton>
         <ActionButton
-          href="https://iccv.thecvf.com/media/PosterPDFs/ICCV%202025/2134.png?t=1759901950.5662367"
-          icon="fas fa-image"
+          href={SITE_CONFIG.posterUrl}
+          icon="lucide:image"
           target="_blank"
         >
           {t(lang, 'home.poster')}
@@ -211,23 +205,12 @@ const schema = getScholarlyArticleSchema({
   </Section>
 
   <script is:inline src="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/contrib/auto-render.min.js"></script>
-  <script is:inline>
-    function initKatex() {
-      if (typeof renderMathInElement !== 'undefined') {
-        renderMathInElement(document.body, {
-          delimiters: [
-            { left: '$$', right: '$$', display: true },
-            { left: '$', right: '$', display: false },
-          ],
-          throwOnError: false,
-        });
-      }
-    }
-    document.addEventListener('astro:page-load', initKatex);
-    if (document.readyState !== 'loading') {
-      initKatex();
-    } else {
-      document.addEventListener('DOMContentLoaded', initKatex);
-    }
+  <script>
+    // KaTeX auto-render is loaded via CDN above (39KB, not on the
+    // critical path). The renderer call lives in a module so the
+    // options are type-checked and reusable.
+    import { initKatex } from '../scripts/katex';
+    import { bindPageLifecycle } from '../scripts/page-init';
+    bindPageLifecycle(initKatex);
   </script>
 </Layout>

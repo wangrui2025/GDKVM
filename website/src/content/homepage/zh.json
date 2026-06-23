@@ -2,6 +2,13 @@
   "title": "GDKVM | ICCV 2025",
   "description": "GDKVM：含门控 Delta 规则的时空键值记忆的超声心动图视频分割",
   "publicationTitle": "GDKVM：含门控 Delta 规则的时空键值记忆的超声心动图视频分割",
+  "authors": [
+    { "name": "王锐", "sup": "1" },
+    { "name": "孙一木", "sup": "1" },
+    { "name": "郭警醒", "sup": "1" },
+    { "name": "吴惠思", "sup": "1,*" },
+    { "name": "秦璟", "sup": "2" }
+  ],
   "venueFull": "IEEE/CVF 国际计算机视觉大会 (ICCV), 2025",
   "affiliation1": "深圳大学",
   "affiliation2": "香港理工大学",

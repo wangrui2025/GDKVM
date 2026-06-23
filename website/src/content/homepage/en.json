@@ -2,6 +2,13 @@
   "title": "GDKVM | ICCV 2025",
   "description": "GDKVM: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule",
   "publicationTitle": "GDKVM: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule",
+  "authors": [
+    { "name": "Rui Wang", "sup": "1" },
+    { "name": "Yimu Sun", "sup": "1" },
+    { "name": "Jingxing Guo", "sup": "1" },
+    { "name": "Huisi Wu", "sup": "1,*" },
+    { "name": "Jing Qin", "sup": "2" }
+  ],
   "venueFull": "IEEE/CVF International Conference on Computer Vision (ICCV), 2025",
   "affiliation1": "Shenzhen University",
   "affiliation2": "The Hong Kong Polytechnic University",

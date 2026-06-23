@@ -1,14 +1,13 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Section from '../../components/Section.astro';
-import { t } from '../../i18n';
+import { t, isLocale, type Locale, getStaticPaths } from '../../i18n';
 import '../../styles/toolstyle.css';
 
-export function getStaticPaths() {
-  return [{ params: { lang: 'en' } }, { params: { lang: 'zh' } }];
-}
+export { getStaticPaths };
 
-const lang = Astro.params.lang as 'en' | 'zh';
+// Narrow dynamic route param to Locale via shared type guard.
+const lang: Locale = isLocale(Astro.params.lang) ? Astro.params.lang : 'en';
 ---
 
 <Layout title={t(lang, 'tool.title')} description={t(lang, 'tool.description')} showFooter={false}>
@@ -54,11 +53,7 @@ const lang = Astro.params.lang as 'en' | 'zh';
 
   <script>
     import { initToolPage } from '../../scripts/tool';
-    document.addEventListener('astro:page-load', initToolPage);
-    if (document.readyState !== 'loading') {
-      initToolPage();
-    } else {
-      document.addEventListener('DOMContentLoaded', initToolPage);
-    }
+    import { bindPageLifecycle } from '../../scripts/page-init';
+    bindPageLifecycle(initToolPage);
   </script>
 </Layout>

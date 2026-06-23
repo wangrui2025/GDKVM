@@ -1,11 +1,11 @@
 ---
 import HomePage from '../../components/HomePage.astro';
+import { isLocale, type Locale, getStaticPaths } from '../../i18n';
 
-export function getStaticPaths() {
-  return [{ params: { lang: 'en' } }, { params: { lang: 'zh' } }];
-}
+export { getStaticPaths };
 
-const lang = Astro.params.lang as 'en' | 'zh';
+// Narrow dynamic route param to Locale via shared type guard.
+const lang: Locale = isLocale(Astro.params.lang) ? Astro.params.lang : 'en';
 ---
 
 <HomePage lang={lang} />

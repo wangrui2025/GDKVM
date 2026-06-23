@@ -1,9 +1,8 @@
-import { t, type Locale } from '../i18n';
+import { t, type Locale, SUPPORTED_LOCALES } from '../i18n';
 
-const SUPPORTED_LOCALES: Locale[] = ['en', 'zh'];
 function getLocale(): Locale {
   const lang = document.documentElement.lang as Locale;
-  return SUPPORTED_LOCALES.includes(lang) ? lang : 'en';
+  return (SUPPORTED_LOCALES as readonly string[]).includes(lang) ? lang : 'en';
 }
 
 export function calculateBsLr(modelSize: number, trainingTokens: number) {

@@ -26,6 +26,15 @@ type NestedKeyOf<ObjectType extends object> = {
 
 export type TranslationKey = NestedKeyOf<Dictionary>;
 
+/**
+ * Runtime type guard for locale values. Use this to narrow
+ * `Astro.params.lang` (typed as `string | undefined`) to the
+ * `Locale` type — avoids unsafe `as` casts at call sites.
+ */
+export function isLocale(value: string | undefined): value is Locale {
+  return value === 'en' || value === 'zh';
+}
+
 export function t(locale: Locale | string, key: TranslationKey): string {
   const keys = key.split('.');
   let val: unknown = dict[locale as Locale] ?? dict.en;
@@ -37,4 +46,28 @@ export function t(locale: Locale | string, key: TranslationKey): string {
     }
   }
   return typeof val === 'string' ? val : key;
+}
+
+/**
+ * Strip the site's `BASE_URL` prefix and the leading locale segment
+ * (e.g. `/en` or `/zh`) from an absolute Astro pathname, returning the
+ * locale-free path expected by `getRelativeLocaleUrl`.
+ *
+ * Centralized here so the regex isn't duplicated between Layout.astro
+ * (SEO hreflang) and LangSwitcher.astro (locale toggle). Trailing slashes
+ * are normalized; the result falls back to `/` for the site root.
+ */
+export function stripLocaleFromPath(pathname: string, baseUrl: string): string {
+  const base = baseUrl.replace(/\/$/, '');
+  return pathname.replace(new RegExp(`^${base}/(en|zh)`), '').replace(/\/$/, '') || '/';
+}
+
+/**
+ * Shared `getStaticPaths` for any page routed under `[lang]/`.
+ * Emits the canonical en + zh pairs. Use as:
+ *   export { getStaticPaths } from '../../i18n';
+ */
+export const SUPPORTED_LOCALES: readonly Locale[] = ['en', 'zh'] as const;
+export function getStaticPaths() {
+  return SUPPORTED_LOCALES.map((lang) => ({ params: { lang } }));
 }

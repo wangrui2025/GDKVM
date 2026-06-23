@@ -19,6 +19,10 @@ export default defineConfig({
     defaultLocale: 'en',
     locales: ['en', 'zh'],
     routing: {
+      // With `prefixDefaultLocale: true`, every page lives under /en/ or /zh/.
+      // `redirectToDefaultLocale: true` makes the root path / auto-redirect
+      // to /en/. We must keep `src/pages/index.astro` (empty, meta-refresh)
+      // as a stub — see CONTEXT.md "已知限制" for why.
       prefixDefaultLocale: true,
       redirectToDefaultLocale: true,
     },

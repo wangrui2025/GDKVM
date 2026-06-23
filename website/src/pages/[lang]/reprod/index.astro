@@ -4,13 +4,12 @@ import Section from '../../../components/Section.astro';
 import ActionButton from '../../../components/ActionButton.astro';
 import CopyButton from '../../../components/CopyButton.astro';
 import { Icon } from 'astro-icon/components';
-import { t } from '../../../i18n';
+import { t, isLocale, type Locale, getStaticPaths } from '../../../i18n';
 
-export function getStaticPaths() {
-  return [{ params: { lang: 'en' } }, { params: { lang: 'zh' } }];
-}
+export { getStaticPaths };
 
-const { lang } = Astro.params;
+// Narrow dynamic route param to Locale via shared type guard.
+const lang: Locale = isLocale(Astro.params.lang) ? Astro.params.lang : 'en';
 const homeUrl = { en: `${import.meta.env.BASE_URL}/`, zh: `${import.meta.env.BASE_URL}/${lang}/` }[lang] ?? `${import.meta.env.BASE_URL}/`;
 ---
 
@@ -25,7 +24,7 @@ const homeUrl = { en: `${import.meta.env.BASE_URL}/`, zh: `${import.meta.env.BAS
         {t(lang, 'reprod.subtitle')}
       </p>
       <div class="mt-6">
-        <ActionButton href={homeUrl} icon="fas fa-arrow-left">
+        <ActionButton href={homeUrl} icon="lucide:arrow-left">
           {t(lang, 'reprod.backHome')}
         </ActionButton>
       </div>
