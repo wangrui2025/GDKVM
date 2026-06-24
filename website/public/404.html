@@ -1,0 +1,91 @@
+---
+/**
+ * Static fallback 404 page for GitHub Pages.
+ *
+ * §5.3.1 v3.9.0 deployed-behavior check: GH Pages does not route [lang]
+ * dynamic 404s — it serves its own "Page not found" for any path that
+ * doesn't match a deployed file. This file lives in public/ so Astro
+ * copies it verbatim into dist/404.html, which GH Pages then serves.
+ *
+ * The Astro 404 page at /GDKVM/[en|zh]/404/ is the primary, full-styled
+ * experience. This static file is the fallback that fires when a user
+ * hits an unhandled path — show both languages inline and link to both
+ * locale homes so the user can pick their preferred route.
+ */
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found — GDKVM</title>
+    <meta http-equiv="refresh" content="5; url=/GDKVM/en/404/">
+    <style>
+      :root {
+        --bg-color: #ffffff;
+        --text-color: #374151;
+        --link-bg: #2563eb;
+        --link-bg-hover: #1d4ed8;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg-color: #111827;
+          --text-color: #e5e7eb;
+        }
+      }
+      html {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        text-align: center;
+      }
+      h1 {
+        font-size: 4rem;
+        font-weight: 700;
+        margin: 0 0 1rem 0;
+      }
+      p {
+        font-size: 1.125rem;
+        margin: 0 0 0.5rem 0;
+        max-width: 32rem;
+      }
+      .links {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      a {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        background-color: var(--link-bg);
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: 500;
+      }
+      a:hover {
+        background-color: var(--link-bg-hover);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>404</h1>
+    <p>Sorry, the page you're looking for doesn't exist.</p>
+    <p>抱歉，您访问的页面不存在。</p>
+    <div class="links">
+      <a href="/GDKVM/en/">English Home</a>
+      <a href="/GDKVM/zh/">中文首页</a>
+    </div>
+  </body>
+</html>
