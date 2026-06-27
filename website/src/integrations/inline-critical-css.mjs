@@ -120,6 +120,17 @@ function inlineCriticalCss() {
             /<url>\s*<loc>https:\/\/wangrui2025\.github\.io\/GDKVM\/<\/loc>\s*<\/url>/g,
             ''
           );
+          // Drop soft-404 utility pages. /GDKVM/en/404/ and /GDKVM/zh/404/
+          // return HTTP 200 (client-side 404), carry noindex meta, and must
+          // never appear in the sitemap.
+          xml = xml.replace(
+            /<url>\s*<loc>https:\/\/wangrui2025\.github\.io\/GDKVM\/en\/404\/<\/loc>\s*<\/url>/g,
+            ''
+          );
+          xml = xml.replace(
+            /<url>\s*<loc>https:\/\/wangrui2025\.github\.io\/GDKVM\/zh\/404\/<\/loc>\s*<\/url>/g,
+            ''
+          );
           // Tidy stray blank lines left after removals
           xml = xml.replace(/^\s*\n/gm, '\n');
           const after = (xml.match(/<loc>/g) || []).length;

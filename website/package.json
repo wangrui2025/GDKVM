@@ -12,11 +12,11 @@
     "@iconify-json/academicons": "^1.2.4",
     "@iconify-json/lucide": "^1.2.111",
     "@iconify-json/simple-icons": "^1.2.85",
-    "@tailwindcss/vite": "^4.1.18",
+    "@tailwindcss/vite": "4.1.18",
     "astro": "^6.4.6",
     "astro-icon": "^1.1.5",
     "katex": "^0.17.0",
-    "tailwindcss": "^4.1.18"
+    "tailwindcss": "4.1.18"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
