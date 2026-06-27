@@ -17,8 +17,14 @@ function inlineCriticalCss() {
     name: 'inline-critical-css',
     hooks: {
       'astro:build:done': ({ dir }) => {
+        // Debug-gated logger: production builds stay silent unless DEBUG=1.
+        // All log calls below go through `log()` so verbose output is opt-in.
+        const debug = process.env.DEBUG === '1' || process.env.DEBUG === 'true';
+        const log = (...args) => {
+          if (debug) console.log(...args);
+        };
         const distDir = fileURLToPath(dir);
-        console.log('[inline-critical-css] Running on dir:', distDir);
+        log('[inline-critical-css] Running on dir:', distDir);
 
         function findHtmlFiles(dir) {
           const results = [];
@@ -33,7 +39,7 @@ function inlineCriticalCss() {
         }
 
         const htmlFiles = findHtmlFiles(distDir);
-        console.log(`[inline-critical-css] Found ${htmlFiles.length} HTML files`);
+        log(`[inline-critical-css] Found ${htmlFiles.length} HTML files`);
 
         for (const htmlPath of htmlFiles) {
           let html = fs.readFileSync(htmlPath, 'utf-8');
@@ -42,7 +48,7 @@ function inlineCriticalCss() {
           ];
 
           if (cssLinks.length === 0) {
-            console.log(
+            log(
               `[inline-critical-css] No CSS links in ${path.relative(distDir, htmlPath)}`
             );
             continue;
@@ -88,7 +94,7 @@ function inlineCriticalCss() {
           html = html.slice(0, headEnd) + styleTag + html.slice(headEnd);
 
           fs.writeFileSync(htmlPath, html, 'utf-8');
-          console.log(
+          log(
             `[inline-critical-css] Inlined ${(allCssContent.length / 1024).toFixed(
               0
             )}KB CSS into ${path.relative(distDir, htmlPath)}`
@@ -136,13 +142,13 @@ function inlineCriticalCss() {
           const after = (xml.match(/<loc>/g) || []).length;
           fs.writeFileSync(sf, xml, 'utf-8');
           if (before !== after) {
-            console.log(
+            log(
               `[sitemap-filter] ${path.basename(sf)}: ${before} → ${after} URLs (removed ${before - after} stubs)`
             );
           }
         }
 
-        console.log('[inline-critical-css] Done');
+        log('[inline-critical-css] Done');
       },
     },
   };
