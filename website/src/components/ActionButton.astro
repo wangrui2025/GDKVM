@@ -10,9 +10,16 @@ export interface Props {
    */
   icon?: string;
   target?: string;
+  /**
+   * Accessible name for icon-only ActionButton usages (e.g. share buttons).
+   * When provided, passed through to the `<a>` as `aria-label`. Existing
+   * text-bearing call sites continue to derive their accessible name from
+   * the visible slot content.
+   */
+  ariaLabel?: string;
 }
 
-const { href, icon, target } = Astro.props;
+const { href, icon, target, ariaLabel } = Astro.props;
 const isExternal = target === '_blank' || href.startsWith('http');
 ---
 
@@ -20,6 +27,7 @@ const isExternal = target === '_blank' || href.startsWith('http');
   href={href}
   target={target}
   rel={isExternal ? 'noopener noreferrer' : undefined}
+  aria-label={ariaLabel}
   class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-800 text-white dark:bg-gray-200 dark:text-gray-900 hover:-translate-y-0.5 hover:shadow-lg transition"
 >
   {icon && <Icon name={icon} class="w-4 h-4" />}

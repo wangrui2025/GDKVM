@@ -28,5 +28,10 @@
   },
   "overrides": {
     "yaml-language-server": "1.23.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild": "^0.28.1"
+    }
   }
 }

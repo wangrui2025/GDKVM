@@ -204,11 +204,12 @@ const schema = getScholarlyArticleSchema({
     </div>
   </Section>
 
-  <script is:inline src="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/contrib/auto-render.min.js"></script>
   <script>
-    // KaTeX auto-render is loaded via CDN above (39KB, not on the
-    // critical path). The renderer call lives in a module so the
-    // options are type-checked and reusable.
+    // KaTeX auto-render is bundled via Astro's module graph (katex ^0.17.0 is
+    // already a project dependency), eliminating the 39KB CDN script. The
+    // side-effect import registers `renderMathInElement` on globalThis,
+    // which the katex.ts init helper then calls.
+    import 'katex/dist/contrib/auto-render.min.js';
     import { initKatex } from '../scripts/katex';
     import { bindPageLifecycle } from '../scripts/page-init';
     bindPageLifecycle(initKatex);
