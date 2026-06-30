@@ -70,5 +70,7 @@ logs/
 .next/
 out/
 
-# Local model code (lives in wangrui2025/gdkvm_code repo)
+# Local model code + Python config (lives in wangrui2025/gdkvm_code repo)
 website/public/model/
+pyproject.toml
+requirements.txt
