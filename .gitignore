@@ -35,3 +35,6 @@ Thumbs.db
 # Project
 .omc/
 test-results/
+# IDE configs (local dev only, not tracked)
+.vscode/
+.claude/
