@@ -39,3 +39,36 @@ test-results/
 .vscode/
 .claude/
 scripts/
+# Local env (preventive)
+.env
+.env.local
+.env.*.local
+
+# Editor temp (preventive)
+.idea/
+*.swp
+*.swo
+*.bak
+*~
+
+# Test artifacts (Playwright + coverage, preventive)
+coverage/
+.nyc_output/
+*.lcov
+playwright-report/
+.playwright/
+
+# Logs (preventive)
+*.log
+logs/
+
+# Python cache (in case any .py runs, preventive)
+*.pyc
+*.pyo
+
+# Next.js / generic build (in case future)
+.next/
+out/
+
+# Local model code (lives in wangrui2025/gdkvm_code repo)
+website/public/model/
