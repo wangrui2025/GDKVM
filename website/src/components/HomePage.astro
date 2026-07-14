@@ -22,6 +22,34 @@ const { lang } = Astro.props;
 const homeContent = (lang === 'zh' ? zhHome : enHome) as { authors: { name: string; sup: string }[] };
 const authors = homeContent.authors;
 
+/**
+ * Parse "First Last" into {givenname, surname} for Highwire citation_author
+ * meta tag. Handles 2-3 word English names reasonably; for institutional
+ * authors that lack a clear given/surname split we emit the full name as
+ * the surname field (Google Scholar accepts this for institutional entries).
+ */
+function splitGivenSurname(fullName: string): { givenname?: string; surname: string } {
+  const parts = fullName.trim().split(/\s+/);
+  if (parts.length === 1) return { surname: parts[0] };
+  return {
+    givenname: parts.slice(0, -1).join(' '),
+    surname: parts[parts.length - 1],
+  };
+}
+
+const institutionalMap: Record<string, string> = {
+  'Polytechnic': 'The Hong Kong Polytechnic University',
+  'Jing Qin': 'The Hong Kong Polytechnic University',
+};
+
+const citationAuthors = authors.map((a) => {
+  const split = splitGivenSurname(a.name);
+  return {
+    ...split,
+    institution: institutionalMap[a.name],
+  };
+});
+
 const schema = getScholarlyArticleSchema({
   title: t(lang, 'home.publicationTitle'),
   authors: authors.map((a) => a.name),
@@ -33,9 +61,25 @@ const schema = getScholarlyArticleSchema({
   pdfUrl: SITE_CONFIG.cvfPaperUrl,
   codeUrl: SITE_CONFIG.codeUrl,
 });
+
+/**
+ * Build the Highwire/Google Scholar citation meta payload. Splits a
+ * venue like "ICCV 2025" into a YYYY/MM/DD publication_date that the
+ * publisher can ingest directly. Date defaults to `datePublished` if
+ * no full ISO date is available in SITE_CONFIG.
+ */
+const citationMeta = {
+  title: t(lang, 'home.publicationTitle'),
+  authors: citationAuthors,
+  publicationDate: `${SITE_CONFIG.datePublished.replace(/-/g, '/')}`,
+  venue: SITE_CONFIG.venue,
+  pdfUrl: SITE_CONFIG.cvfPaperUrl,
+  abstractUrl: new URL(Astro.url.pathname, Astro.site).href,
+  language: lang === 'zh' ? 'zh' : 'en',
+};
 ---
 
-<Layout title={t(lang, 'home.title')} description={t(lang, 'home.description')} structuredData={schema}>
+<Layout title={t(lang, 'home.title')} description={t(lang, 'home.description')} structuredData={schema} citation={citationMeta}>
   <!-- Hero -->
   <section class="relative bg-gray-50 dark:bg-gray-800 pb-12 pt-8">
     <div class="max-w-5xl mx-auto px-4">
