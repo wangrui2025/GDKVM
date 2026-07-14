@@ -19,6 +19,33 @@ interface Props {
    * 200 for client-side routing but should never be indexed.
    */
   noindex?: boolean;
+  /**
+   * Optional Highwire/Google Scholar citation meta tags. When provided, the
+   * Layout emits `<meta name="citation_*">` siblings so Google Scholar,
+   * Semantic Scholar, and other ingest pipelines can extract paper metadata
+   * (title, authors, venue, DOI, PDF URL, abstract).
+   *
+   * Citation_* tag spec (Highwire Press, Google Scholar recommended):
+   *   - citation_title (string) — paper title
+   *   - citation_author (object[]) — {givenname, surname} or {institution}
+   *   - citation_publication_date (YYYY/MM/DD)
+   *   - citation_journal_title / citation_conference_title — venue
+   *   - citation_pdf_url — direct PDF download URL
+   *   - citation_doi — paper DOI when assigned
+   *   - citation_abstract_html_url — landing page
+   *   - citation_language (string ISO 639-1)
+   * Reference: https://scholar.google.com/intl/en/scholar/inclusion.html
+   */
+  citation?: {
+    title?: string;
+    authors?: Array<{ givenname?: string; surname: string; institution?: string }>;
+    publicationDate?: string;
+    venue?: string;
+    pdfUrl?: string;
+    doi?: string;
+    abstractUrl?: string;
+    language?: string;
+  };
 }
 
 const {
@@ -32,6 +59,7 @@ const {
   showFooter = true,
   structuredData,
   noindex = false,
+  citation,
 } = Astro.props;
 
 const lang = Astro.currentLocale ?? 'en';
@@ -113,6 +141,25 @@ const structuredDataJson = structuredData ? JSON.stringify(structuredData) : nul
     <meta name="theme-color" content="#111827" media="(prefers-color-scheme: dark)" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://cdn.jsdelivr.net; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';" />
     <ClientRouter fallback="none" />
+    {/*
+      Highwire/Google Scholar citation_* meta tags. Only emitted when a page
+      opts in via the `citation` prop (e.g. academic homepage, paper landing).
+      Skipped on tool/reprod/404 pages where these metadata would be confusing.
+    */}
+    {citation && (
+      <>
+        {citation.title && <meta name="citation_title" content={citation.title} />}
+        {citation.publicationDate && <meta name="citation_publication_date" content={citation.publicationDate} />}
+        {citation.venue && <meta name="citation_conference_title" content={citation.venue} />}
+        {citation.pdfUrl && <meta name="citation_pdf_url" content={citation.pdfUrl} />}
+        {citation.doi && <meta name="citation_doi" content={citation.doi} />}
+        {citation.abstractUrl && <meta name="citation_abstract_html_url" content={citation.abstractUrl} />}
+        {citation.language && <meta name="citation_language" content={citation.language} />}
+        {citation.authors?.map((author) => (
+          <meta name="citation_author" content={`${author.givenname ? author.givenname + ' ' : ''}${author.surname}${author.institution ? ', ' + author.institution : ''}`} />
+        ))}
+      </>
+    )}
     {structuredData && (
       /* TRUSTED: static JSON.stringify of academic data, served as application/ld+json. */
       <script is:inline type="application/ld+json" set:html={structuredDataJson} />
