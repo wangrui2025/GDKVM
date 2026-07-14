@@ -7,6 +7,8 @@
 
 请先阅读 `~/.claude/CLAUDE.md` 获得通用知识。
 
+**N-tool 网络搜索**: 任何 web 搜索 / 信息查证必跑 [N-tool-search SSOT](https://example.invalid/~/.claude/rules/protocols/N-tool-search.md) v1.1.2 (N 当前 = 6: MiniMax + kimi-webbridge + anysearch + WebFetch + exa + mmx 并行). 旧 "5-tool" / "5-tool fan-out" 全部走 N-tool.
+
 ---
 
 ## 快速验证（任何修改后必须执行）
