@@ -27,11 +27,12 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: '22'
-          cache: 'npm'
-          cache-dependency-path: website/package-lock.json
+
+      - name: Enable pnpm via corepack
+        run: corepack enable pnpm
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
         working-directory: website
 
       - name: Install Playwright browsers
@@ -108,11 +109,12 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: '22'
-          cache: 'npm'
-          cache-dependency-path: website/package-lock.json
+
+      - name: Enable pnpm via corepack
+        run: corepack enable pnpm
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
         working-directory: website
 
       - name: Build
