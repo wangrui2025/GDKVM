@@ -23,7 +23,10 @@
 |------|------|------|
 | 首页 | `/en/` `/zh/` | 论文标题、作者、摘要、方法图、挑战、BibTeX |
 | 工具页 | `/en/tool/` `/zh/tool/` | 在线工具（心肌分割可视化） |
+| 复现页 | `/en/reprod/` `/zh/reprod/` | 复现指南（环境、数据、训练命令） |
 | 404 | `/en/404/` | 错误页 |
+
+遗留重定向 stub（`noindex`，不进 sitemap）：`/` → `/en/`，`/reprod/` → `/en/reprod/`。
 
 ---
 
@@ -44,7 +47,7 @@ body, h1, h2, h3, h4, h5, h6 {
 |------|--------|
 | 全局正文/标题 | `Times New Roman`, `Noto Serif SC`, Georgia, serif |
 | BibTeX / 等宽 | `Fira Code`, Consolas, monospace |
-| 公式 | KaTeX (CDN `@0.17.0`) |
+| 公式 | KaTeX（npm 依赖 `katex@^0.17.0`，本地打包） |
 
 ### 3.2 字号规范
 
@@ -225,9 +228,9 @@ npm run preview
 
 GDKVM 不提供本地 poster 渲染和 slides 演示。外部海报 PDF 通过 `<a target="_blank" rel="noopener">` 链接引用，用户点击后在 ICCV 官网查看。
 
-### 9.3 KaTeX CDN 样式
+### 9.3 KaTeX 本地打包
 
-公式渲染使用 `https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.css`，通过 CDN 加载，无需本地安装。
+公式渲染使用 npm 依赖 `katex@^0.17.0`：`Layout.astro` 直接 `import 'katex/dist/katex.min.css'`，`HomePage.astro` 通过模块图导入 `katex/dist/contrib/auto-render.min.js`，全部本地打包，**不依赖 CDN**。构建后 `scripts/strip-woff-fallback.mjs` 会移除 legacy woff 字体（保留 woff2）。
 
 ### 9.4 工具页独立样式
 

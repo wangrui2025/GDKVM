@@ -38,7 +38,7 @@ test-results/
 # IDE configs (local dev only, not tracked)
 .vscode/
 .claude/
-scripts/
+/scripts/
 # Local env (preventive)
 .env
 .env.local

@@ -28,12 +28,10 @@ export default defineConfig({
     },
   },
   integrations: [
-    // Sitemap includes the legacy /reprod/ redirect stub. Tried
-    // zod-compatible filter (arrow + function declaration) but
-    // @astrojs/sitemap 3.7.3's zod schema rejects both forms.
-    // Accept this as a known cosmetic item — search engines
-    // follow the meta-refresh to the canonical page, so no
-    // SEO penalty beyond a tiny crawl-budget waste.
+    // Sitemap output contains only the 6 canonical locale pages
+    // (/en/, /zh/, + reprod/tool). The legacy /reprod/ redirect stub
+    // and the / root stub are excluded automatically (they carry
+    // <meta name="robots" content="noindex">), which is what we want.
     sitemap(),
     astroIcon(),
     inlineCriticalCss(),

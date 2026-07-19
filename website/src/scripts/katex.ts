@@ -4,9 +4,10 @@
  * (extracted to keep the page body small and the rendering pipeline
  * testable in isolation).
  *
- * The CDN auto-render bundle is loaded via the <script is:inline> tag
- * in HomePage.astro — see the SOP comment in that file for why CDN
- * is acceptable for a 39KB math renderer that isn't on the critical path.
+ * The auto-render bundle is bundled locally via Astro's module graph
+ * (`import 'katex/dist/contrib/auto-render.min.js'` in HomePage.astro),
+ * which registers `renderMathInElement` on globalThis. No CDN involved —
+ * KaTeX CSS is likewise bundled from the npm package in Layout.astro.
  */
 
 const KAATEX_OPTIONS = {
@@ -18,7 +19,7 @@ const KAATEX_OPTIONS = {
 } as const;
 
 export function initKatex() {
-  // The CDN auto-render bundle exposes `renderMathInElement` on the
+  // The side-effect import exposes `renderMathInElement` on the
   // global. Guard against late loads (e.g. during view transitions).
   const render = (
     globalThis as unknown as { renderMathInElement?: (el: Element, opts: object) => void }
