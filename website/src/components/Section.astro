@@ -2,12 +2,15 @@
 export interface Props {
   class?: string;
   id?: string;
+  /** compact = py-8 instead of default py-12 (e.g. for footers / todo lists) */
+  compact?: boolean;
 }
 
-const { class: className = '', id } = Astro.props;
+const { class: className = '', id, compact = false } = Astro.props;
+const paddingClass = compact ? 'py-8 px-4' : 'py-12 px-4';
 ---
 
-<section class={`py-12 px-4 ${className}`.trim()} id={id}>
+<section class={`${paddingClass} ${className}`.trim()} id={id}>
   <div class="max-w-5xl mx-auto">
     <slot />
   </div>
