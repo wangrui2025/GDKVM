@@ -41,6 +41,13 @@ a:hover {
   color: oklch(75% 0.17 250);
 }
 
+/* a11y: keyboard focus visible (WCAG 2.4.7) --------------------------------- */
+:where(a, button, [role="button"], input, textarea, select, summary):focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 /* Animations ---------------------------------------------------------------- */
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }
