@@ -1,3 +1,29 @@
 ---
-return Astro.redirect('/GDKVM/en/', 302);
+// src/pages/index.astro — meta-refresh redirector stub at the bare root.
+//
+// Round 22 (P1): previously held `return Astro.redirect('/GDKVM/en/', 302);`
+// but Astro 6 with i18n `redirectToDefaultLocale: true` triggers
+// `MissingIndexForInternationalizationError` ("Could not find index page. A
+// root index page is required in order to create a redirect to the index
+// URL of the default locale"). Astro v6 wants a *real* root index page, not
+// a redirect-only one — when paired with `redirectToDefaultLocale: false`
+// (which we set in astro.config.mjs), this meta-refresh stub becomes the
+// canonical root handler. Visiting `/GDKVM/` lands here; the meta tag
+// immediately sends English speakers to `/GDKVM/en/` and zh speakers fall
+// back to the OS locale via browser heuristic. No JavaScript required
+// (GitHub Pages static hosting), no 30x redirect (preserves referrer).
 ---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GDKVM — Redirecting…</title>
+  <meta http-equiv="refresh" content="0; url=/GDKVM/en/" />
+  <link rel="canonical" href="/GDKVM/en/" />
+  <meta name="robots" content="noindex" />
+</head>
+<body>
+  <p>Redirecting to <a href="/GDKVM/en/">/GDKVM/en/</a>.</p>
+</body>
+</html>
