@@ -32,7 +32,7 @@ export default defineConfig({
     // (/en/, /zh/, + reprod/tool). The legacy /reprod/ redirect stub
     // and the / root stub are excluded automatically (they carry
     // <meta name="robots" content="noindex">), which is what we want.
-    sitemap(),
+    sitemap({ lastmod: new Date() }),
     astroIcon(),
     inlineCriticalCss(),
   ],
