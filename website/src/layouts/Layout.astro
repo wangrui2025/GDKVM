@@ -111,7 +111,7 @@ const ogImage = image ?? defaultOgImage;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:image:alt" content="GDKVM architecture diagram for echocardiography video segmentation" />
+    <meta property="og:image:alt" content={lang === 'zh' ? 'GDKVM 心脏超声视频分割架构图' : 'GDKVM architecture diagram for echocardiography video segmentation'} />
     <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site).href} />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
