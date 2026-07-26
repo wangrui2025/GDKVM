@@ -51,11 +51,10 @@ interface Props {
 const {
   title,
   description = 'GDKVM: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule',
-  // Use a self-hosted, base-prefixed OG image so social crawlers don't depend
-  // on third-party CDNs (cdn.jsdelivr.net refuses many crawlers due to TLS/CORS).
-  // Width/height are omitted intentionally so crawlers fetch the actual file
-  // rather than trusting a hardcoded 1200x630 that may not match.
-  image = `${import.meta.env.BASE_URL}/gdkvm-og.png`,
+  // Per-page image override (e.g. paper hero). Default falls back to a
+  // locale-aware OG image (og-home-en/zh.png) so social share cards on
+  // /en/ and /zh/ differ. Round 22 P1 (cross-site audit 2026-07-26).
+  image,
   showFooter = true,
   structuredData,
   noindex = false,
@@ -64,6 +63,8 @@ const {
 
 const lang = Astro.currentLocale ?? 'en';
 const structuredDataJson = structuredData ? JSON.stringify(structuredData) : null;
+const defaultOgImage = `${import.meta.env.BASE_URL}/images/og-home-${lang}.png`;
+const ogImage = image ?? defaultOgImage;
 ---
 
 <!DOCTYPE html>
@@ -109,14 +110,14 @@ const structuredDataJson = structuredData ? JSON.stringify(structuredData) : nul
     <meta property="og:site_name" content="GDKVM — ICCV 2025" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={image} />
+    <meta property="og:image" content={ogImage} />
     <meta property="og:image:alt" content="GDKVM architecture diagram for echocardiography video segmentation" />
     <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site).href} />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={image} />
+    <meta name="twitter:image" content={ogImage} />
     <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site).href} />
 
     <!-- Language alternates for SEO. With `prefixDefaultLocale: true` + [lang]/,
