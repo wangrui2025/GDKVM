@@ -220,6 +220,11 @@ pre {
   background-color: oklch(85% 0.2 90 / 0.25);
 }
 
+.compatibility-header:focus-visible {
+  outline: 3px solid oklch(55% 0.2 265);
+  outline-offset: 2px;
+}
+
 .compatibility-header::-webkit-details-marker {
   display: none;
 }

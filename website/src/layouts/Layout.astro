@@ -64,7 +64,7 @@ const {
 const lang = Astro.currentLocale ?? 'en';
 const structuredDataJson = structuredData ? JSON.stringify(structuredData) : null;
 const defaultOgImage = `${import.meta.env.BASE_URL}/images/og-home-${lang}.png`;
-const ogImage = image ?? defaultOgImage;
+const ogImage = new URL(image ?? defaultOgImage, Astro.site).href;
 ---
 
 <!DOCTYPE html>
