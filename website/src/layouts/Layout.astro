@@ -1,5 +1,8 @@
 ---
-import 'katex/dist/katex.min.css';
+// NOTE: KaTeX CSS is deliberately NOT imported here. Only HomePage.astro
+// renders math, and a Layout-level import inlined ~30KB of KaTeX rules +
+// 20 @font-face blocks into every page (tool / reprod / 404) via the
+// inline-critical-css integration. It lives in HomePage.astro instead.
 import { ClientRouter } from 'astro:transitions';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import LangSwitcher from '../components/LangSwitcher.astro';
@@ -138,6 +141,13 @@ const ogImage = new URL(image ?? defaultOgImage, Astro.site).href;
         </>
       );
     })()}
+
+    <!-- Every figure on the site (hero logo, architecture diagram, challenge
+         grid) is served from jsDelivr — see src/config/site.ts CDN_BASE.
+         Opening the DNS + TLS connection during head parsing removes a
+         full round-trip from the LCP image's critical path. -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 
     <link rel="icon" type="image/png" href={`${import.meta.env.BASE_URL}/favicon.png`} />
     <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}/favicon.png`} />

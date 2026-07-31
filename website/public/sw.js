@@ -1,4 +1,8 @@
-const CACHE_NAME = "gdkvm-shell-v2";
+// v3: cache-first is now scoped to content-hashed /_astro/ assets; everything
+// else moved to stale-while-revalidate. The version bump is required — the
+// `activate` handler deletes caches under any other name, which is what
+// evicts the permanently-pinned entries left behind by the v2 policy.
+const CACHE_NAME = "gdkvm-shell-v3";
 const STATIC_ASSETS = [
   "/GDKVM/",
   "/GDKVM/favicon.png",
@@ -60,18 +64,35 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (url.origin === location.origin) {
+    // GitHub Pages serves every asset with a short, non-configurable
+    // Cache-Control, so the SW is the only place we can express the
+    // immutable-vs-revalidate distinction:
+    //
+    //   /_astro/*  → content-hashed by Astro; a changed byte means a changed
+    //                URL, so cache-first is safe and permanent (`immutable`).
+    //   everything → mutable at a stable URL (favicon.png, manifest.json,
+    //   else         sw-precached images). Cache-first pinned these for the
+    //                lifetime of the cache; serve the cached copy for speed
+    //                but revalidate in the background (stale-while-revalidate)
+    //                so the next load is fresh.
+    const isImmutable = url.pathname.includes("/_astro/");
+
     event.respondWith(
-      caches.match(request).then((cached) => {
-        if (cached) return cached;
-        return fetch(request).then((response) => {
-          if (response.ok) {
-            caches
-              .open(CACHE_NAME)
-              .then((cache) => cache.put(request, response.clone()));
-          }
-          return response;
-        });
-      }),
+      caches.open(CACHE_NAME).then((cache) =>
+        cache.match(request).then((cached) => {
+          if (cached && isImmutable) return cached;
+
+          const fetched = fetch(request)
+            .then((response) => {
+              if (response.ok) cache.put(request, response.clone());
+              return response;
+            })
+            .catch(() => cached);
+
+          // stale-while-revalidate: cached copy now, refresh for next time.
+          return cached || fetched;
+        }),
+      ),
     );
   }
 });
