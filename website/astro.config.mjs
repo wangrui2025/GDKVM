@@ -76,8 +76,15 @@ export default defineConfig({
       },
       // Exclude 404 pages and the built-in root redirector stub.
       // The bare host (`/GDKVM/`) is the i18n auto-generated stub that
-      // carries <meta name="robots" content="noindex">.
-      filter: (page) => !page.endsWith('/404/') && !page.endsWith('/GDKVM/'),
+      // carries <meta name="robots" content="noindex">. Round 25 P2 (audit
+      // 2026-08-05): also exclude the legacy `/GDKVM/reprod/` meta-refresh
+      // stub — same `<meta name="robots" content="noindex">` source as the
+      // root stub. Without this, @astrojs/sitemap emits the noindex URL in
+      // the sitemap AND emits a duplicate `hreflang="en"` against it
+      // (because both `/GDKVM/reprod/` and `/GDKVM/en/reprod/` end with
+      // `/reprod/`). Per Google Search Console guidelines, noindex URLs
+      // must not appear in sitemaps.
+      filter: (page) => !page.endsWith('/404/') && !page.endsWith('/GDKVM/') && !page.endsWith('/GDKVM/reprod/'),
     }),
     astroIcon(),
     sitemapSeo(),
