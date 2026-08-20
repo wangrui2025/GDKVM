@@ -14,7 +14,7 @@
     "@iconify-json/simple-icons": "^1.2.85",
     "@tailwindcss/vite": "4.1.18",
     "astro": "^6.4.6",
-    "astro-icon": "^1.1.5",
+    "astro-icon": "^1.2.0",
     "katex": "^0.17.0",
     "tailwindcss": "4.1.18"
   },
@@ -32,7 +32,9 @@
   "pnpm": {
     "overrides": {
       "esbuild": "^0.28.1",
-      "fast-uri": "^3.1.4",
+      "fast-uri": "^3.1.5",
+      "js-yaml": ">=4.3.1 <5",
+      "nanoid": ">=3.3.18 <4",
       "postcss": "^8.5.18",
       "sharp": "^0.35.0",
       "svgo": "^4.0.2||^3.3.4",
