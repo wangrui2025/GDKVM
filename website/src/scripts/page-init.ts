@@ -6,18 +6,17 @@
  * every page-level `<script>`.
  *
  * IMPORTANT: `astro:page-load` ALSO fires on the initial page load when
- * ClientRouter is mounted, so without deduping we'd call `init` twice on
- * the first paint (once via the readyState branch, once via the event).
- * For a click handler attach that's a no-op the second time, but for any
- * `init` that registers a delegated listener on `document`, double-fire
- * means double listeners → one user click fires the handler twice →
- * toggle-style effects cancel out. See CASE-GDKVM-THEME-TOGGLE-DOUBLE-FIRE-20260623.
+ * ClientRouter is mounted, so the readyState fallback and that event can
+ * target the same route. Dedupe by route, not forever: ClientRouter keeps
+ * this module alive while replacing page DOM, so revisiting `/tool/` must
+ * initialize the newly swapped-in form again.
  */
 export function bindPageLifecycle(init: () => void): void {
-  let hasFired = false;
+  let lastRoute: string | null = null;
   const fire = () => {
-    if (hasFired) return;
-    hasFired = true;
+    const route = `${window.location.pathname}${window.location.search}`;
+    if (lastRoute === route) return;
+    lastRoute = route;
     try {
       init();
     } catch (err) {
