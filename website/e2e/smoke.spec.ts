@@ -45,6 +45,11 @@ test.describe('GDKVM smoke tests', () => {
     const announcer = page.locator('.astro-route-announcer');
     await expect(announcer).toHaveAttribute('aria-live', 'assertive');
     await expect(announcer).toHaveAttribute('aria-atomic', 'true');
+
+    // The document-level delegated handler must survive ClientRouter swaps.
+    const themeBtn = page.locator('button[aria-label="Toggle Theme"]').first();
+    await themeBtn.click();
+    await expect(page.locator('html')).toHaveClass(/dark/);
   });
 
   test.describe('tool page', () => {

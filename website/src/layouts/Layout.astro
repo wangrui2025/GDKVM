@@ -206,10 +206,9 @@ const ogImage = new URL(image ?? defaultOgImage, Astro.site).href;
     {showFooter && <Footer />}
     <script>
       import { initDelegatedClickHandlers } from '../scripts/dom-handlers';
-      import { bindPageLifecycle } from '../scripts/page-init';
-      // Re-bind on every page swap (ClientRouter) so the handlers stay
-      // live after Astro's view transitions.
-      bindPageLifecycle(initDelegatedClickHandlers);
+      // The delegated listener is attached to `document`, which survives
+      // ClientRouter swaps, so it only needs to be installed once.
+      initDelegatedClickHandlers();
     </script>
   </body>
 </html>
