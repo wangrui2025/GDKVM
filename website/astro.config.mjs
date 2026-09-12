@@ -27,7 +27,11 @@ export default defineConfig({
   site: 'https://wangrui2025.github.io',
   base: '/GDKVM',
   outDir: 'dist',
-  prefetch: { prefetchAll: true },
+  // `prefetchAll` alone uses Astro's default `hover` strategy. The site has
+  // only three internal routes per locale (home / tool / reprod), so warming
+  // a link as soon as it scrolls into view costs a few KB and makes in-site
+  // navigation instant — including on touch, where hover never fires.
+  prefetch: { prefetchAll: true, defaultStrategy: 'viewport' },
   image: {
     remotePatterns: [
       { protocol: 'https', hostname: 'mykcs.github.io' },

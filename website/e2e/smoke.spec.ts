@@ -45,6 +45,46 @@ test.describe('GDKVM smoke tests', () => {
     const announcer = page.locator('.astro-route-announcer');
     await expect(announcer).toHaveAttribute('aria-live', 'assertive');
     await expect(announcer).toHaveAttribute('aria-atomic', 'true');
+
+    // The document-level delegated handler must survive ClientRouter swaps.
+    const themeBtn = page.locator('button[aria-label="Toggle Theme"]').first();
+    await themeBtn.click();
+    await expect(page.locator('html')).toHaveClass(/dark/);
+  });
+
+  test('tool lifecycle survives leaving and revisiting via ClientRouter', async ({ page }) => {
+    await page.goto('en/tool/');
+
+    const runCalculation = async (modelSize: string, trainingTokens: string) => {
+      await page.locator('#modelSize').fill(modelSize);
+      await page.locator('#trainingTokens').fill(trainingTokens);
+      await page.locator('#modelForm button[type="submit"]').click();
+      await expect(page.locator('#bsValue')).not.toContainText('BS: -');
+    };
+
+    await runCalculation('1e8', '1e9');
+
+    await page.evaluate(() => {
+      const home = document.createElement('a');
+      home.href = '/GDKVM/en/';
+      home.id = 'lifecycle-home';
+      home.textContent = 'Home';
+      document.body.append(home);
+    });
+    await page.locator('#lifecycle-home').click();
+    await expect(page).toHaveURL(/\/en\/$/);
+
+    await page.evaluate(() => {
+      const tool = document.createElement('a');
+      tool.href = '/GDKVM/en/tool/';
+      tool.id = 'lifecycle-tool';
+      tool.textContent = 'Tool';
+      document.body.append(tool);
+    });
+    await page.locator('#lifecycle-tool').click();
+    await expect(page).toHaveURL(/\/en\/tool\/$/);
+
+    await runCalculation('2e8', '2e9');
   });
 
   test.describe('tool page', () => {

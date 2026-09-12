@@ -1,5 +1,8 @@
 ---
-import 'katex/dist/katex.min.css';
+// NOTE: KaTeX CSS is deliberately NOT imported here. Only HomePage.astro
+// renders math, and a Layout-level import inlined ~30KB of KaTeX rules +
+// 20 @font-face blocks into every page (tool / reprod / 404) via the
+// inline-critical-css integration. It lives in HomePage.astro instead.
 import { ClientRouter } from 'astro:transitions';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import LangSwitcher from '../components/LangSwitcher.astro';
@@ -139,12 +142,21 @@ const ogImage = new URL(image ?? defaultOgImage, Astro.site).href;
       );
     })()}
 
+    <!-- Every figure on the site (hero logo, architecture diagram, challenge
+         grid) is served from jsDelivr — see src/config/site.ts CDN_BASE.
+         Opening the DNS + TLS connection during head parsing removes a
+         full round-trip from the LCP image's critical path. -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+
     <link rel="icon" type="image/png" href={`${import.meta.env.BASE_URL}/favicon.png`} />
     <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}/favicon.png`} />
     <link rel="manifest" href={`${import.meta.env.BASE_URL}/manifest.json`} />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#111827" media="(prefers-color-scheme: dark)" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://cdn.jsdelivr.net; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';" />
+    <!-- frame-ancestors is intentionally omitted: CSP meta elements cannot
+         enforce it, and GitHub Pages does not expose custom response headers. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://cdn.jsdelivr.net; font-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self';" />
     <ClientRouter fallback="none" />
     {/*
       Highwire/Google Scholar citation_* meta tags. Only emitted when a page
@@ -194,10 +206,9 @@ const ogImage = new URL(image ?? defaultOgImage, Astro.site).href;
     {showFooter && <Footer />}
     <script>
       import { initDelegatedClickHandlers } from '../scripts/dom-handlers';
-      import { bindPageLifecycle } from '../scripts/page-init';
-      // Re-bind on every page swap (ClientRouter) so the handlers stay
-      // live after Astro's view transitions.
-      bindPageLifecycle(initDelegatedClickHandlers);
+      // The delegated listener is attached to `document`, which survives
+      // ClientRouter swaps, so it only needs to be installed once.
+      initDelegatedClickHandlers();
     </script>
   </body>
 </html>

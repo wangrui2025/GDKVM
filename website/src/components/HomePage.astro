@@ -1,4 +1,8 @@
 ---
+// KaTeX styles live here rather than in Layout.astro: this is the only page
+// that renders math, so a Layout-level import also shipped ~30KB of KaTeX
+// rules + 20 @font-face blocks to tool / reprod / 404.
+import 'katex/dist/katex.min.css';
 import Layout from '../layouts/Layout.astro';
 import Section from './Section.astro';
 import ActionButton from './ActionButton.astro';
@@ -143,6 +147,7 @@ const citationMeta = {
         class="w-full rounded"
         loading="eager"
         decoding="async"
+        fetchpriority="high"
       />
     </div>
     <figcaption class="text-sm text-gray-600 dark:text-gray-400 text-justify mt-4 leading-relaxed">

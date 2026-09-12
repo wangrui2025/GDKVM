@@ -18,7 +18,7 @@ const lang = Astro.currentLocale ?? 'en';
   data-copy-label={label}
   data-copy-success={successLabel}
   aria-label={t(lang, 'tool.copyCode')}
-  class="copy-btn absolute top-2 right-2 z-10 bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs flex items-center gap-1"
+  class="copy-btn absolute top-2 right-2 z-10 min-h-[24px] bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs flex items-center gap-1"
 >
   <Icon name="lucide:copy" class="w-3 h-3 copy-icon" />
   <span>{label}</span>

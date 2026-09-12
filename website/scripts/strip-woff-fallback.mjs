@@ -1,14 +1,19 @@
 #!/usr/bin/env node
-// Post-build: Strip legacy .woff KaTeX font fallback (keep woff2 only).
+// Post-build: Strip legacy KaTeX font fallbacks (keep woff2 only) and
+// relax `font-display` from `block` to `swap`.
 //
 // Mirrors the pattern from main site (mykcs.github.io build-pipeline.mjs
 // removeLegacyWoff). woff2 is universally supported (>97%); the legacy
-// woff fallback was for IE/old Android which no current browser needs.
-// Saves ~250KB per build for GDKVM (~20 woff files).
+// woff/ttf fallbacks were for IE/old Android which no current browser needs.
+// KaTeX's own CSS ships a 3-entry src list — woff2 (keep) + woff + ttf
+// (both dropped). Stripping woff alone left ~540KB of .ttf in dist.
 //
-// We MUST also strip the woff source from CSS — otherwise browsers will
-// 404 on the missing fallback url. The font-face src list has 2 entries:
-// woff2 (keep) + woff (drop).
+// We MUST also strip the fallback sources from CSS — otherwise browsers
+// will 404 on the missing files.
+//
+// font-display: KaTeX ships `block`, which hides math glyphs for up to 3s
+// while the font loads. `swap` renders fallback glyphs immediately and
+// swaps in KaTeX faces when ready — strictly better for FCP/LCP.
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -20,11 +25,12 @@ if (!fs.existsSync(_astro)) {
   process.exit(0);
 }
 
-// Phase 1: Remove .woff files
+// Phase 1: Remove legacy .woff / .ttf font files (woff2 is kept)
+const LEGACY_FONT_EXT = ['.woff', '.ttf'];
 let removedBytes = 0;
 let removedCount = 0;
 for (const f of fs.readdirSync(_astro)) {
-  if (f.endsWith('.woff')) {
+  if (LEGACY_FONT_EXT.some((ext) => f.endsWith(ext))) {
     const p = path.join(_astro, f);
     const size = fs.statSync(p).size;
     fs.unlinkSync(p);
@@ -33,18 +39,21 @@ for (const f of fs.readdirSync(_astro)) {
   }
 }
 console.log(
-  `[strip-woff-fallback] Removed ${removedCount} woff files (${(removedBytes / 1024).toFixed(0)}KB)`
+  `[strip-woff-fallback] Removed ${removedCount} legacy font files (${(removedBytes / 1024).toFixed(0)}KB)`
 );
 
-// Phase 2: Strip woff source URLs from CSS files
+// Phase 2: Strip legacy font source URLs from CSS files + relax font-display
 function stripWoffFromFile(filePath) {
   if (!fs.existsSync(filePath)) return false;
   const original = fs.readFileSync(filePath, 'utf-8');
-  // Remove woff source list item, e.g. ",url(/GDKVM/_astro/x.woff) format(\"woff\")"
-  const stripped = original.replace(
-    /,url\([^)]+\.woff[^)]*\) format\("woff"\)/g,
-    ''
-  );
+  // Remove woff/ttf source list items, e.g.
+  //   ,url(/GDKVM/_astro/x.woff) format("woff")
+  //   ,url(/GDKVM/_astro/x.ttf) format("truetype")
+  let stripped = original
+    .replace(/,url\([^)]+\.woff[^)]*\) format\("woff"\)/g, '')
+    .replace(/,url\([^)]+\.ttf[^)]*\) format\("truetype"\)/g, '');
+  // KaTeX ships font-display:block — swap avoids the 3s invisible-text window.
+  stripped = stripped.replace(/font-display\s*:\s*block/g, 'font-display:swap');
   if (stripped !== original) {
     fs.writeFileSync(filePath, stripped, 'utf-8');
     return true;
@@ -59,7 +68,7 @@ for (const f of fs.readdirSync(_astro)) {
   }
 }
 
-// Phase 3: Strip woff source from inlined <style> in HTML files
+// Phase 3: Strip legacy font src from inlined <style> in HTML files
 let htmlCleaned = 0;
 function walkHtml(dir) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -74,6 +83,6 @@ function walkHtml(dir) {
 walkHtml(DIST_DIR);
 
 console.log(
-  `[strip-woff-fallback] Stripped woff src from ${cssCleaned} CSS + ${htmlCleaned} HTML files`
+  `[strip-woff-fallback] Stripped legacy font src + font-display:swap in ${cssCleaned} CSS + ${htmlCleaned} HTML files`
 );
 console.log('[strip-woff-fallback] Done');
