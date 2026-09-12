@@ -11,7 +11,7 @@
 |------|-----|
 | 论文标题 | GDKVM: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule |
 | 会议 | ICCV 2025 |
-| 技术栈 | Astro 6.x + Tailwind CSS v4 + TypeScript |
+| 技术栈 | Astro 7.x + Tailwind CSS v4 + TypeScript |
 | 部署 URL | `https://wangrui2025.github.io/GDKVM/` |
 | i18n | `prefixDefaultLocale: true` — `/en/` 和 `/zh/` |
 

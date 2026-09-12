@@ -1,6 +1,6 @@
-# GDKVM — Astro 6.x 项目速查
+# GDKVM — Astro 7.x 项目速查
 
-> 技术栈：Astro v6.1.6 + Tailwind v4 + TypeScript
+> 技术栈：Astro v7.3.2 + Tailwind v4 + TypeScript
 > 部署目标：GitHub Pages (`https://wangrui2025.github.io/GDKVM/`)
 
 ## 请参考
@@ -21,7 +21,7 @@ npx playwright test    # 4 tests passed
 
 ---
 
-## Astro 6.x 现代化守则
+## Astro 7.x 现代化守则
 
 ### URL 构造
 - ✅ 使用 `new URL(path, Astro.site).href`
@@ -34,7 +34,7 @@ npx playwright test    # 4 tests passed
 
 ### 图片
 - ✅ 使用 `astro:assets` 的 `<Image />`
-- ❌ 禁止 `<Image format="webp" />`（Astro 6 已废弃 format 属性）
+- ❌ 禁止 `<Image format="webp" />`（当前 Astro 已移除 format 属性）
 
 ### 脚本与样式
 - 页面级 CSS/JS 必须放在 `src/` 下，通过 `import` 引入
@@ -44,7 +44,7 @@ npx playwright test    # 4 tests passed
 
 ### View Transitions
 - ✅ 使用 `<ClientRouter />`
-- ❌ 禁止 `<ViewTransitions />`（Astro 6 废弃）
+- ❌ 禁止 `<ViewTransitions />`（当前 Astro 已移除）
 
 ---
 
