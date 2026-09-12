@@ -12,11 +12,11 @@
     "@iconify-json/academicons": "^1.2.4",
     "@iconify-json/lucide": "^1.2.111",
     "@iconify-json/simple-icons": "^1.2.85",
-    "@tailwindcss/vite": "4.1.18",
-    "astro": "^6.4.6",
+    "@tailwindcss/vite": "4.3.3",
+    "astro": "^7.3.2",
     "astro-icon": "^1.2.0",
     "katex": "^0.17.0",
-    "tailwindcss": "4.1.18"
+    "tailwindcss": "4.3.3"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
@@ -32,14 +32,15 @@
   "pnpm": {
     "overrides": {
       "esbuild": "^0.28.1",
-      "fast-uri": "^3.1.5",
-      "js-yaml": ">=4.3.1 <5",
+      "fast-uri": "^3.1.6",
+      "js-yaml": ">=4.3.2 <5",
       "nanoid": ">=3.3.18 <4",
       "postcss": "^8.5.18",
-      "sharp": "^0.35.0",
-      "svgo": "^4.0.2||^3.3.4",
+      "sharp": "^0.35.4",
+      "svgo": "^4.1.0||^3.3.4",
       "tar": "^7.5.21",
-      "yaml": ">=2.8.3"
+      "yaml": ">=2.8.3",
+      "smol-toml": ">=1.7.1"
     },
     "onlyBuiltDependencies": [
       "esbuild",

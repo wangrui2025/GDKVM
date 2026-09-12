@@ -100,7 +100,4 @@ export default defineConfig({
       preserveSymlinks: true,
     },
   },
-  experimental: {
-    rustCompiler: true,
-  },
 });
