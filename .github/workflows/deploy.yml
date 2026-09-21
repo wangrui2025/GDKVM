@@ -35,8 +35,12 @@ jobs:
         run: pnpm install --frozen-lockfile
         working-directory: website
 
-      - name: Install Playwright Chromium and system deps
-        run: npx playwright install --with-deps chromium
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+        working-directory: website
+
+      - name: Install Playwright system deps
+        run: npx playwright install-deps chromium
         working-directory: website
 
       - name: Build
