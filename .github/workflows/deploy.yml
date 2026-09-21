@@ -39,9 +39,6 @@ jobs:
         run: npx playwright install chromium
         working-directory: website
 
-      - name: Install Playwright system deps
-        run: npx playwright install-deps chromium
-        working-directory: website
 
       - name: Build
         run: npm run build
