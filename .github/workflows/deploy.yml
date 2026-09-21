@@ -4,9 +4,24 @@ on:
   push:
     branches:
       - main
+    # Publish only when the built Pages artifact can change.
+    paths:
+      - 'website/src/**'
+      - 'website/public/**'
+      - 'website/assets/**'
+      - 'website/scripts/**'
+      - 'website/astro.config.mjs'
+      - 'website/package.json'
+      - 'website/pnpm-lock.yaml'
+      - 'website/tsconfig.json'
+      - 'website/.npmrc'
   pull_request:
     branches:
       - main
+    # PR CI also runs when tests or this workflow itself change.
+    paths:
+      - 'website/**'
+      - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
 env:
