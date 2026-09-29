@@ -21,5 +21,6 @@ export default defineConfig({
     command: 'npx astro preview --port 3333',
     url: 'http://localhost:3333/GDKVM/',
     reuseExistingServer: !process.env.CI,
+    env: { ASTRO_PREVIEW_BACKGROUND: '0' },
   },
 });

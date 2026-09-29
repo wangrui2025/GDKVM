@@ -25,6 +25,15 @@ We validated GDKVM on two mainstream echocardiography video datasets (**CAMUS** 
 
 [https://wangrui2025.github.io/GDKVM/](https://wangrui2025.github.io/GDKVM/)
 
+## CI and website validation
+
+This repository uses **SPECIALIZED_CI** because its website acceptance includes a production-site build and Playwright browser tests. Follow the shared [account-level CI standard](https://github.com/mykcs/.agents/blob/main/docs/agents/CI_STANDARD.md); this README is the local CI owner. GitHub Actions runs CI, while GitHub Pages publishes Production.
+
+- Local fast validation: `cd website && pnpm install --frozen-lockfile && pnpm run build && pnpm exec playwright test` (install Playwright Chromium first when needed). The hosted Pages workflow also runs a hreflang-base check that is currently inline there, so this local command is not full workflow parity.
+- `.github/workflows/deploy.yml` runs those lanes on matching website pull requests. A PR run checks GitHub's merge candidate; every new push gets a new run. It has no stale-PR cancellation policy. On `main`, only website content/build inputs publish Pages; docs and Playwright-config-only changes do not publish. The `pages` concurrency group serializes publication without cancelling an active deploy.
+- `.github/workflows/multi-site-checks.yml` runs repository consistency checks on pull requests and `main` pushes; its per-ref concurrency cancels superseded runs. Both workflows are advisory and consume GitHub Actions compute.
+- GitHub currently has no active ruleset or branch protection for `main`; there is no required exact-head merge gate or CI authority/fallback. Re-read live rules before changing this contract. Review the shared standard for provider-budget policy.
+
 ## Installation
 
 ```bash
