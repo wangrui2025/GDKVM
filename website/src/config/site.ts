@@ -12,7 +12,9 @@ export const CDN_BASE = 'https://cdn.jsdelivr.net/gh/mykcs/academic@v1.1.0';
 
 export const SITE_CONFIG = {
   /** GitHub repository for code releases */
-  codeUrl: 'https://github.com/wangrui2025/GDKVM',
+  codeUrl: 'https://github.com/mykcs/gdkvm-rerelease-public',
+  /** Raw-source navigation; processed caches have separate protocol identities. */
+  dataCollectionUrl: 'https://huggingface.co/collections/miyuki17/cardiac-ultrasoundcamus-and-echonet-6a91a3c05c72ef0284980011',
   /** arXiv abstract page */
   arxivUrl: 'https://arxiv.org/abs/2512.10252',
   /** CVF open access paper page */

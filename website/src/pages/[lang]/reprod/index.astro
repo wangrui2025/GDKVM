@@ -1,4 +1,5 @@
 ---
+import ResourceRoutes from '../../../components/ResourceRoutes.astro';
 import Layout from '../../../layouts/Layout.astro';
 import Section from '../../../components/Section.astro';
 import ActionButton from '../../../components/ActionButton.astro';
@@ -31,7 +32,12 @@ const homeUrl = { en: `${import.meta.env.BASE_URL}/`, zh: `${import.meta.env.BAS
     </div>
   </section>
 
+  <ResourceRoutes lang={lang} />
+
   <Section class="pb-12">
+    <details class="rounded-lg border border-gray-200 p-4 dark:border-gray-700">
+      <summary class="cursor-pointer font-semibold">{t(lang, 'home.legacyGuide')}</summary>
+      <p class="my-4">{t(lang, 'home.legacyWarning')}</p>
     <div class="fade-in">
       <!-- 1. Environment Setup -->
       <h2 class="text-2xl font-semibold mt-10 mb-6 pb-2 border-b-2 border-gray-100 dark:border-gray-700 font-display" id="environment">
@@ -87,7 +93,7 @@ const homeUrl = { en: `${import.meta.env.BASE_URL}/`, zh: `${import.meta.env.BAS
       <p class="mb-4">{t(lang, 'reprod.getCodeDesc')}</p>
       <div class="relative mb-4">
         <CopyButton targetId="code-06" />
-        <pre id="code-06" class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-bash">git clone https://github.com/wangrui2025/GDKVM.git gdkvm_20251215</code></pre>
+        <pre id="code-06" class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-bash"># Archived checkout example retired. Use the current public code link above.</code></pre>
       </div>
 
       <p class="mb-2">{t(lang, 'reprod.getCodeEnter')}</p>
@@ -281,6 +287,7 @@ eval_stage:
         <pre id="code-19" class="bg-gray-100 dark:bg-gray-800 rounded p-4 text-sm"><code class="language-bash">wandb sync gdkvm_20251215/wandb/offline-run-20251215_123456-abcdef1gh</code></pre>
       </div>
     </div>
+    </details>
   </Section>
 
   <footer class="py-8 bg-gray-50 dark:bg-gray-800 mt-8">

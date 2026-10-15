@@ -1,0 +1,15 @@
+---
+import { SITE_CONFIG } from '../config/site';
+import { t, type Locale } from '../i18n';
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+---
+<aside class="mx-auto my-8 max-w-5xl rounded-lg border border-gray-200 bg-gray-50 p-6 text-left dark:border-gray-700 dark:bg-gray-800" aria-label={t(lang, 'home.routesTitle')}>
+  <h2 class="text-xl font-semibold mb-3">{t(lang, 'home.routesTitle')}</h2>
+  <p class="mb-3 leading-relaxed">{t(lang, 'home.routesBody')}</p>
+  <nav class="flex flex-wrap gap-x-6 gap-y-2 mb-3" aria-label={t(lang, 'home.routesTitle')}>
+    <a class="underline underline-offset-4" href={SITE_CONFIG.codeUrl} target="_blank" rel="noopener noreferrer">{t(lang, 'home.routesCode')}</a>
+    <a class="underline underline-offset-4" href={SITE_CONFIG.dataCollectionUrl} target="_blank" rel="noopener noreferrer">{t(lang, 'home.routesData')}</a>
+  </nav>
+  <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-300">{t(lang, 'home.routesDataNote')}</p>
+</aside>

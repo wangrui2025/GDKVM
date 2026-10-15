@@ -1,4 +1,10 @@
-Code: https://github.com/wangrui2025/gdkvm_code
+Current public experiment code: https://github.com/mykcs/gdkvm-rerelease-public
+
+This repository owns the **project website and paper assets**, not the Python training package.
+
+Dataset source navigation: https://huggingface.co/collections/miyuki17/cardiac-ultrasoundcamus-and-echonet-6a91a3c05c72ef0284980011
+
+Historical code: https://github.com/wangrui2025/gdkvm_code (historical provenance; not the current re-release).
 # GDKVM: Echocardiography Video Segmentation via Spatiotemporal Key-Value Memory with Gated Delta Rule
 
 [![Project Page](https://img.shields.io/badge/Project-Page-BC52EE?logo=githubpages)](https://wangrui2025.github.io/GDKVM/)
@@ -34,17 +40,11 @@ This repository uses **SPECIALIZED_CI** because its website acceptance includes 
 - `.github/workflows/multi-site-checks.yml` runs repository consistency checks on pull requests and `main` pushes; its per-ref concurrency cancels superseded runs. It uses a one-commit checkout because its checks read the worktree and GitHub API without consulting Git history. Both workflows are advisory and consume GitHub Actions compute.
 - GitHub currently has no active ruleset or branch protection for `main`; there is no required exact-head merge gate or CI authority/fallback. Re-read live rules before changing this contract. Review the shared standard for provider-budget policy.
 
-## Installation
+## Training and evaluation
 
-```bash
-git clone https://github.com/wangrui2025/GDKVM.git
-cd GDKVM
-pip install -e .
-```
+Use the [current public re-release](https://github.com/mykcs/gdkvm-rerelease-public) and follow its README and versioned data/evaluation contracts. Do not run `pip install -e .` in this website repository.
 
-## Quick Start
-
-TBD — code is being organized for release.
+The website's December 2025 reproduction notes are archived historical instructions. Current NPY/mmap caches are distinct from legacy JPEG/PNG folders. OSA uses a separate reconstruction protocol (CAMUS 15×256×256; EchoNet-Dynamic 10×128×128; endpoint-only supervision); equal frame counts do not establish cache compatibility. Dataset source collections distinguish raw sources, archive ZIPs and historical derivatives; a raw-source repository is not a ready-to-train cache.
 
 ## Citation
 
