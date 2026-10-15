@@ -34,5 +34,12 @@
   "poster": "Poster",
   "todoTitle": "To-Do List",
   "todo1": "Problem Formulation Flowchart",
-  "todo2": "Model Processing Flowchart"
+  "todo2": "Model Processing Flowchart",
+  "routesTitle": "Current code and data",
+  "routesBody": "This site presents the ICCV 2025 paper. For current training and evaluation, use the modern re-release repository; its new results are separate from the original paper numbers.",
+  "routesCode": "Current public code",
+  "routesData": "Dataset source collections",
+  "routesDataNote": "Collections distinguish raw sources from historical derivatives. Current training uses manifest-bound NPY/mmap caches. OSA has its own protocol: CAMUS 15 frames at 256×256; EchoNet-Dynamic 10 frames at 128×128; endpoint-only supervision. A historical PNG cache with the same frame count is not an accepted substitute.",
+  "legacyGuide": "Historical setup notes — December 2025",
+  "legacyWarning": "Archived for provenance. These old commands, paths and processed-data links are not the current installation or data contract. Follow the current code repository above."
 }

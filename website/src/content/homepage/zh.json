@@ -34,5 +34,12 @@
   "poster": "海报",
   "todoTitle": "待办清单",
   "todo1": "问题设置流程图",
-  "todo2": "模型处理流程图"
+  "todo2": "模型处理流程图",
+  "routesTitle": "当前代码与数据入口",
+  "routesBody": "本站展示 ICCV 2025 论文。训练与评估请使用现代化重发布代码；新协议结果与原论文数字分开记录。",
+  "routesCode": "当前公开代码",
+  "routesData": "数据源 Collection",
+  "routesDataNote": "Collection 区分原始源与历史派生版；当前训练使用有 manifest 身份的 NPY/mmap 缓存。OSA 采用独立协议：CAMUS 15帧/256×256，EchoNet-Dynamic 10帧/128×128，仅首末帧监督。旧 PNG 缓存即使帧数相同，也不能直接当作新协议缓存。",
+  "legacyGuide": "历史环境说明——2025年12月",
+  "legacyWarning": "以下仅保留来源追溯；旧命令、目录和处理后数据链接不是当前安装或数据合同。请按上方当前代码仓库执行。"
 }

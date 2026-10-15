@@ -1,4 +1,5 @@
 ---
+import ResourceRoutes from './ResourceRoutes.astro';
 // KaTeX styles live here rather than in Layout.astro: this is the only page
 // that renders math, so a Layout-level import also shipped ~30KB of KaTeX
 // rules + 20 @font-face blocks to tool / reprod / 404.
@@ -137,6 +138,8 @@ const citationMeta = {
       </div>
     </div>
   </section>
+
+  <ResourceRoutes lang={lang} />
 
   <!-- Architecture Figure -->
   <Section>

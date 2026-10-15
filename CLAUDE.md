@@ -1,5 +1,10 @@
 # GDKVM — Astro 7.x 项目速查
 
+## Current repository role
+
+This repository is the GDKVM **project website / paper-assets** owner. It is not the Python experiment package. Current public experiment code: https://github.com/mykcs/gdkvm-rerelease-public . Dataset source navigation: https://huggingface.co/collections/miyuki17/cardiac-ultrasoundcamus-and-echonet-6a91a3c05c72ef0284980011 . The December 2025 setup guide is historical; do not install this website with pip or assume old JPG/PNG caches match current NPY protocols. Site source and commands are under `website/`.
+
+
 > 技术栈：Astro v7.3.2 + Tailwind v4 + TypeScript
 > 部署目标：GitHub Pages (`https://wangrui2025.github.io/GDKVM/`)
 
