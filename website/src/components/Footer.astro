@@ -1,12 +1,13 @@
 ---
 import { t } from '../i18n';
+import { formatCalendarText } from '../utils/calendar-date.mjs';
 const lang = Astro.currentLocale ?? 'en';
 ---
 
 <footer class="py-8 bg-gray-50 dark:bg-gray-800 mt-8">
-  <div class="max-w-5xl mx-auto px-4 text-center">
+  <div class="max-w-content mx-auto px-4 text-center">
     <p class="text-sm text-gray-500 dark:text-gray-400">
-      {t(lang, 'footer.lastUpdated')}
+      {formatCalendarText(t(lang, 'footer.lastUpdated'), lang)}
     </p>
   </div>
 </footer>

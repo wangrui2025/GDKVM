@@ -35,6 +35,7 @@ env:
 
 jobs:
   test:
+    timeout-minutes: 20
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -52,16 +53,15 @@ jobs:
         run: pnpm install --frozen-lockfile
         working-directory: website
 
-      - name: Restore Playwright Chromium cache
+      - name: Restore Playwright browser cache
         id: playwright-cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('website/pnpm-lock.yaml') }}
+          key: playwright-chromium-webkit-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('website/pnpm-lock.yaml') }}
 
       - name: Install Playwright browsers
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install chromium
+        run: npx playwright install --with-deps chromium webkit
         working-directory: website
 
 

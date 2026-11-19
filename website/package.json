@@ -2,10 +2,12 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build && node scripts/strip-woff-fallback.mjs",
+    "build": "astro check && astro build && node scripts/strip-woff-fallback.mjs && npm run test:design && npm run audit:design",
     "preview": "astro preview",
     "astro": "astro",
-    "check": "astro check"
+    "check": "astro check",
+    "test:design": "node --test scripts/design.test.mjs",
+    "audit:design": "node scripts/audit-design.mjs"
   },
   "dependencies": {
     "@astrojs/compiler-rs": "^0.2.1",

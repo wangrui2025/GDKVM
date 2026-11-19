@@ -1,6 +1,6 @@
 # GDKVM 全站排版与年月日统一
 
-> Draft · TASK SPEC ONLY · Implementation: NOT DONE
+> Draft · Implementation candidate ready · Browser/merge acceptance pending
 > Size: M · Confidence: medium
 
 ## 目标与来源
@@ -34,3 +34,14 @@ website/src/styles/global.css、toolstyle.css、layouts/Layout.astro；website/D
 ## 证据
 
 目前仅合同；实现 NOT DONE；构建/浏览器 NOT RUN。完成后补命令、覆盖数、结果和证据。
+
+
+## 实施记录（2026年11月20日）
+
+- 单一 `website/src/styles/tokens.css` → `global.css` → `Layout` / `FallbackLayout`。Tailwind 字级、行高、字重、间距及容器宽度均映射到 owner；普通 UI 的独立间距/字号声明已迁移。
+- 保留学术衬线身份，正文统一为 16px / 1.65，图注 14px，元信息 13px；同级 section 28px、小节 20px，三个内容宽度角色。打印、数学与原图几何单独说明。
+- 原 `public/404.html` 改为 Astro 生成同名真实主机 fallback，去掉页面中误显示的 frontmatter 注释；两个历史跳转保持目的地并共享 fallback 布局。
+- 日期只在显示处投影，JSON 原始记录不变。普通页脚的 2026-06-04 与复现历史页脚的 2025-12-15 各自保留其真实日期；完整日期、年月、年份分别保留精度。
+- 本地 `npx --yes pnpm@10.33.0 run build` PASS：11/11 HTML 样式依赖及消费者声明，日期/缺失样式正反例 PASS。当前环境阻止脚本浏览器启动，cloud 浏览器也不能连接本地 preview；未将静态审计称为渲染验收。
+- 正式 `Deploy to GitHub Pages / test` 将运行全部生成路由 × Chromium/WebKit × 440×956/1440×1000 × light/dark，实际扰动 font/size/leading/spacing，同时对真实 Tailwind padding、caption、heading、content width 做见证；保留原语言/主题/工具计算/ClientRouter 回归，并提供候选截图。
+- 待当前 head CI 通过后完成 Ready、受规则约束的 merge 和 Pages 正式部署身份读回。此条在正式验收前保持未完成。
