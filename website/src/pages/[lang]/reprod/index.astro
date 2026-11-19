@@ -37,7 +37,7 @@ const homeUrl = { en: `${import.meta.env.BASE_URL}/`, zh: `${import.meta.env.BAS
 
   <Section class="pb-12">
     <details class="rounded-lg border border-gray-200 p-4 dark:border-gray-700">
-      <summary class="cursor-pointer font-semibold">{t(lang, 'home.legacyGuide')}</summary>
+      <summary class="cursor-pointer font-semibold">{formatCalendarText(t(lang, 'home.legacyGuide'), lang)}</summary>
       <p class="my-4">{t(lang, 'home.legacyWarning')}</p>
     <div class="fade-in">
       <!-- 1. Environment Setup -->

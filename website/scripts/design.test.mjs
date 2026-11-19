@@ -31,3 +31,15 @@ test('new standalone HTML cannot silently omit the shared design', () => {
   assert.ok(inspectHTML(fixture).includes('missing body font consumer'));
   assert.ok(inspectHTML(fixture).includes('missing spacing consumer'));
 });
+test('rendered date audit catches English names and spaced Chinese, preserving evidence', () => {
+  for (const html of [
+    '<html lang="en"><p>December 15, 2025</p></html>',
+    '<html lang="zh"><p>2025 年 12 月 15 日</p></html>',
+    '<html lang="zh"><p>2025-12-15</p></html>',
+  ]) assert.ok(inspectHTML(html).includes('nonstandard displayed date'));
+  for (const html of [
+    '<html lang="en"><p>2025-12-15</p></html>',
+    '<html lang="zh"><p>2025年12月15日</p></html>',
+    '<html lang="zh"><pre>2025-12-15</pre><code>December 15, 2025</code><p>run-2025-12-15.json</p></html>',
+  ]) assert.ok(!inspectHTML(html).includes('nonstandard displayed date'));
+});

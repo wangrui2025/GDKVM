@@ -1,6 +1,7 @@
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { resolve, relative, dirname, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { formatCalendarText } from '../src/utils/calendar-date.mjs';
 
 export const htmlFiles = dir => readdirSync(dir, { withFileTypes: true }).flatMap(entry => {
   const file = join(dir, entry.name);
@@ -19,6 +20,11 @@ export function inspectHTML(html, loadStylesheet = () => '') {
   if (!/font-family\s*:\s*var\(--font-body\)/.test(css)) errors.push('missing body font consumer');
   if (!/line-height\s*:\s*var\(--leading-body\)/.test(css)) errors.push('missing body leading consumer');
   if (!/(?:padding|gap)[\w-]*\s*:[^;}]*var\(--space-/.test(css)) errors.push('missing spacing consumer');
+  const locale = /<html\b[^>]*lang=["']zh(?:-[^"']*)?["']/i.test(html) ? 'zh' : 'en';
+  const prose = html.replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/<(script|style|pre|code|svg|math)\b[^>]*>[\s\S]*?<\/\1>/gi, '')
+    .replace(/<[^>]*>/g, ' ').replace(/&nbsp;|&#160;/g, ' ');
+  if (formatCalendarText(prose, locale) !== prose) errors.push('nonstandard displayed date');
   return errors;
 }
 
