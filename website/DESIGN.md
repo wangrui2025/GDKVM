@@ -32,35 +32,50 @@
 
 ## 3. 字体规范
 
-### 3.1 字体栈
+### 3.1 可执行来源
 
-全站统一使用 Times New Roman 系列衬线字体（含 CJK 回退）：
+`src/styles/tokens.css` 是本站字体、字级、字重、行距、间距与阅读宽度的唯一数值来源；`global.css` 导入它，并将 Tailwind 的字号、leading、weight、spacing、container 工具映射到这些角色。普通内容页由 `Layout.astro` 导入，跳转兜底及真正的 `404.html` 由 `FallbackLayout.astro` 导入同一份样式。修改 owner 会影响所有 11 个生成 HTML，不需要逐页复制 CSS。
 
-```css
-/* src/styles/global.css */
-body, h1, h2, h3, h4, h5, h6 {
-  font-family: 'Times New Roman', 'Noto Serif SC', Georgia, serif;
-}
-```
+### 3.2 字体与字级
 
-| 用途 | 字体栈 |
-|------|--------|
-| 全局正文/标题 | `Times New Roman`, `Noto Serif SC`, Georgia, serif |
-| BibTeX / 等宽 | `Fira Code`, Consolas, monospace |
-| 公式 | KaTeX（npm 依赖 `katex@^0.17.0`，本地打包） |
+| 角色 | Token / 规则 | 当前值 |
+|------|---------------|-------|
+| 正文及普通标题字体 | `--font-body` / `--font-title` | Times New Roman、Noto Serif SC、Times、serif |
+| 代码 / BibTeX / kbd | `--font-code` | SFMono-Regular、Consolas、Liberation Mono、Menlo、monospace |
+| 正文 | `--size-body`，root `--size-root` | 1rem / 16px |
+| 作者及次要介绍 | `--size-author` | 1.125rem / 18px |
+| 图注 / 辅助说明 | `--size-caption` | .875rem / 14px |
+| 元信息 / 控件短标签 | `--size-meta` | .8125rem / 13px |
+| 小节标题 | `--size-subheading` | 1.25rem / 20px |
+| 同级 section 标题 | `--size-section` | 1.75rem / 28px |
+| 工具 / 复现页面标题 | `--size-page` | 2.25rem / 36px |
+| 论文标题 | `--size-publication` | clamp(1.75rem, 3.5vw, 2.5rem) |
+| 404 状态数字 | `--size-error` | 4rem；仅状态数字使用 |
 
-### 3.2 字号规范
+正文行距 1.65，图注/短标签 1.5，标题 1.3，展示标题 1.2；通过同名 `--leading-*` 统一消费。字重为正文 400、标签 500、标题 600、重点 700。`strong` 表达语义重点，`em` 保留术语/作品斜体；正文链接有下划线，明显的按钮与导航保留其控件样式。普通列表使用 `ol/li`、`ul/li`，论文图号、公式编号和原文 BibTeX 保留原编号。
 
-| 元素 | 字号 |
-|------|------|
-| 论文标题 | 32pt |
-| 作者名 | 18pt |
-| 机构 | 14pt |
-| Section 标题 | 18pt |
-| 正文 | 16pt |
-| BibTeX | 13pt |
+### 3.3 间距、宽度与有意的变体
 
-**禁止改回** Inter / Plus Jakarta Sans 等无衬线字体。
+所有普通 UI 的 margin/padding/gap 使用 `--space-unit: .25rem`（当前 4px）及其有限倍数，Tailwind 的 `p-* / m-* / gap-* / space-*` 也绑定这一单位。内联代码的半格内边距用于紧凑短标签；边框、圆角、阴影、图标尺寸、响应断点不是正文间距。
+
+- `--width-content: 56rem`：论文/复现内容与共享页脚。
+- `--width-reading: 48rem`：跳转和错误提示。
+- `--width-form: 28rem`：工具表单。
+- Section 使用统一的 12 格纵向间距，紧凑 section 为 8 格；页面水平 gutter 为 4 格。
+- KaTeX 使用其专业数学字体，科学图片/视频维持原比例；不把图内坐标变成正文 token。
+- A4 打印通过全局 `@page` 保留 15mm × 20mm 页边距，正文 `--print-body: 11pt`，论文标题 `--print-title: 18pt`。物理纸张规则与屏幕 rem 尺度分开声明。
+
+### 3.4 日期与精度
+
+`src/utils/calendar-date.mjs` 是显示 formatter。完整中文日期为 `YYYY年M月D日`，英文为 `YYYY-MM-DD`；只有年月时保持 `YYYY年M月` / `YYYY-MM`，只知道年份就保留年份，不补造日期，不使用本地时区解析日期字符串。页脚和复现说明中的日期在呈现边界调用它。
+
+源 JSON、URL/文件名、代码、JSON-LD、sitemap 和 Highwire `citation_publication_date` 保持其机器格式。带具体时刻的数据保留原时区；不把带时区时间戳当日期截断。
+
+### 3.5 全站回归门
+
+`pnpm build` 会枚举实际生成 HTML，并验证全部页面挂载共享样式与消费声明；`e2e/design-contract.spec.ts` 在 Chromium/WebKit、1440×1000 和 440×956、浅色/深色下逐页验证实际计算样式、页面溢出，并扰动字号/字体/行距/间距 token 证明页面确实响应。没有匹配 DOM 消费者的假页面必须失败。跳转页测试其 fallback 本体及正常跳转目的地，不能只测跳转后的首页。
+
+CI 继续运行原有语言切换、主题切换、ClientRouter 和工具计算回归；截图与报告属于当次候选产物。未得到本次候选的浏览器 PASS 前，不把构建成功称作视觉验收完成。
 
 ---
 
@@ -230,7 +245,7 @@ GDKVM 不提供本地 poster 渲染和 slides 演示。外部海报 PDF 通过 `
 
 ### 9.3 KaTeX 本地打包
 
-公式渲染使用 npm 依赖 `katex@^0.17.0`：`Layout.astro` 直接 `import 'katex/dist/katex.min.css'`，`HomePage.astro` 通过模块图导入 `katex/dist/contrib/auto-render.min.js`，全部本地打包，**不依赖 CDN**。构建后 `scripts/strip-woff-fallback.mjs` 会移除 legacy woff 字体（保留 woff2）。
+公式渲染使用 npm 依赖 `katex@^0.17.0`：`HomePage.astro` 按需 `import 'katex/dist/katex.min.css'`，`HomePage.astro` 通过模块图导入 `katex/dist/contrib/auto-render.min.js`，全部本地打包，**不依赖 CDN**。构建后 `scripts/strip-woff-fallback.mjs` 会移除 legacy woff 字体（保留 woff2）。
 
 ### 9.4 工具页独立样式
 

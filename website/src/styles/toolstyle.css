@@ -13,7 +13,7 @@
 .select-item {
     background: #F7FAFC;
     border-radius: 0.75rem;
-    padding: 1.5rem;
+    padding: var(--space-6);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }

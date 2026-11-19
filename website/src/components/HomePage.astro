@@ -87,7 +87,7 @@ const citationMeta = {
 <Layout title={t(lang, 'home.title')} description={t(lang, 'home.description')} structuredData={schema} citation={citationMeta}>
   <!-- Hero -->
   <section class="relative bg-gray-50 dark:bg-gray-800 pb-12 pt-8">
-    <div class="max-w-5xl mx-auto px-4">
+    <div class="max-w-content mx-auto px-4">
       <div class="text-center">
         <!-- ICCV Logo -->
         <div class="mb-6">
@@ -161,7 +161,7 @@ const citationMeta = {
   <!-- Abstract -->
   <Section>
     <div class="abstract-box">
-      <h2 class="text-3xl font-semibold text-center mb-6 font-display">{t(lang, 'home.abstractTitle')}</h2>
+      <h2 class="text-section font-semibold text-center mb-6 font-display">{t(lang, 'home.abstractTitle')}</h2>
       <div class="text-justify fade-in space-y-4">
         <p>{t(lang, 'home.abstractP1')}</p>
         <p>{t(lang, 'home.abstractP2')}</p>
@@ -173,12 +173,12 @@ const citationMeta = {
 
   <!-- Challenges -->
   <Section>
-    <h3 class="text-2xl font-semibold text-center mb-6 font-display">{t(lang, 'home.challengesTitle')}</h3>
+    <h3 class="text-subheading font-semibold text-center mb-6 font-display">{t(lang, 'home.challengesTitle')}</h3>
     <div class="text-center mb-6">
       <p>{t(lang, 'home.challengesDesc')}</p>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 max-w-5xl mx-auto">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 max-w-content mx-auto">
       {
         [
           { src: `${CDN_BASE}/images/publications/iccv2025-gdkvm/arXiv-2512.10252v1/fig/challenge/cha_1.jpg`, alt: 'Noise', cap: '(a)' },
@@ -205,7 +205,7 @@ const citationMeta = {
 
   <!-- BibTeX -->
   <Section id="BibTeX">
-    <h2 class="text-3xl font-semibold text-center mb-6 font-display">{t(lang, 'home.bibtexTitle')}</h2>
+    <h2 class="text-section font-semibold text-center mb-6 font-display">{t(lang, 'home.bibtexTitle')}</h2>
     <div class="relative">
       <CopyButton targetId="bibtex-content" label={t(lang, 'home.copy')} successLabel={t(lang, 'home.copied')} />
       <pre
@@ -225,7 +225,7 @@ const citationMeta = {
   <!-- Additional Resources -->
   <Section class="pb-8">
     <div class="text-center">
-      <h2 class="text-3xl font-semibold text-center mb-6 font-display">{t(lang, 'home.resourcesTitle')}</h2>
+      <h2 class="text-section font-semibold text-center mb-6 font-display">{t(lang, 'home.resourcesTitle')}</h2>
       <div class="flex flex-wrap justify-center gap-3">
         <ActionButton
           href={SITE_CONFIG.cvfPaperUrl}

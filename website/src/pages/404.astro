@@ -1,0 +1,14 @@
+---
+// Astro emits the same dist/404.html that GitHub Pages serves for unknown URLs.
+// Unlike the old copied public file, this fallback consumes the site stylesheet.
+import FallbackLayout from '../layouts/FallbackLayout.astro';
+---
+<FallbackLayout title="Page Not Found — GDKVM" target="/GDKVM/en/404/" delay={5}>
+  <h1 class="error-code">404</h1>
+  <p>Sorry, the page you're looking for doesn't exist.</p>
+  <p lang="zh">抱歉，您访问的页面不存在。</p>
+  <nav class="fallback-links" aria-label="Home pages">
+    <a href="/GDKVM/en/">English Home</a>
+    <a href="/GDKVM/zh/">中文首页</a>
+  </nav>
+</FallbackLayout>

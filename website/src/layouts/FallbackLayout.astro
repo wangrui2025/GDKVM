@@ -1,0 +1,24 @@
+---
+import '../styles/global.css';
+interface Props {
+  title: string;
+  target: string;
+  canonical?: string;
+  delay?: number;
+}
+const { title, target, canonical = target, delay = 0 } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="robots" content="noindex,nofollow" />
+    <meta http-equiv="refresh" content={`${delay}; url=${target}`} />
+    <link rel="canonical" href={canonical} />
+  </head>
+  <body class="fallback-page" data-design-system="gdkvm">
+    <main class="fallback-content"><slot /></main>
+  </body>
+</html>
