@@ -329,3 +329,11 @@ diff <(node -e "console.log(Object.keys(require('./src/content/homepage/en.json'
 |------|------|
 | 2026-05-28 | 新增 §14 学术图片 CDN 策略（OSA 模式：`<img>` + jsDelivr 语义化版本，优于 `<Image>` + raw.githubusercontent） |
 | 2026-05-27 | 新增 §3 字体规范（含 CSS 实现）、§4.2 暗色模式实现、§5 a11y 规范、§7 组件事件处理（data-action 模式）、§8 @media print 规范、§10 i18n 对等验证命令、§11 checklist 新增 a11y 验证、§13 变更历史 |
+
+## 10. 愿望：更精致、可替代的交互品质（2026-11-20 · 交互品质参考）
+
+用户希望让论文项目站的操作更自然：论文/工具/复现入口、图表与复制按钮的鼠标悬停、键盘聚焦、手机触控反馈清晰而克制；图标、文字、点击范围和相对间距共同帮助读者理解下一步，不让动效干扰论文方法与复现证据。
+
+**2026-11-20 的启发参考：** [nuro.dev](https://nuro.dev/) 的选项 hover、图标大小与空间节奏。它只是当前可学习的一例，既不是指定要照抄的视觉稿，也不规定颜色、动画时长、CSS 框架或永久唯一标准。未来发现更好的研究展示/交互实践，应先比较再取其更适合本站者。
+
+真正落地时优先复用本站现有 token、ActionButton/LangSwitcher/ThemeToggle 等组件，并进行桌面与 440px 手机的真浏览器验收：hover、focus-visible、触控、prefers-reduced-motion、无布局跳动、无横向溢出、中英文一致，绝不把未验证的工具功能做成“已成功”视觉暗示。**本 PR 只记录长期设计愿望，不改变页面或生产。**
