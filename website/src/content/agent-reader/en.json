@@ -1,0 +1,11 @@
+{
+  "title": "For agents",
+  "intro": "Find the paper, evidence and relevant project pages. Copy this public directory into your assistant; it is not independent scientific verification.",
+  "copy": "Copy site context",
+  "copied": "Context copied.",
+  "manual": "Select the text and copy manually.",
+  "details": "Review the full text before sharing",
+  "resources": "Machine-readable resources",
+  "pages": "Read the original sources",
+  "site": "Public context only"
+}

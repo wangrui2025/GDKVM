@@ -2,8 +2,9 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build && node scripts/strip-woff-fallback.mjs && npm run test:design && npm run audit:design",
+    "build": "astro check && astro build && node scripts/strip-woff-fallback.mjs && npm run test:design && npm run audit:design && node scripts/check-agent-reader.mjs",
     "preview": "astro preview",
+    "test:agent-reader": "node scripts/test-agent-reader-browser.mjs",
     "astro": "astro",
     "check": "astro check",
     "test:design": "node --test scripts/design.test.mjs",

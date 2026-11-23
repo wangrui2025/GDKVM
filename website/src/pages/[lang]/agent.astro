@@ -1,0 +1,67 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { reader, copyContext } from "../../lib/agentReader";
+import en from "../../content/agent-reader/en.json";
+import zh from "../../content/agent-reader/zh.json";
+import { getRelativeLocaleUrl } from "astro:i18n";
+export function getStaticPaths(){return [{params:{lang:"en"}},{params:{lang:"zh"}}];}
+const lang=Astro.params.lang==="zh"?"zh":"en";
+const t=lang==="zh"?zh:en;
+const context=copyContext(Astro.site!.origin);
+---
+<Layout title={t.title+" · "+reader.site} description={t.intro}>
+  <div class="max-w-content mx-auto px-4 py-12 space-y-8" data-agent-reader>
+    <header class="space-y-3">
+      <p class="text-gray-600 dark:text-gray-300">{reader.site} · {t.site}</p>
+      <h1 class="text-section font-bold">{t.title}</h1>
+      <p>{t.intro}</p>
+    </header>
+    <section class="border border-gray-300 dark:border-gray-600 rounded-lg p-4 space-y-3" aria-label={t.copy}>
+      <button type="button" data-agent-copy data-copied={t.copied} data-manual={t.manual} class="border border-gray-400 dark:border-gray-500 rounded px-4 py-3 font-semibold cursor-pointer">{t.copy}</button>
+      <p role="status" data-agent-status aria-live="polite"></p>
+      <details data-agent-details>
+        <summary class="cursor-pointer">{t.details}</summary>
+        <textarea data-agent-context aria-label={t.details} class="w-full border border-gray-300 dark:border-gray-600 rounded p-2 bg-white dark:bg-gray-900" readonly rows="10">{context}</textarea>
+      </details>
+      <noscript><p>{t.manual}</p></noscript>
+    </section>
+    <section class="space-y-3">
+      <h2 class="text-section font-bold">{t.resources}</h2>
+      <ul class="space-y-2">
+        <li><a class="underline" href={reader.discovery.index}>llms.txt</a></li>
+        <li><a class="underline" href={reader.discovery.catalog}>site.json</a></li>
+        <li><a class="underline" href={reader.discovery.guide}>SKILL.md</a></li>
+      </ul>
+    </section>
+    <section class="space-y-3">
+      <h2 class="text-section font-bold">{t.pages}</h2>
+      <p>{reader.publication.title[lang]} · {reader.publication.venue[lang]}</p>
+      <ul class="space-y-2">
+        {reader.pages.filter(x=>x.lang===lang).map(x=><li><a class="underline" href={x.path}>{x.title}</a></li>)}
+        {reader.publication.sources.map(x=><li><a class="underline" href={x.url}>{x.title}</a></li>)}
+      </ul>
+      {reader.cautions[lang].map(x=><p>{x}</p>)}
+    </section>
+    <a class="underline" href={getRelativeLocaleUrl(lang,"/")}>{t.pages}</a>
+  </div>
+</Layout>
+<script>
+  // Event delegation remains valid after Astro ClientRouter navigation.
+  document.addEventListener("click",async event=>{
+    const button=event.target instanceof Element?event.target.closest<HTMLButtonElement>("button[data-agent-copy]"):null;
+    if(!button)return;
+    const root=button.closest("[data-agent-reader]");
+    const input=root?.querySelector<HTMLTextAreaElement>("[data-agent-context]");
+    const status=root?.querySelector<HTMLElement>("[data-agent-status]");
+    if(!input||!status)return;
+    try{
+      await navigator.clipboard.writeText(input.value);
+      status.textContent=button.dataset.copied??"";
+    }catch{
+      const details=root?.querySelector<HTMLDetailsElement>("[data-agent-details]");
+      if(details)details.open=true;
+      input.focus();input.select();
+      status.textContent=button.dataset.manual??"";
+    }
+  });
+</script>
