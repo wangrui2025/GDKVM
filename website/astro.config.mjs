@@ -88,7 +88,7 @@ export default defineConfig({
       // (because both `/GDKVM/reprod/` and `/GDKVM/en/reprod/` end with
       // `/reprod/`). Per Google Search Console guidelines, noindex URLs
       // must not appear in sitemaps.
-      filter: (page) => !page.endsWith('/404/') && !page.endsWith('/GDKVM/') && !page.endsWith('/GDKVM/reprod/'),
+      filter: (page) => !page.endsWith('/404/') && !page.endsWith('/GDKVM/') && !page.endsWith('/GDKVM/reprod/') && !page.endsWith('/GDKVM/agent/'),
     }),
     astroIcon(),
     sitemapSeo(),

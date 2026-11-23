@@ -1,0 +1,6 @@
+---
+import FallbackLayout from "../../layouts/FallbackLayout.astro";
+import { getRelativeLocaleUrl } from "astro:i18n";
+const target=getRelativeLocaleUrl("en","agent/");
+---
+<FallbackLayout title="Agent Reader" target={target}><p><a href={target}>Read the public project guide</a></p></FallbackLayout>

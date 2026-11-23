@@ -1,4 +1,7 @@
 ---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import agentEn from '../content/agent-reader/en.json';
+import agentZh from '../content/agent-reader/zh.json';
 import { t } from '../i18n';
 import { formatCalendarText } from '../utils/calendar-date.mjs';
 const lang = Astro.currentLocale ?? 'en';
@@ -8,6 +11,7 @@ const lang = Astro.currentLocale ?? 'en';
   <div class="max-w-content mx-auto px-4 text-center">
     <p class="text-sm text-gray-500 dark:text-gray-400">
       {formatCalendarText(t(lang, 'footer.lastUpdated'), lang)}
+     <span aria-hidden="true"> · </span><a class="underline" href={getRelativeLocaleUrl(lang,"agent/")}>{lang==="zh"?agentZh.title:agentEn.title}</a>
     </p>
   </div>
 </footer>

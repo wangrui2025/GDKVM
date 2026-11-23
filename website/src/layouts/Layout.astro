@@ -188,6 +188,7 @@ const ogImage = new URL(image ?? defaultOgImage, Astro.site).href;
         }
       })();
     </script>
+    <link rel="help" type="text/markdown" href={import.meta.env.BASE_URL.replace(/\/$/,"")+"/agent/SKILL.md"} />
   </head>
   <body data-design-system="gdkvm" class="bg-white text-gray-700 dark:bg-gray-900 dark:text-gray-200 transition-colors min-h-screen flex flex-col">
     <a
