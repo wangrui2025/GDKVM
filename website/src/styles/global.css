@@ -59,25 +59,21 @@ body {
   line-height: var(--leading-body);
 }
 
-a {
-  color: var(--color-primary);
-  transition: color 0.2s;
+@layer base {
+  a {
+    color: var(--color-primary);
+    transition: color 0.2s;
+  }
+  a:hover { color: var(--color-primary-dark); }
 }
 
-a:hover {
-  color: var(--color-primary-dark);
-}
-
-.dark a {
-  color: oklch(70% 0.17 250);
-}
-
-.dark a:hover {
-  color: oklch(75% 0.17 250);
+@layer base {
+  .dark a { color: oklch(70% 0.17 250); }
+  .dark a:hover { color: oklch(75% 0.17 250); }
 }
 
 /* a11y: keyboard focus visible (WCAG 2.4.7) --------------------------------- */
-:where(a, button, [role="button"], input, textarea, select, summary):focus-visible {
+:where(a, button, [role="button"], input, textarea, select, summary, pre):focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
   border-radius: 2px;
@@ -195,7 +191,7 @@ pre {
 
 /* Copy button --------------------------------------------------------------- */
 .copy-btn {
-  opacity: 0.7;
+  opacity: 1;
   transition: opacity 0.2s;
   border: 1px solid oklch(85% 0 0);
   cursor: pointer;

@@ -209,6 +209,8 @@ const citationMeta = {
     <div class="relative">
       <CopyButton targetId="bibtex-content" label={t(lang, 'home.copy')} successLabel={t(lang, 'home.copied')} />
       <pre
+        tabindex="0"
+        aria-label={t(lang, 'home.bibtexTitle')}
         class="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 text-sm overflow-x-auto"
         is:raw
       ><code id="bibtex-content">@InProceedings&#123;Wang_ICCV25_GDKVM,
@@ -248,8 +250,8 @@ const citationMeta = {
   <!-- To-Do List -->
   <Section compact>
     <div class="text-center">
-      <p class="mb-2 text-xs font-semibold uppercase tracking-widest text-gray-400">{t(lang, 'home.todoTitle')}</p>
-      <ul class="list-none text-sm text-gray-400 opacity-70">
+      <p class="mb-2 text-xs font-semibold uppercase tracking-widest text-gray-600 dark:text-gray-400">{t(lang, 'home.todoTitle')}</p>
+      <ul class="list-none text-sm text-gray-600 dark:text-gray-400">
         <li class="mb-1"><Icon name="lucide:square" class="w-3 h-3 inline mr-1" /> {t(lang, 'home.todo1')}</li>
         <li><Icon name="lucide:square" class="w-3 h-3 inline mr-1" /> {t(lang, 'home.todo2')}</li>
       </ul>
