@@ -8,3 +8,5 @@ results. Inspect the current branch and open PRs, validate the changed layer,
 and report exact candidate and actual serving state separately.
 
 Before changes to product direction or site IA, read [current website Wish](docs/wish/LATEST.md) and [Wish interpretation](docs/wish/DESIGN.md). Preserve the paper, experiment-code, website design and Dev authorities.
+
+For material page/feature changes, resolve [Intent](docs/intent/README.md) first, then follow the existing Wish, Design, Dev and verification owners; preserve confirmed behavior and do not infer approval from implementation.

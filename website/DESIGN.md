@@ -337,3 +337,5 @@ diff <(node -e "console.log(Object.keys(require('./src/content/homepage/en.json'
 **2026-11-20 的启发参考：** [nuro.dev](https://nuro.dev/) 的选项 hover、图标大小与空间节奏。它只是当前可学习的一例，既不是指定要照抄的视觉稿，也不规定颜色、动画时长、CSS 框架或永久唯一标准。未来发现更好的研究展示/交互实践，应先比较再取其更适合本站者。
 
 真正落地时优先复用本站现有 token、ActionButton/LangSwitcher/ThemeToggle 等组件，并进行桌面与 440px 手机的真浏览器验收：hover、focus-visible、触控、prefers-reduced-motion、无布局跳动、无横向溢出、中英文一致，绝不把未验证的工具功能做成“已成功”视觉暗示。**本 PR 只记录长期设计愿望，不改变页面或生产。**
+
+Feature-level goals and protected semantics: [Intent](../docs/intent/README.md). This file retains its existing ownership and history.

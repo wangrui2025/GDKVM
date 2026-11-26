@@ -18,3 +18,5 @@ replace the paper, source data, or design specification.
 This is an implementation map, not a blanket PASS; current test and deployment
 evidence must be obtained for each change. Real device and independent-reader
 behavior are separate from browser simulation and build results.
+
+Feature-level goals and protected semantics: [Intent](../docs/intent/README.md). This file retains its existing ownership and history.
