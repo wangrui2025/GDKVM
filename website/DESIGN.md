@@ -338,4 +338,4 @@ diff <(node -e "console.log(Object.keys(require('./src/content/homepage/en.json'
 
 真正落地时优先复用本站现有 token、ActionButton/LangSwitcher/ThemeToggle 等组件，并进行桌面与 440px 手机的真浏览器验收：hover、focus-visible、触控、prefers-reduced-motion、无布局跳动、无横向溢出、中英文一致，绝不把未验证的工具功能做成“已成功”视觉暗示。**本 PR 只记录长期设计愿望，不改变页面或生产。**
 
-Feature-level goals and protected semantics: [Intent](../docs/intent/README.md). This file retains its existing ownership and history.
+Feature-level goals and protected semantics: [Feature Design](../docs/design/features/README.md). This file retains its existing ownership and history.
